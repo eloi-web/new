@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consultancy Listings</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="consultancy.css">
+</head>
+<body>
+<header>
+  <h1>Consultancy Services in<span> Rwanda</span></h1>
+  <p class="browse">Expert advice and tailored solutions to help businesses and individuals make informed decisions & performance</p>
+</header>
+
+<div class="search-filter">
+  <input type="text" id="searchInput" placeholder="Search consultancy...">
+  <select id="locationFilter">
+    <option value="">All Locations</option>
+    <option value="Kigali">Kigali</option>
+    <option value="Musanze">Musanze</option>
+    <option value="Huye">Huye</option>
+    <option value="Rubavu">Rubavu</option>
+  </select>
+</div>
+
+<div class="listing-grid" id="listingGrid">
+
+</div>
+
+
+<div class="modal" id="consultancyModal">
+  <div class="modal-content">
+    <span class="close-modal" id="closeModal">&times;</span>
+    <h2 id="modalTitle">Title</h2>
+    <p id="modalLocation">Location</p>
+    <p id="modalDesc">Description</p>
+    <p class="price" id="modalPrice">$0.00</p>
+    <p class="popup-badge" style="font-weight:bold; color:gold;"></p>
+    <p class="popup-rating"></p>
+
+    <label for="bookingDate">Choose a date:</label>
+    <input type="text" id="bookingDate" placeholder="Select date">
+
+    <button class="btn" style="margin-top: 1rem;">Book Now</button>
+  </div>
+</div>
+
+<footer class="site-footer" id="footer">
+    <div class="footer-row">
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="links">
+          <li><a href="/">Home</a></li>
+          <li><a href="#updates">Updates</a></li>
+          <li><a href="#about-content">About</a></li>
+          <li><a href="#service-content">Services</a></li>
+          <li><a href="chat.html">Support</a></li>
+          <li><a href="javascript:void(0)">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul class="links">
+            <li><a href="auctions.html">Auction</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultancy.html">Consultants</a></li>
+            <li><a href="tenders.html">Tenders</a></li>
+            <li><a href="Wedding Venues.html">Venues</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul class="links">
+          <li><a href="javascript:void(0)">Service Provider</a></li>
+          <li><a href="javascript:void(0)">Service seeker</a></li>
+          <li><a href="javascript:void(0)">Privacy Policy</a></li>
+          <li><a href="javascript:void(0)">Payment Options</a></li>
+          <li><a href="chat.html">Help</a></li>
+        </ul>
+      </div>
+      <div class="footer-col newsletter">
+        <h4>Newsletter</h4>
+        <p>
+          Subscribe to our newsletter for a weekly updates, helpful tips, and
+          exclusive offers.
+        </p>
+        <form action="#">
+          <input type="email" placeholder="Your email" required>
+          <button type="submit">subscribe</button>
+        </form>
+        <div class="icons">
+          <a href="javascript:void(0)" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="javascript:void(0)" target="_blank"><i class="fab fa-twitter"></i></a>
+          <a href="javascript:void(0)" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 GBA. All rights reserved.</p>
+      <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </div>
+  </footer>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="consultancy.js"></script>
+</body>
+</html>

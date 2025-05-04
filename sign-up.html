@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join GBA</title>
+    <link rel="stylesheet" href="sign-up.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <button id="backArrow" class="back-arrow" aria-label="Go back">←</button>
+    <div class="auth-container">
+        <div class="left-side">
+            <div class="left-content">
+                <h2>Unlock Your Potential with GBA</h2>
+                <p class="sub-heading">Discover a world of opportunities, connect with a vibrant community, and achieve your goals.</p>
+                
+            </div>
+        </div>
+        <div class="right-side signup-side">
+            <div class="right-content">
+                <h2>Create Your Free Account</h2>
+                <form action="" method="post" class="signup-form">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" class="form-control" name="username" placeholder="Username" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" class="form-control" name="email" placeholder="Email Address" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-control" name="password" placeholder="Password" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required>
+                    </div>
+                    <button type="submit" class="signup-button">Sign Up <i class="fas fa-arrow-right"></i></button>
+                </form>
+                <div class="alternative-signup">
+                    <p>Or sign up with</p>
+                    <div class="social-buttons">
+                        <a href="/auth/facebook" class="social-button facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="/auth/google" class="social-button google"><i class="fab fa-google"></i></a>
+                        <a href="/auth/linkedin" class="social-button linkedin"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="switch-auth">
+                    Already have an account? <a href="log-in.html">Log In <i class="fas fa-sign-in-alt"></i></a>
+                </div>
+   
+                <p class="company-name">&copy; 2025 GBA</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+  const backArrow = document.getElementById('backArrow');
+  
+  if (backArrow) {
+    backArrow.addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+     } else {
+       window.location.href = 'inde.html';
+      }
+    });
+  }
+});
+    </script>
+</body>
+</html>

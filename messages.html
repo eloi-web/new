@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    <link rel="stylesheet" href="messages.css">
+</head>
+<body>
+    <div class="messages-page">
+        <div class="messages-container" id="messagesList">
+          <h2>Messages</h2>
+          <div class="message-card" onclick="openChat()">
+            <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61" alt="user">
+            <div class="new">
+              <h4>Jack Black</h4>
+              <p>Hey, are you available to talk?</p>
+            </div>
+          </div>
+        </div>
+        <div class="chat-sidebar" id="chatSidebar">
+          <div class="chat-header">
+            <h4>Jack Black</h4>
+            <span class="close-btn" onclick="closeChat()">×</span>
+          </div>
+          <div class="chat-messages" id="chatMessages">
+            <div class="message incoming"><p>Hey!</p></div>
+          </div>
+          <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Type a message..." />
+            <button onclick="sendMessage()">Send</button>
+          </div>
+        </div>
+      </div>
+</body>
+<script src="messages.js"></script>
+</html>

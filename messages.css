@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+  }
+  .message-card img{
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+  }
+.messages-page {
+    display: flex;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .messages-container {
+    width: 100%;
+    padding: 1rem;
+    transition: 0.3s;
+    overflow-y: auto;
+  }
+  .new{
+    background-color: rgba(0, 0, 0, 0.096);
+    width: 550px;
+    height: 80px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .new h4, .new p{
+    padding-left: 10px;
+  }
+  .chat-sidebar {
+    position: absolute;
+    right: -100%;
+    top: 0;
+    width: 100%;
+    max-width: 400px;
+    height: 100%;
+    background: #fff;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    transition: right 0.4s ease;
+    z-index: 10;
+  }
+  
+  .chat-sidebar.open {
+    right: 0;
+  }
+  .chat-header {
+    padding: 1rem;
+    background: #007bff;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: #007bff solid 2px;
+  }
+    .close-btn {
+        position: absolute;
+        right: 10px;
+        font-size: 24px;
+        cursor: pointer;
+        color: white;
+    }
+  .chat-messages {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+  .message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    max-width: 70%;
+  }
+  
+  .incoming {
+    background: #f1f1f1;
+    align-self: flex-start;
+  }
+  
+  .outgoing {
+    background: #007bff;
+    color: #fff;
+    align-self: flex-end;
+  }
+  .chat-input {
+    padding: 1rem;
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid #ccc;
+  }
+  
+  .chat-input input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+  }
+  
+  .chat-input button {
+    padding: 10px 15px;
+    border: none;
+    background: #007bff;
+    color: #fff;
+    border-radius: 25px;
+    cursor: pointer;
+  }
+  @media (max-width: 640px) {
+    .new{
+        width: 275px;
+    }
+  }
+  
+  

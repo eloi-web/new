@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GBA dashboard</title>
+    <link rel="shortcut icon" href="" type="image/x-icon">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+    <div class="container">
+        <aside>
+            <div class="top">
+
+                <div class="logo">
+                    <h2>G<span class="danger">BA</span></h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <i class='bx bx-x'></i>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="#" class="active">
+                    <i class='bx bxs-dashboard' ></i>
+                    <h3>Dashboard</h3>
+                </a>  
+
+                <a href="#">
+                    <i class='bx bx-user' ></i>
+                    <h3>Reachs</h3>
+                </a>
+
+                <a href="#">
+                    <i class='bx bx-file'></i>
+                    <h3>Listings</h3>
+                </a>
+
+                <a href="#">
+                    <i class='bx bx-line-chart-down'></i>
+                    <h3>Analytics</h3>
+                </a>
+
+                <a href="#">
+                    <i class='bx bx-paper-plane bx-tada' ></i>
+                    <h3>Messages</h3><span class="message-count">8</span>
+              </a>
+
+                <a href="#">
+                    <i class='bx bx-mobile-vibration'></i>
+                    <h3>Inquiries</h3>
+                </a>
+
+                <a href="#">
+                    <i class='bx bx-book-open'></i>
+                    <h3>Reports</h3>
+                </a>
+
+                <a href="#">
+                    <i class='bx bx-cog bx-flashing' ></i>
+                    <h3>Settings</h3>
+                </a>
+
+                <a href="#">
+                    <i class='bx bx-add-to-queue'></i>
+                    <h3>Add listing</h3>
+                </a>
+
+               <a href="#">
+                    <i class='bx bx-log-out-circle'></i>
+                    <h3>Log Out</h3>
+                </a>
+                <a href="inde.html">
+                    <i class='bx bx-book-open'></i>
+                    <h3>Homepage</h3>
+                </a>
+                
+                <a href="#">
+					<i class='bx bxs-cloud-download' ></i>
+					<h3>Download As PDF</h3>
+				</a>
+            </div>
+        </aside>
+
+        <main>
+            <h1>Dashboard</h1>
+            <div class="date">
+                <input type="date">
+            </div>
+
+            <div class="insights">
+                <div class="sales">
+                    <i class='bx bx-bar-chart-alt'></i>
+                    <div class="middle">
+                        <div class="left">
+                            <h3>Total listing</h3>
+                            <h1>8</h1>
+                        </div>
+                        <div class="progress">
+                            <svg>
+                                <circle cx="38" cy="38" r="36"></circle>
+                            </svg>
+                            <div class="number">
+                                <p>81%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <small class="text-muted">Last 4 days</small>
+                </div>
+
+                <div class="income">
+                    <i class='bx bx-line-chart'></i>
+                    <div class="middle">
+                        <div class="left">
+                            <h3>Total revenue</h3>
+                            <h1>$438</h1>
+                        </div>
+                        <div class="progress">
+                            <svg>
+                                <circle cx="38" cy="38" r="36"></circle>
+                            </svg>
+                            <div class="number">
+                                <p>45%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <small class="text-muted">Last 4 days</small>
+                </div>
+                <div class="expense">
+                    <i class='bx bx-line-chart-down'></i>
+                    <div class="middle">
+                        <div class="left">
+                            <h3>Total bids/apps</h3>
+                            <h1>2</h1>
+                        </div>
+                        <div class="progress">
+                            <svg>
+                                <circle cx="38" cy="38" r="36"></circle>
+                            </svg>
+                            <div class="number">
+                                <p>21%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <small class="text-muted">Last 4 days</small>
+                </div>
+
+            </div>
+
+
+            <div class="recent-order">
+                <h2>Recent Activities</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Insights</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <!--  <tr>
+                        <td>Playstation PS5</td>
+                        <td>84332</td>
+                        <td>Due</td>
+                        <td class="warning">Pending</td>
+                        <td class="primary">Details</td>
+                        </tr>
+                    -->
+                </table>
+                <a href="#">Show All</a>
+            </div>
+            
+        </main>
+        <div class="right">
+            <div class="top">
+                <button id="menu-btn">
+                    <i class='bx bx-menu'></i>
+                </button>
+                <div class="theme-toggle">
+                    <i class='bx bx-sun active'></i>
+                    <i class='bx bx-moon'></i>
+                </div>
+                <div class="profile">
+                    <div class="info">
+                        <p>Hi, <b>Ntwali</p>
+                        <small class="text-muted">User</small>
+                    </div>
+                    <div class="profile-photo">
+                        <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="User">
+                    </div>
+                </div>
+            </div>
+            <div class="recent-updates">
+                <h2>Recent Updates</h2>
+                <div class="updates">
+                    <div class="update">
+                        <div class="profile-photo">
+                            <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="GBA">
+                        </div>
+                        <div class="message">
+                            <p><b>Michael angello</b> just posted once in a while</p>
+                            <small class="text-muted">2 Minutes ago</small>
+                        </div>
+                    </div>
+
+                    <div class="update">
+                        <div class="profile-photo">
+                            <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="GBA">
+                        </div>
+                        <div class="message">
+                            <p><b>Jack Black</b> just added new job alerts & several venues available in Kigali</p>
+                            <small class="text-muted">20 Minutes ago</small>
+                        </div>
+                    </div>
+
+                    <div class="update">
+                        <div class="profile-photo">
+                            <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="GBA">
+                        </div>
+                        <div class="message">
+                            <p><b>Jasmine ellie</b> just shared a link to apply for new jobs & their requirements</p>
+                            <small class="text-muted">30 Minutes ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sales-analytics">
+                <h2>User Analytics</h2>
+                <div class="item online">
+                    <i class='bx bxs-objects-horizontal-left'></i>
+                    <div class="right">
+                        <div class="info">
+                            <h3>LISTINGS</h3>
+                            <small class="text-muted">Last 4 months</small>
+                        </div>
+                        <h5 class="success">+78%</h5>
+                        <h3>20</h3>
+                    </div>
+                </div>
+
+                 <div class="item offline">
+                    <i class='bx bxs-user-check'></i>
+                    <div class="right">
+                        <div class="info">
+                            <h3>ENGAGEMENTS</h3>
+                            <small class="text-muted">Last 4 months</small>
+                        </div>
+                        <h5 class="danger">-17%</h5>
+                        <h3>1100</h3>
+                    </div>
+                </div>
+
+                 <div class="item customers">
+                    <i class='bx bxs-notification-off'></i>
+                    <div class="right">
+                        <div class="info">
+                            <h3>FAKE NEWS</h3>
+                            <small class="text-muted">Last 4 months</small>
+                        </div>
+                        <h5 class="success">+25%</h5>
+                        <h3>232</h3>
+                    </div>
+                </div>
+
+                <div class="item add-product">
+                    <div>
+                        <i class="bx-add"></i>
+                        <a href="#"><h3>Add analytics</h3></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+
+<script src="orders.js"></script>
+<script src="dashboard.js"></script>
+</html>

@@ -1,0 +1,371 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+body {
+    background-color: #f9f9f9;
+    color: #333;
+    padding: 2rem 1rem;
+  }
+
+  .hero {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://img.freepik.com/free-photo/photorealistic-wedding-venue-with-intricate-decor-ornaments_23-2151481491.jpg?t=st=1746284464~exp=1746288064~hmac=4a5335b7817a347c27174908880e8e244de3056f75deb88d9d2432742143aed8&w=1380') no-repeat center center/cover;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .hero-content {
+    background-color: rgba(0,0,0,0.6);
+    padding: 2rem;
+    border-radius: 1rem;
+    max-width: 800px;
+  }
+
+  .hero-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-content p.browse {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-content button {
+    padding: 0.75rem 1.5rem;
+    margin: 0 0.5rem;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background-color: #007bff;
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+  }
+
+  .btn-secondary:hover {
+    background-color: white;
+    color: black;
+  }
+
+  .filters, .services {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  .filters {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .filters input, .filters select{
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    flex: 1 1 30%;
+  }
+
+  .filters button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 12px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1em;
+    border-radius: 25px;
+    transition: background-color 0.3s;
+  }
+
+  .filters button:hover {
+    background-color: #007bff;
+  }
+
+  .services h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card {
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+  }
+
+  .card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .card-content {
+    padding: 1rem;
+  }
+
+  .card-content h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-content p {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 1rem;
+  }
+
+  .card-content button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.90em;
+    cursor: pointer;
+  }
+
+  .card-content button:hover {
+    background-color: #007bff;
+  }
+
+  @media (max-width: 600px) {
+    .hero-content h1 {
+      font-size: 2rem;
+    }
+
+    .hero-content p {
+      font-size: 1rem;
+    }
+
+    .filters input, .filters select, .filters button {
+      flex: 1 1 100%;
+    }
+  }
+
+  /* footer*/
+.site-footer {
+    background: white; 
+    color: black; 
+    padding: 60px 0 20px 0; 
+    font-size: 0.9em;
+    border-radius: 0; 
+  }
+  
+  .site-footer .container {
+    max-width: 1280px;
+    width: 95%;
+    margin: 0 auto;
+  }
+  
+  .site-footer .footer-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 3.5rem;
+    margin-bottom: 40px;
+  }
+  
+  .site-footer .footer-col {
+    flex: 1; 
+    min-width: 200px; 
+  }
+  
+  .site-footer .footer-col h4 {
+    color: black;
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 20px;
+  }
+  
+  .site-footer .footer-col .links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .site-footer .footer-col .links li {
+    margin-bottom: 10px;
+  }
+  
+  .site-footer .footer-col .links li a {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.692);
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .site-footer .footer-col .links li a:hover {
+    color: #007bff;
+  }
+  
+  .site-footer .footer-col p {
+    margin: 20px 0;
+    text-align: center;
+    color: black;
+    max-width: 300px;
+  }
+  
+  .site-footer .footer-col form {
+    display: flex;
+    gap: 5px;
+    margin-top: 20px;
+  }
+  
+  .site-footer .footer-col input {
+    height: 40px;
+    border-radius: 6px;
+    background: none;
+    width: 100%;
+    outline: none;
+    border: 1px solid #7489C6;
+    caret-color: #fff;
+    color: black;
+    padding-left: 10px;
+  }
+  
+  .site-footer .footer-col input::placeholder {
+    color: #ccc;
+  }
+  
+  .site-footer .footer-col form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .site-footer .footer-col form button:hover {
+    background: #0056b3;
+  }
+  
+  .site-footer .footer-col .icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    gap: 15px; 
+    cursor: pointer;
+  }
+  
+  .site-footer .footer-col .icons a {
+    color: black;
+    font-size: 1.2em;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .site-footer .footer-col .icons a:hover {
+    color: #fff;
+  }
+  
+  .site-footer .footer-bottom {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #283149;
+    font-size: 0.85em;
+    color: #777;
+  }
+  
+  .site-footer .footer-bottom a {
+    color: #777;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .site-footer .footer-bottom a:hover {
+    color: black;
+  }
+  .footer-col.newsletter p{
+    text-align: center;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .site-footer {
+      padding: 30px 0 10px 0;
+      text-align: center;
+    }
+  
+    .site-footer .footer-row {
+      padding: 20px;
+      gap: 1rem;
+      flex-direction: column; 
+    }
+  
+    .site-footer .footer-col {
+      margin-bottom: 30px; 
+    }
+  
+    .site-footer .footer-col form {
+      display: block;
+    }
+  
+    .site-footer .footer-col form :where(input, button) {
+      width: 100%;
+    }
+  
+    .site-footer .footer-col.newsletter p {
+      text-align: center; 
+    }
+    .site-footer .footer-col.newsletter form {
+      display: block; 
+    }
+  
+    .site-footer .footer-col.newsletter form input[type="email"] {
+      width: 95%;
+      margin-bottom: 5px; 
+    }
+  
+    .site-footer .footer-col.newsletter form button {
+      width: 100%;
+      margin-top: 0; 
+    }
+  
+  }

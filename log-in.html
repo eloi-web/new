@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to GBA</title>
+    <link rel="stylesheet" href="sign-up.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <button id="backArrow" class="back-arrow" aria-label="Go back">←</button>
+    <div class="auth-container">
+        <div class="left-side login-side">
+            <div class="left-content">
+                <h2>Welcome Back to GBA</h2>
+                <p class="sub-heading">Sign in to continue your journey with our amazing community and resources.</p>
+                
+            </div>
+        </div>
+        <div class="right-side">
+            <div class="right-content">
+                <h2>Sign In</h2>
+                <form action="" method="post" class="login-form">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" class="form-control" name="username" placeholder="Username or Email" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-control" name="password" placeholder="Password" required>
+                    </div>
+                    <div class="form-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">Remember me</label>
+                        </div>
+                        <a href="/forgot-password" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="login-button" >Sign In <i class="fas fa-sign-in-alt"></i></button>
+                </form>
+                <div class="alternative-login">
+                    <p>Or sign in with</p>
+                    <div class="social-buttons">
+                        <a href="/auth/facebook" class="social-button facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="/auth/google" class="social-button google"><i class="fab fa-google"></i></a>
+                        <a href="/auth/linkedin" class="social-button linkedin"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="switch-auth">
+                    Don't have an account? <a href="sign-up.html">Sign Up <i class="fas fa-user-plus"></i></a>
+                </div>
+        
+                <p class="company-name">&copy; 2025 GBA</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+  const backArrow = document.getElementById('backArrow');
+  
+  if (backArrow) {
+    backArrow.addEventListener('click', function() {
+      if (window.history.length > 1) {
+        window.history.back();
+     } else {
+       window.location.href = 'inde.html';
+      }
+    });
+  }
+});
+    </script>
+</body>
+</html

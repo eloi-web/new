@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="explore variety of jobs listings, tenders, auctions, venues for weeding, consultants">
+    <title>Jobs listings</title>
+    <link rel="stylesheet" href="jobs.css">
+</head>
+<body>
+<section class="category-header">
+    <h2><span class="find">Find Jobs in</span> Rwanda</h2>
+    <p class="browse">Browse top job listings tailored for your skills, interests, and preferred location.</p>
+  </section>
+  
+  <div class="filters">
+    <select id="locationFilter">
+      <option value="">All Locations</option>
+      <option value="kigali">Kigali</option>
+      <option value="musanze">Musanze</option>
+      <option value="huye">Huye</option>
+    </select>
+  
+    <select id="typeFilter">
+      <option value="">All Job Types</option>
+      <option value="full-time">Full-time</option>
+      <option value="part-time">Part-time</option>
+      <option value="freelance">Freelance</option>
+    </select>
+  
+    <input type="text" id="searchInput" placeholder="Search by title or keyword..." />
+  </div>
+
+  <div class="listing-grid" id="jobListings">
+
+  </div>
+  
+  <h2>Latest Job Listings</h2>
+  <div id="job-container"></div>
+  <div id="skeletons"></div>
+  <button id="loadMoreBtn">Load More</button>
+
+   <div id="job-popup" class="job-popup hidden">
+    <div class="popup-content">
+      <span class="close-btn" onclick="closeJobPopup()">×</span>
+      <img id="popup-image" src="" alt="Job Image" style="width:100%; max-height:250px; object-fit:cover; border-radius:8px; margin-bottom:1rem;">
+      <h2 id="popup-title">Job Title</h2>
+      <p id="popup-company">Company - Location</p>
+      <p id="popup-type">Type</p>
+      <p id="popup-desc">Job Description...</p>
+  
+      <button class="cta-btn">Contact / Enroll</button>
+      <label style="display:block; margin-top:1rem;">Upload Your Resume:
+        <input type="file" id="upload-cv" accept=".pdf,.doc,.docx" />
+      </label>
+    </div>
+  </div>
+  
+  <footer class="site-footer" id="footer">
+    <div class="footer-row">
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="links">
+          <li><a href="/">Home</a></li>
+          <li><a href="#updates">Updates</a></li>
+          <li><a href="#about-content">About</a></li>
+          <li><a href="#service-content">Services</a></li>
+          <li><a href="chat.html">Support</a></li>
+          <li><a href="javascript:void(0)">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul class="links">
+          <li><a href="auctions.html">Auction</a></li>
+          <li><a href="jobs.html">Jobs</a></li>
+          <li><a href="consultancy.html">Consultants</a></li>
+          <li><a href="tenders.html">Tenders</a></li>
+          <li><a href="Wedding Venues.html">Venues</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul class="links">
+          <li><a href="javascript:void(0)">Service Provider</a></li>
+          <li><a href="javascript:void(0)">Service seeker</a></li>
+          <li><a href="javascript:void(0)">Privacy Policy</a></li>
+          <li><a href="javascript:void(0)">Payment Options</a></li>
+          <li><a href="chat.html">Help</a></li>
+        </ul>
+      </div>
+      <div class="footer-col newsletter">
+        <h4>Newsletter</h4>
+        <p>
+          Subscribe to our newsletter for a weekly updates, helpful tips, and
+          exclusive offers.
+        </p>
+        <form action="#">
+          <input type="email" placeholder="Your email" required>
+          <button type="submit">subscribe</button>
+        </form>
+        <div class="icons">
+          <a href="javascript:void(0)" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="javascript:void(0)" target="_blank"><i class="fab fa-twitter"></i></a>
+          <a href="javascript:void(0)" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 GBA. All rights reserved.</p>
+      <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </div>
+  </footer>
+</body>
+<script src="jobs.js" nonce="abc123"></script>
+</html>

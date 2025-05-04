@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore real estate listings in Rwanda. Find homes, apartments, and properties.">
+    <title>Real Estate Listings</title>
+    <link rel="stylesheet" href="realestate.css">
+</head>
+<body>
+    <section class="category-header">
+        <h2><span class="find">Find Real Estate in</span> Rwanda</h2>
+        <p class="browse">Browse top real estate listings, find your dream home, and contact the sellers directly.</p>
+    </section>
+    
+    <div class="filters">
+        <span class="filter-tag">Luxury</span>
+        <span class="filter-tag">Apartment</span>
+        <span class="filter-tag">Beach</span>
+        
+    </div>
+    
+    <div class="listing-grid">
+
+    </div>
+    
+    <button id="loadMoreBtn">Load More</button>
+    
+    <div class="property-popup hidden">
+        <div class="popup-content">
+          <button class="close-btn">X</button>
+          <div class="popup-image"></div>
+          <h2></h2>
+          <p></p>
+        </div>
+      </div>
+      
+    
+    
+    <div class="listing-grid" id="propertyListings"></div>
+    
+
+    <div id="property-popup" class="property-popup hidden">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closePropertyPopup()">×</span>
+            <img id="popup-image" src="" alt="Property Image" style="width:100%; max-height:250px; object-fit:cover; border-radius:8px; margin-bottom:1rem;">
+            <h2 id="popup-title">Property Title</h2>
+            <p id="popup-location">Location</p>
+            <p id="popup-price" style="font-weight:bold; color:black;">$0.00</p>
+            <p id="popup-type">Type</p>
+            <p id="popup-desc">Property Description...</p>
+            <button class="cta-btn">Contact Seller</button>
+        </div>
+    </div>
+
+    <footer class="site-footer" id="footer">
+        <div class="footer-row">
+          <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul class="links">
+              <li><a href="/">Home</a></li>
+              <li><a href="#updates">Updates</a></li>
+              <li><a href="#about-content">About</a></li>
+              <li><a href="#service-content">Services</a></li>
+              <li><a href="chat.html">Support</a></li>
+              <li><a href="javascript:void(0)">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Explore</h4>
+            <ul class="links">
+                <li><a href="auctions.html">Auction</a></li>
+                <li><a href="jobs.html">Jobs</a></li>
+                <li><a href="consultancy.html">Consultants</a></li>
+                <li><a href="tenders.html">Tenders</a></li>
+                <li><a href="Wedding Venues.html">Venues</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Legal</h4>
+            <ul class="links">
+              <li><a href="javascript:void(0)">Service Provider</a></li>
+              <li><a href="javascript:void(0)">Service seeker</a></li>
+              <li><a href="javascript:void(0)">Privacy Policy</a></li>
+              <li><a href="javascript:void(0)">Payment Options</a></li>
+              <li><a href="chat.html">Help</a></li>
+            </ul>
+          </div>
+          <div class="footer-col newsletter">
+            <h4>Newsletter</h4>
+            <p>
+              Subscribe to our newsletter for a weekly updates, helpful tips, and
+              exclusive offers.
+            </p>
+            <form action="#">
+              <input type="email" placeholder="Your email" required>
+              <button type="submit">subscribe</button>
+            </form>
+            <div class="icons">
+              <a href="javascript:void(0)" target="_blank"><i class="fab fa-facebook-f"></i></a>
+              <a href="javascript:void(0)" target="_blank"><i class="fab fa-twitter"></i></a>
+              <a href="javascript:void(0)" target="_blank"><i class="fab fa-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 GBA. All rights reserved.</p>
+          <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+      </footer>
+
+    <script src="realestate.js"></script>
+</body>
+</html>
