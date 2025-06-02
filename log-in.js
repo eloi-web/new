@@ -3,13 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault(); // This is still CRUCIAL!
+            e.preventDefault();
 
-            const email = loginForm['username'].value; // Assuming 'username' input is for email
+            const email = loginForm['username'].value;
             const password = loginForm['password'].value;
 
             try {
-                // Send credentials to your Node.js serverless function
                 const response = await fetch('/api/admin-login', {
                     method: 'POST',
                     headers: {
@@ -18,15 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({ email, password }),
                 });
 
-                const data = await response.json(); // Parse the JSON response from your backend
+                const data = await response.json();
 
-                if (response.ok) { // Check for 2xx status codes (e.g., 200 OK)
+                if (response.ok) {
                     console.log("Admin login successful:", data.message);
                     alert("Admin login successful! Redirecting to admin dashboard.");
-                    // You would redirect to your admin dashboard page here
-                    window.location.href = '/dashboard.html'; // Create this page later
+                    window.location.href = '/mainpage.html';
                 } else {
-                    // Handle errors from your backend (e.g., 401 Invalid credentials)
                     console.error("Admin login failed:", data.message);
                     alert(`Login Failed: ${data.message || 'An unexpected error occurred.'}`);
                 }
