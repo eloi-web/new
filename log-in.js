@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     console.log("Admin login successful:", data.message);
-                    alert("Admin login successful! Redirecting to admin dashboard.");
+                    alert("Admin login successful! Redirecting to admin mainpage.");
                     window.location.href = '/mainpage.html';
                 } else {
                     console.error("Admin login failed:", data.message);
