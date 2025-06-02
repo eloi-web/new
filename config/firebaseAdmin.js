@@ -20,8 +20,7 @@ if (!admin.apps.length) { // Prevents re-initialization if imported multiple tim
         console.error('Failed to parse FIREBASE_SERVICE_ACCOUNT_KEY or initialize from env. Attempting local file...', error);
         // Fallback for local development if the env var isn't set or is invalid
         try {
-            // Make sure you place your downloaded key file in a 'keys' folder
-            // and adjust the path accordingly:
+
             const serviceAccountLocal = require('../keys/your-firebase-admin-sdk-key.json'); // RENAME THIS to your actual file
             admin.initializeApp({
                 credential: admin.credential.cert(serviceAccountLocal)
