@@ -3,9 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin dashboard</title>
+    <title>Admin Dashboard - GBA</title>
+    <link rel="stylesheet" href="sign-up.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #f4f7f6; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .dashboard-container { background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 90%; max-width: 800px; }
+        .dashboard-header { text-align: center; margin-bottom: 30px; }
+        .dashboard-header h2 { color: #333; margin-bottom: 10px; }
+        .post-form-group { margin-bottom: 20px; }
+        .post-form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
+        .post-form-group input[type="text"],
+        .post-form-group textarea { width: calc(100% - 20px); padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; transition: border-color 0.3s; }
+        .post-form-group input[type="text"]:focus,
+        .post-form-group textarea:focus { border-color: #007bff; outline: none; }
+        .post-form-group textarea { min-height: 150px; resize: vertical; }
+        .create-post-button { background-color: #28a745; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 17px; font-weight: bold; width: 100%; transition: background-color 0.3s ease; }
+        .create-post-button:hover { background-color: #218838; }
+        #logoutButton {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #logoutButton:hover {
+            background-color: #c82333;
+        }
+
+        .posts-list { margin-top: 40px; border-top: 1px solid #eee; padding-top: 30px; }
+        .posts-list h3 { text-align: center; color: #333; margin-bottom: 25px; }
+        .post-item { background-color: #f9f9f9; border: 1px solid #eee; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+        .post-item h4 { margin-top: 0; color: #007bff; }
+        .post-item p { color: #666; font-size: 15px; line-height: 1.6; }
+        .post-meta { font-size: 13px; color: #888; margin-top: 10px; }
+        .post-actions button {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .post-actions button.delete { background-color: #dc3545; }
+        .post-actions button:hover { opacity: 0.9; }
+    </style>
 </head>
 <body>
-    
+    <button id="logoutButton">Logout</button>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h2>Admin Dashboard</h2>
+            <p>Create and manage your posts.</p>
+        </div>
+
+        <form id="postForm" class="post-form">
+            <h3>Create New Post</h3>
+            <div class="input-group post-form-group">
+                <label for="postTitle">Post Title:</label>
+                <input type="text" id="postTitle" placeholder="Enter post title" required>
+            </div>
+            <div class="input-group post-form-group">
+                <label for="postContent">Post Content:</label>
+                <textarea id="postContent" placeholder="Write your post content here..." required></textarea>
+            </div>
+            <div class="post-form-group">
+                <input type="checkbox" id="postPublished" checked>
+                <label for="postPublished">Publish Immediately</label>
+            </div>
+            <button type="submit" class="create-post-button">Create Post <i class="fas fa-plus"></i></button>
+        </form>
+
+        <div class="posts-list">
+            <h3>Your Posts</h3>
+            <div id="postsContainer">
+                <p>Loading posts...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-dashboard.js" type="module"></script>
 </body>
 </html>

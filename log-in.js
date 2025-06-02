@@ -1,3 +1,4 @@
+// log-in.js (client-side)
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.querySelector('.login-form');
 
@@ -21,8 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     console.log("Admin login successful:", data.message);
-                    alert("Admin login successful! Redirecting to admin mainpage.");
-                    window.location.href = '/mainpage.html';
+                    // Store the JWT token securely
+                    localStorage.setItem('adminToken', data.token); // Store the token!
+                    alert("Admin login successful! Redirecting to admin dashboard.");
+                    window.location.href = '/mainpage.html'; // Redirect to new dashboard
                 } else {
                     console.error("Admin login failed:", data.message);
                     alert(`Login Failed: ${data.message || 'An unexpected error occurred.'}`);
