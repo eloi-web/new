@@ -1,41 +1,39 @@
-import { auth, signInWithEmailAndPassword } from './firebase.js';
-
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.querySelector('.login-form');
 
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+            e.preventDefault(); // This is still CRUCIAL!
 
-            const email = loginForm['username'].value;
+            const email = loginForm['username'].value; // Assuming 'username' input is for email
             const password = loginForm['password'].value;
 
             try {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
+                // Send credentials to your Node.js serverless function
+                const response = await fetch('/api/admin-login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
 
-                console.log("User logged in:", user);
-                alert("Login successful! Redirecting to admin dashboard.");
-                window.location.href = './dashboard.html';
+                const data = await response.json(); // Parse the JSON response from your backend
+
+                if (response.ok) { // Check for 2xx status codes (e.g., 200 OK)
+                    console.log("Admin login successful:", data.message);
+                    alert("Admin login successful! Redirecting to admin dashboard.");
+                    // You would redirect to your admin dashboard page here
+                    window.location.href = '/admin-dashboard.html'; // Create this page later
+                } else {
+                    // Handle errors from your backend (e.g., 401 Invalid credentials)
+                    console.error("Admin login failed:", data.message);
+                    alert(`Login Failed: ${data.message || 'An unexpected error occurred.'}`);
+                }
 
             } catch (error) {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.error("Error logging in:", errorCode, errorMessage);
-
-                let displayMessage = "An unexpected error occurred.";
-                switch (errorCode) {
-                    case 'auth/user-not-found':
-                    case 'auth/wrong-password':
-                        displayMessage = "Invalid email or password.";
-                        break;
-                    case 'auth/invalid-email':
-                        displayMessage = "Please enter a valid email address.";
-                        break;
-                    default:
-                        displayMessage = errorMessage;
-                }
-                alert(`Login Error: ${displayMessage}`);
+                console.error("Network or client-side error during login:", error);
+                alert("A network error occurred. Please try again.");
             }
         });
     }
