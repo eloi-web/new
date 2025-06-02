@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 console.log("User logged in:", user);
                 alert("Login successful! Redirecting to admin dashboard.");
-                window.location.href = '/dashboard.html';
+                window.location.href = './dashboard.html';
 
             } catch (error) {
                 const errorCode = error.code;

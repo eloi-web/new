@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log("Account created successfully:", user);
                 alert("Account created successfully! You can now log in.");
 
-                window.location.href = '/log-in.html'; 
+                window.location.href = './log-in.html'; 
             } catch (error) {
                 const errorCode = error.code;
                 const errorMessage = error.message;
