@@ -1,5 +1,4 @@
 import { auth, signInWithEmailAndPassword } from './firebase.js';
-
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.querySelector('.login-form');
 
@@ -14,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 console.log("User logged in:", user);
                 alert("Login successful! Redirecting to admin dashboard.");
-                window.location.href = '/admin-dashboard.html';
+                window.location.href = '/dashboard.html';
 
             } catch (error) {
                 const errorCode = error.code;

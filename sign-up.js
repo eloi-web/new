@@ -1,13 +1,11 @@
-// src/js/sign-up.js
-import { auth, createUserWithEmailAndPassword } from './firebase.js'; // Adjust path relative to this file
+import { auth, createUserWithEmailAndPassword } from './firebase.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Get the form element by its class name
     const signUpForm = document.querySelector('.signup-form');
 
     if (signUpForm) {
         signUpForm.addEventListener('submit', async (e) => {
-            e.preventDefault(); // Prevent default form submission
+            e.preventDefault();
 
             const email = signUpForm.elements['email'].value;
             const password = signUpForm.elements['password'].value;
@@ -15,20 +13,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (password !== confirmPassword) {
                 alert("Passwords do not match!");
-                return; // Stop the function if passwords don't match
+                return;
             }
 
             try {
-                // Create user with email and password using Firebase Authentication
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
                 console.log("Account created successfully:", user);
                 alert("Account created successfully! You can now log in.");
 
-                // Redirect to the login page after successful account creation
-                window.location.href = '/login.html'; // Ensure this path is correct for your project
-
+                window.location.href = '/log-in.html'; 
             } catch (error) {
                 const errorCode = error.code;
                 const errorMessage = error.message;
@@ -52,8 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    // Handle the back arrow functionality
     const backArrow = document.getElementById('backArrow');
     if (backArrow) {
         backArrow.addEventListener('click', function() {
