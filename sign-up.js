@@ -1,5 +1,5 @@
 // src/js/sign-up.js
-import { auth, createUserWithEmailAndPassword } from 'firebase.js'; // Adjust path relative to this file
+import { auth, createUserWithEmailAndPassword } from './firebase.js'; // Adjust path relative to this file
 
 document.addEventListener('DOMContentLoaded', () => {
     // Get the form element by its class name

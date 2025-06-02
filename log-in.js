@@ -1,4 +1,4 @@
-import { auth, signInWithEmailAndPassword } from 'firebase.js';
+import { auth, signInWithEmailAndPassword } from './firebase.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.querySelector('.login-form');
