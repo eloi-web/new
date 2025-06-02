@@ -1,9 +1,12 @@
 import { auth, signInWithEmailAndPassword } from './firebase.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.querySelector('.login-form');
 
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
             const email = loginForm['username'].value;
             const password = loginForm['password'].value;
 
