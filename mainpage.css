@@ -648,6 +648,20 @@ body {
   border-color: #444 !important;
 }
 
+.category-navigation { text-align: center; margin-bottom: 30px; }
+        .category-navigation a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .category-navigation a:hover { background-color: #0056b3; }
+        .recent-posts-section { padding: 20px; max-width: 960px; margin: 20px auto; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
 @media (max-width: 1600px) {
   .follow {
     left: 58.5%;

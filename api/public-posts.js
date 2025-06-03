@@ -1,7 +1,7 @@
 // api/public-posts.js
-const admin = require('../config/firebaseAdmin'); // Import initialized Firebase Admin SDK
+const admin = require('../config/firebaseAdmin'); // Firebase Admin SDK is already set up
 
-const db = admin.firestore(); // Get a reference to Firestore
+const db = admin.firestore(); // Get Firestore instance
 
 module.exports = async (req, res) => {
     if (req.method !== 'GET') {
@@ -9,11 +9,20 @@ module.exports = async (req, res) => {
     }
 
     try {
-        // Fetch only posts where 'published' is true, ordered by creation time
-        const postsSnapshot = await db.collection('posts')
-                                        .where('published', '==', true)
-                                        .orderBy('createdAt', 'desc')
-                                        .get();
+        const { category } = req.query; // Get the 'category' query parameter from the URL
+
+        let postsRef = db.collection('posts')
+                         .where('published', '==', true); // Always fetch only published posts
+
+        if (category) {
+            // If a category is specified, add a filter for it
+            postsRef = postsRef.where('category', '==', category);
+        }
+
+        // Order the results by creation time
+        postsRef = postsRef.orderBy('createdAt', 'desc');
+
+        const postsSnapshot = await postsRef.get();
 
         const posts = postsSnapshot.docs.map(doc => ({
             id: doc.id,

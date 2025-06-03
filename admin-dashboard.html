@@ -10,13 +10,15 @@
         .dashboard-container { background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 90%; max-width: 800px; }
         .dashboard-header { text-align: center; margin-bottom: 30px; }
         .dashboard-header h2 { color: #333; margin-bottom: 10px; }
-        .post-form-group { margin-bottom: 20px; }
-        .post-form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
-        .post-form-group input[type="text"],
-        .post-form-group textarea { width: calc(100% - 20px); padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; transition: border-color 0.3s; }
-        .post-form-group input[type="text"]:focus,
-        .post-form-group textarea:focus { border-color: #007bff; outline: none; }
-        .post-form-group textarea { min-height: 150px; resize: vertical; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group select { width: calc(100% - 20px); padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; transition: border-color 0.3s; }
+        .form-group input[type="text"]:focus,
+        .form-group textarea:focus,
+        .form-group select:focus { border-color: #007bff; outline: none; }
+        .form-group textarea { min-height: 120px; resize: vertical; }
         .create-post-button { background-color: #28a745; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 17px; font-weight: bold; width: 100%; transition: background-color 0.3s ease; }
         .create-post-button:hover { background-color: #218838; }
         #logoutButton {
@@ -31,28 +33,17 @@
             cursor: pointer;
             font-size: 16px;
         }
-        #logoutButton:hover {
-            background-color: #c82333;
-        }
-
+        #logoutButton:hover { background-color: #c82333; }
+        .category-specific-fields { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #eee; }
+        .category-specific-fields.active { display: block; }
+        /* Styling for posts list if you add it back */
         .posts-list { margin-top: 40px; border-top: 1px solid #eee; padding-top: 30px; }
         .posts-list h3 { text-align: center; color: #333; margin-bottom: 25px; }
         .post-item { background-color: #f9f9f9; border: 1px solid #eee; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
         .post-item h4 { margin-top: 0; color: #007bff; }
         .post-item p { color: #666; font-size: 15px; line-height: 1.6; }
         .post-meta { font-size: 13px; color: #888; margin-top: 10px; }
-        .post-actions button {
-            background-color: #007bff;
-            color: white;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-right: 10px;
-        }
-        .post-actions button.delete { background-color: #dc3545; }
-        .post-actions button:hover { opacity: 0.9; }
+
     </style>
 </head>
 <body>
@@ -60,33 +51,90 @@
     <div class="dashboard-container">
         <div class="dashboard-header">
             <h2>Admin Dashboard</h2>
-            <p>Create and manage your posts.</p>
+            <p>Create and manage your categorized posts.</p>
         </div>
 
         <form id="postForm" class="post-form">
             <h3>Create New Post</h3>
-            <div class="input-group post-form-group">
+
+            <div class="form-group">
+                <label for="postCategory">Category:</label>
+                <select id="postCategory" required>
+                    <option value="">--Select Category--</option>
+                    <option value="Auction">Auction</option>
+                    <option value="Jobs">Jobs</option>
+                    <option value="Consultants">Consultants</option>
+                    <option value="Tenders">Tenders</option>
+                    <option value="Venues">Venues</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="postTitle">Post Title:</label>
                 <input type="text" id="postTitle" placeholder="Enter post title" required>
             </div>
-            <div class="input-group post-form-group">
-                <label for="postContent">Post Content:</label>
-                <textarea id="postContent" placeholder="Write your post content here..." required></textarea>
+
+            <div class="form-group">
+                <label for="postContent">General Content:</label>
+                <textarea id="postContent" placeholder="General description for this post (optional)"></textarea>
             </div>
-            <div class="post-form-group">
+
+            <div id="jobFields" class="category-specific-fields">
+                <h4>Job Specific Details</h4>
+                <div class="form-group">
+                    <label for="jobDescription">Job Description:</label>
+                    <textarea id="jobDescription" placeholder="Detailed job description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="jobTags">Tags (comma-separated):</label>
+                    <input type="text" id="jobTags" placeholder="e.g., full-time, remote, engineering">
+                </div>
+                <div class="form-group">
+                    <label for="jobImages">Job Images (select multiple):</label>
+                    <input type="file" id="jobImages" accept="image/*" multiple>
+                    <div id="jobImagePreviews"></div>
+                </div>
+                <div class="form-group">
+                    <label for="companyLogo">Company Logo:</label>
+                    <input type="file" id="companyLogo" accept="image/*">
+                    <div id="companyLogoPreview"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <input type="checkbox" id="postPublished" checked>
                 <label for="postPublished">Publish Immediately</label>
             </div>
+
             <button type="submit" class="create-post-button">Create Post <i class="fas fa-plus"></i></button>
         </form>
 
         <div class="posts-list">
-            <h3>Your Posts</h3>
+            <h3>Your Posts (Admin View)</h3>
             <div id="postsContainer">
                 <p>Loading posts...</p>
             </div>
         </div>
     </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script>
+        // YOUR PUBLIC FIREBASE CLIENT CONFIG HERE (from Firebase Console > Project settings > Your apps)
+       const firebaseConfig = {
+  apiKey: "AIzaSyDA1oonly5aQv0NPPna32lJli3P2GVPzHs",
+  authDomain: "gba-marketplace.firebaseapp.com",
+  projectId: "gba-marketplace",
+  storageBucket: "gba-marketplace.firebasestorage.app",
+  messagingSenderId: "110246782047",
+  appId: "1:110246782047:web:ca126e8b6466395833e7ea",
+  measurementId: "G-SSS7TFDC83"
+};
+
+        // Initialize Firebase App for this client-side dashboard's use
+        firebase.initializeApp(firebaseConfig);
+        const storage = firebase.storage(); // Get Firebase Storage instance
+    </script>
 
     <script src="admin-dashboard.js" type="module"></script>
 </body>
