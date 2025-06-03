@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Store the JWT token securely
                     localStorage.setItem('adminToken', data.token); // Store the token!
                     alert("Admin login successful! Redirecting to admin dashboard.");
-                    window.location.href = '/mainpage.html'; // Redirect to new dashboard
+                    window.location.href = '/admin-dashboard.html'; // Redirect to new dashboard
                 } else {
                     console.error("Admin login failed:", data.message);
                     alert(`Login Failed: ${data.message || 'An unexpected error occurred.'}`);
