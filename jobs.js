@@ -1,9 +1,32 @@
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", async () => {
     const listingsEl = document.getElementById("jobListings");
     const locationFilter = document.getElementById("locationFilter");
     const typeFilter = document.getElementById("typeFilter");
     const searchInput = document.getElementById("searchInput");
-
+ 
+    let allJobs = [];
+    
+    async function fetchJobs() {
+        listingsEl.innerHTML = '<p>Loading jobs...</p>';
+        try {
+            const response = await fetch('/api/public-posts?category=Jobs');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            if (data && Array.isArray(data.posts)) {
+                allJobs = data.posts;
+            } else {
+                allJobs = data; 
+            }
+            
+            console.log("Fetched jobs:", allJobs);
+        } catch (error) {
+            console.error("Error fetching jobs:", error);
+            listingsEl.innerHTML = '<p>Failed to load jobs. Please try again later.</p>'; 
+            allJobs = []; 
+        }
+    }
     const jobs = [
         {
           "title": "Full Stack Developer",
@@ -241,12 +264,14 @@
           </div>
         </div>
       `;
-  
-      // Attach click event to open modal with job data
+
       card.addEventListener("click", () => openJobPopup(job));
       listingsEl.appendChild(card);
     });
   }
+
+  await fetchJobs();
+  applyFiltersAndSearch();
   
  // modals
  window.openJobPopup = function (job) {
