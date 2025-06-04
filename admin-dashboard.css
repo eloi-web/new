@@ -2,21 +2,73 @@
 * {
   font-family: 'Poppins', sans-serif;
 }
-body { background-color: #f4f7f6; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-        .dashboard-container { background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 90%; max-width: 800px; }
-        .dashboard-header { text-align: center; margin-bottom: 30px; }
-        .dashboard-header h2 { color: #333; margin-bottom: 10px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
+body { 
+       background-color: #f4f7f6;
+       display: flex; 
+       flex-direction: column; 
+       align-items: center; 
+       justify-content: center; 
+       min-height: 100vh; 
+       margin: 0; 
+     }
+        .dashboard-container { background-color: #fff; 
+         padding: 30px; 
+         border-radius: 8px; 
+         box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+         width: 90%; max-width: 800px; 
+        }
+        .dashboard-header { 
+         text-align: center; 
+         margin-bottom: 30px; 
+        }
+        .dashboard-header h2 { 
+        color: #333; 
+        margin-bottom: 10px; 
+        }
+        .form-group { 
+         margin-bottom: 20px; 
+        }
+        .form-group label { 
+         display: block; 
+         margin-bottom: 8px; 
+         font-weight: bold; 
+         color: #555; 
+        }
         .form-group input[type="text"],
         .form-group textarea,
-        .form-group select { width: calc(100% - 20px); padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; transition: border-color 0.3s; }
+        .form-group select { 
+        width: calc(100% - 20px); 
+        padding: 12px; 
+        border: 1px solid #ddd; 
+        border-radius: 5px; 
+        font-size: 16px; 
+        transition: border-color 0.3s; 
+        }
         .form-group input[type="text"]:focus,
         .form-group textarea:focus,
-        .form-group select:focus { border-color: #007bff; outline: none; }
-        .form-group textarea { min-height: 120px; resize: vertical; }
-        .create-post-button { background-color: #007bff; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 17px; font-weight: bold; width: 100%; transition: background-color 0.3s ease; }
-        .create-post-button:hover { background-color: #007bff; }
+        .form-group select:focus { 
+         border-color: #007bff; 
+         outline: none; 
+        }
+        .form-group textarea { 
+         min-height: 120px; 
+         resize: vertical; 
+        }
+        .create-post-button { 
+         background-color: #007bff; 
+         color: white; 
+         padding: 12px 25px; 
+         border: none; 
+         border-radius: 25px; 
+         cursor: pointer; 
+         font-size: 17px; 
+         font-weight: bold; 
+         width: 100%; 
+         transition: background-color 0.3s ease; 
+        }
+        .create-post-button:hover { 
+         background-color: #007bff; 
+        }
         #logoutButton {
             position: absolute;
             top: 20px;
@@ -25,17 +77,48 @@ body { background-color: #f4f7f6; display: flex; flex-direction: column; align-i
             color: white;
             padding: 10px 15px;
             border: none;
-            border-radius: 5px;
+            border-radius: 25px;
             cursor: pointer;
             font-size: 16px;
         }
-        #logoutButton:hover { background-color: #007bff; }
-        .category-specific-fields { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #eee; }
-        .category-specific-fields.active { display: block; }
-        /* Styling for posts list if you add it back */
-        .posts-list { margin-top: 40px; border-top: 1px solid #eee; padding-top: 30px; }
-        .posts-list h3 { text-align: center; color: #333; margin-bottom: 25px; }
-        .post-item { background-color: #f9f9f9; border: 1px solid #eee; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
-        .post-item h4 { margin-top: 0; color: #007bff; }
-        .post-item p { color: #666; font-size: 15px; line-height: 1.6; }
-        .post-meta { font-size: 13px; color: #888; margin-top: 10px; }
+        #logoutButton:hover { 
+        background-color: #007bff; 
+        }
+        .category-specific-fields { 
+        display: none; margin-top: 20px; 
+        padding-top: 20px; 
+        border-top: 1px dashed #eee; 
+        }
+        .category-specific-fields.active { 
+        display: block; 
+        }
+        .posts-list { 
+        margin-top: 40px; 
+        border-top: 1px solid #eee; 
+        padding-top: 30px; 
+        }
+        .posts-list h3 { 
+        text-align: center; 
+        color: #333; margin-bottom: 25px; 
+        }
+        .post-item { 
+        background-color: #f9f9f9; 
+        border: 1px solid #eee; 
+        padding: 15px; 
+        margin-bottom: 15px; 
+        border-radius: 5px; 
+        }
+        .post-item h4 { 
+        margin-top: 0; 
+        color: #007bff; 
+        }
+        .post-item p { 
+        color: #666; 
+        font-size: 15px; 
+        line-height: 1.6; 
+        }
+        .post-meta { 
+        font-size: 13px; 
+        color: #888; 
+        margin-top: 10px; 
+        }
