@@ -1,506 +1,527 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'poppins', sans-serif;
 }
+
 body {
-    background-color: #f9f9f9;
-    padding: 2rem 1rem;
+  background-color: #f9f9f9;
+  padding: 2rem 1rem;
+}
+
+header h1 {
+  color: #007bff;
+  padding: 1rem;
+  text-align: center;
+}
+
+span {
+  color: black;
+}
+
+header p.browse {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: #555;
+  text-align: center;
+}
+
+.search-filter {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.search-filter input,
+.search-filter select {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.listing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.listing-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.listing-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-img {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-body h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.card-body p {
+  color: #555;
+  margin: 0.5rem 0;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem 1rem;
+}
+
+.btn {
+  background: #007bff;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn:hover {
+  background: #007bffc3;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+}
+
+.close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #888;
+}
+
+.price {
+  color: black;
+  font-weight: bold;
+}
+
+.modal label {
+  display: block;
+  margin-top: 1rem;
+}
+
+.modal input[type="text"] {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+/*skeleton*/
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 10px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
   }
 
-  header h1 {
-    color: #007bff;
-    padding: 1rem;
-    text-align: center;
+  100% {
+    background-position: 200% 0;
   }
-  span{
-    color: black;
+}
+
+.skeleton-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.skeleton-img {
+  height: 200px;
+}
+
+.skeleton-title {
+  height: 20px;
+  width: 60%;
+}
+
+.skeleton-text {
+  height: 15px;
+  width: 90%;
+}
+
+.skeleton-btn {
+  height: 35px;
+  width: 40%;
+  align-self: flex-end;
+}
+
+.card-extra {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  background-color: gold;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.rating {
+  color: #f39c12;
+}
+
+.clients {
+  color: #2ecc71;
+}
+
+/*responsive*/
+@media (max-width: 1024px) {
+  .search-filter {
+    padding: 1rem 1.5rem;
   }
-  header p.browse{
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    color: #555;
-    text-align: center;
+}
+
+@media (max-width: 768px) {
+  header {
+    font-size: 0.50rem;
+    padding: 0.75rem;
   }
 
   .search-filter {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: stretch;
     padding: 1rem;
-    gap: 1rem;
   }
 
-  .search-filter input, .search-filter select {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+  .search-filter input,
+  .search-filter select {
+    width: 100%;
+    font-size: 0.95rem;
   }
 
   .listing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    padding: 2rem;
+    padding: 1rem;
+    gap: 1rem;
+    grid-template-columns: 1fr;
   }
 
   .listing-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-  }
-
-  .listing-card:hover {
-    transform: translateY(-5px);
+    border-radius: 10px;
   }
 
   .card-img {
-    height: 200px;
-    background-size: cover;
-    background-position: center;
-  }
-
-  .card-body {
-    padding: 1rem;
+    height: 180px;
   }
 
   .card-body h3 {
-    margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.05rem;
   }
 
   .card-body p {
-    color: #555;
-    margin: 0.5rem 0;
+    font-size: 0.9rem;
   }
 
   .card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 1rem 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 
   .btn {
-    background: #007bff;
-    color: white;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: 600;
-  }
-
-  .btn:hover {
-    background: #007bffc3;
-  }
-
-  /* Modal */
-  .modal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0,0,0,0.6);
-    z-index: 999;
-  }
-
-  .modal.active {
-    display: flex;
+    width: 100%;
+    text-align: center;
+    font-size: 0.95rem;
+    padding: 0.6rem 1rem;
   }
 
   .modal-content {
-    background: white;
-    border-radius: 10px;
-    padding: 2rem;
-    max-width: 500px;
-    width: 100%;
-    position: relative;
+    padding: 1.25rem;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-img {
+    height: 150px;
+  }
+
+  .card-body h3 {
+    font-size: 1rem;
+  }
+
+  .card-body p,
+  .card-extra {
+    font-size: 0.85rem;
   }
 
   .modal-content h2 {
-    margin-top: 0;
+    font-size: 1.25rem;
+  }
+
+  .modal label,
+  .modal input {
+    font-size: 0.9rem;
+  }
+
+  .badge,
+  .rating,
+  .clients {
+    font-size: 0.8rem;
   }
 
   .close-modal {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #888;
+    top: 0.5rem;
+    right: 0.75rem;
   }
+}
 
-  .price {
-    color: black;
-    font-weight: bold;
-  }
-
-  .modal label {
-    display: block;
-    margin-top: 1rem;
-  }
-
-  .modal input[type="text"] {
-    width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.25rem;
-  }
-  /*skeleton*/
-  .skeleton {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 10px;
-  }
-  
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-  
-  .skeleton-card {
-    background: white;
-    border-radius: 12px;
-    padding: 1rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .skeleton-img {
-    height: 200px;
-  }
-  
-  .skeleton-title {
-    height: 20px;
-    width: 60%;
-  }
-  
-  .skeleton-text {
-    height: 15px;
-    width: 90%;
-  }
-  
-  .skeleton-btn {
-    height: 35px;
-    width: 40%;
-    align-self: flex-end;
-  }
-
-  .card-extra {
-    display: flex;
-    gap: 0.75rem;
-    font-size: 0.85rem;
-    color: #555;
-    margin-top: 0.5rem;
-    flex-wrap: wrap;
-  }
-  .badge {
-    background-color: gold;
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
-    font-weight: bold;
-  }
-  .rating {
-    color: #f39c12;
-  }
-  .clients {
-    color: #2ecc71;
-  }
-
-  /*responsive*/
-@media (max-width: 1024px) {
-    .search-filter {
-      padding: 1rem 1.5rem;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    header {
-      font-size: 0.50rem;
-      padding: 0.75rem;
-    }
-  
-    .search-filter {
-      flex-direction: column;
-      align-items: stretch;
-      padding: 1rem;
-    }
-  
-    .search-filter input,
-    .search-filter select {
-      width: 100%;
-      font-size: 0.95rem;
-    }
-  
-    .listing-grid {
-      padding: 1rem;
-      gap: 1rem;
-      grid-template-columns: 1fr; 
-    }
-  
-    .listing-card {
-      border-radius: 10px;
-    }
-  
-    .card-img {
-      height: 180px;
-    }
-  
-    .card-body h3 {
-      font-size: 1.05rem;
-    }
-  
-    .card-body p {
-      font-size: 0.9rem;
-    }
-  
-    .card-footer {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-    }
-  
-    .btn {
-      width: 100%;
-      text-align: center;
-      font-size: 0.95rem;
-      padding: 0.6rem 1rem;
-    }
-  
-    .modal-content {
-      padding: 1.25rem;
-      max-width: 90%;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .card-img {
-      height: 150px;
-    }
-  
-    .card-body h3 {
-      font-size: 1rem;
-    }
-  
-    .card-body p,
-    .card-extra {
-      font-size: 0.85rem;
-    }
-  
-    .modal-content h2 {
-      font-size: 1.25rem;
-    }
-  
-    .modal label,
-    .modal input {
-      font-size: 0.9rem;
-    }
-  
-    .badge,
-    .rating,
-    .clients {
-      font-size: 0.8rem;
-    }
-  
-    .close-modal {
-      top: 0.5rem;
-      right: 0.75rem;
-    }
-  }
-  
-  /* footer*/
+/* footer*/
 .site-footer {
-    background: white; 
-    color: black; 
-    padding: 60px 0 20px 0; 
-    font-size: 0.9em;
-    border-radius: 0; 
+  background: white;
+  color: black;
+  padding: 60px 0 20px 0;
+  font-size: 0.9em;
+  border-radius: 0;
+}
+
+.site-footer .container {
+  max-width: 1280px;
+  width: 95%;
+  margin: 0 auto;
+}
+
+.site-footer .footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 3.5rem;
+  margin-bottom: 40px;
+}
+
+.site-footer .footer-col {
+  flex: 1;
+  min-width: 200px;
+}
+
+.site-footer .footer-col h4 {
+  color: black;
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.site-footer .footer-col .links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.site-footer .footer-col .links li {
+  margin-bottom: 10px;
+}
+
+.site-footer .footer-col .links li a {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.692);
+  transition: color 0.2s ease-in-out;
+}
+
+.site-footer .footer-col .links li a:hover {
+  color: #007bff;
+}
+
+.site-footer .footer-col p {
+  margin: 20px 0;
+  text-align: center;
+  color: black;
+  max-width: 300px;
+}
+
+.site-footer .footer-col form {
+  display: flex;
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.site-footer .footer-col input {
+  height: 40px;
+  border-radius: 6px;
+  background: none;
+  width: 100%;
+  outline: none;
+  border: 1px solid #7489C6;
+  caret-color: #fff;
+  color: black;
+  padding-left: 10px;
+}
+
+.site-footer .footer-col input::placeholder {
+  color: #ccc;
+}
+
+.site-footer .footer-col form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.site-footer .footer-col form button:hover {
+  background: #0056b3;
+}
+
+.site-footer .footer-col .icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  gap: 15px;
+  cursor: pointer;
+}
+
+.site-footer .footer-col .icons a {
+  color: black;
+  font-size: 1.2em;
+  transition: color 0.2s ease-in-out;
+}
+
+.site-footer .footer-col .icons a:hover {
+  color: #fff;
+}
+
+.site-footer .footer-bottom {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid #283149;
+  font-size: 0.85em;
+  color: #777;
+}
+
+.site-footer .footer-bottom a {
+  color: #777;
+  text-decoration: none;
+  margin: 0 10px;
+  transition: color 0.2s ease-in-out;
+}
+
+.site-footer .footer-bottom a:hover {
+  color: black;
+}
+
+.footer-col.newsletter p {
+  text-align: center;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .site-footer {
+    padding: 30px 0 10px 0;
+    text-align: center;
   }
-  
-  .site-footer .container {
-    max-width: 1280px;
-    width: 95%;
-    margin: 0 auto;
-  }
-  
+
   .site-footer .footer-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 3.5rem;
-    margin-bottom: 40px;
+    padding: 20px;
+    gap: 1rem;
+    flex-direction: column;
   }
-  
+
   .site-footer .footer-col {
-    flex: 1; 
-    min-width: 200px; 
+    margin-bottom: 30px;
   }
-  
-  .site-footer .footer-col h4 {
-    color: black;
-    font-size: 1.2rem;
-    font-weight: 400;
-    margin-bottom: 20px;
-  }
-  
-  .site-footer .footer-col .links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .site-footer .footer-col .links li {
-    margin-bottom: 10px;
-  }
-  
-  .site-footer .footer-col .links li a {
-    text-decoration: none;
-    color: rgba(0, 0, 0, 0.692);
-    transition: color 0.2s ease-in-out;
-  }
-  
-  .site-footer .footer-col .links li a:hover {
-    color: #007bff;
-  }
-  
-  .site-footer .footer-col p {
-    margin: 20px 0;
-    text-align: center;
-    color: black;
-    max-width: 300px;
-  }
-  
+
   .site-footer .footer-col form {
-    display: flex;
-    gap: 5px;
-    margin-top: 20px;
+    display: block;
   }
-  
-  .site-footer .footer-col input {
-    height: 40px;
-    border-radius: 6px;
-    background: none;
+
+  .site-footer .footer-col form :where(input, button) {
     width: 100%;
-    outline: none;
-    border: 1px solid #7489C6;
-    caret-color: #fff;
-    color: black;
-    padding-left: 10px;
   }
-  
-  .site-footer .footer-col input::placeholder {
-    color: #ccc;
-  }
-  
-  .site-footer .footer-col form button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s ease-in-out;
-  }
-  
-  .site-footer .footer-col form button:hover {
-    background: #0056b3;
-  }
-  
-  .site-footer .footer-col .icons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-    gap: 15px; 
-    cursor: pointer;
-  }
-  
-  .site-footer .footer-col .icons a {
-    color: black;
-    font-size: 1.2em;
-    transition: color 0.2s ease-in-out;
-  }
-  
-  .site-footer .footer-col .icons a:hover {
-    color: #fff;
-  }
-  
-  .site-footer .footer-bottom {
+
+  .site-footer .footer-col.newsletter p {
     text-align: center;
-    padding: 20px 0;
-    border-top: 1px solid #283149;
-    font-size: 0.85em;
-    color: #777;
+
   }
-  
-  .site-footer .footer-bottom a {
-    color: #777;
-    text-decoration: none;
-    margin: 0 10px;
-    transition: color 0.2s ease-in-out;
+
+  .site-footer .footer-col.newsletter form {
+    display: block;
   }
-  
-  .site-footer .footer-bottom a:hover {
-    color: black;
+
+  .site-footer .footer-col.newsletter form input[type="email"] {
+    width: 95%;
+    /* Make input full width as well */
+    margin-bottom: 5px;
+    /* Add some margin below the input */
   }
-  .footer-col.newsletter p{
-    text-align: center;
+
+  .site-footer .footer-col.newsletter form button {
+    width: 100%;
+    margin-top: 0;
+    /* Reset top margin if needed */
   }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    .site-footer {
-      padding: 30px 0 10px 0;
-      text-align: center;
-    }
-  
-    .site-footer .footer-row {
-      padding: 20px;
-      gap: 1rem;
-      flex-direction: column; 
-    }
-  
-    .site-footer .footer-col {
-      margin-bottom: 30px; 
-    }
-  
-    .site-footer .footer-col form {
-      display: block;
-    }
-  
-    .site-footer .footer-col form :where(input, button) {
-      width: 100%;
-    }
-  
-    .site-footer .footer-col.newsletter p {
-      text-align: center; 
-     
-    }
-    .site-footer .footer-col.newsletter form {
-      display: block; 
-    }
-  
-    .site-footer .footer-col.newsletter form input[type="email"] {
-      width: 95%; /* Make input full width as well */
-      margin-bottom: 5px; /* Add some margin below the input */
-    }
-  
-    .site-footer .footer-col.newsletter form button {
-      width: 100%;
-      margin-top: 0; /* Reset top margin if needed */
-    }
-  
-  }
+
+}

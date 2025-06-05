@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="admin-dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <button id="logoutButton">Logout</button>
     <div class="dashboard-container">
@@ -78,26 +80,85 @@
             </div>
         </div>
     </div>
+    <!-- modal popup -->
+    <div id="editPostModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeEditModalButton">&times;</span>
+            <h2>Edit Post</h2>
+            <form id="editPostForm">
+                <input type="hidden" id="editPostId"> <label for="editPostCategory">Category:</label>
+                <select id="editPostCategory" disabled>
+                    <option value="Jobs">Jobs</option>
+                </select>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
-    <script>
-        // YOUR PUBLIC FIREBASE CLIENT CONFIG HERE (from Firebase Console > Project settings > Your apps)
-       const firebaseConfig = {
-  apiKey: "AIzaSyDA1oonly5aQv0NPPna32lJli3P2GVPzHs",
-  authDomain: "gba-marketplace.firebaseapp.com",
-  projectId: "gba-marketplace",
-  storageBucket: "gba-marketplace.firebasestorage.app",
-  messagingSenderId: "110246782047",
-  appId: "1:110246782047:web:ca126e8b6466395833e7ea",
-  measurementId: "G-SSS7TFDC83"
-};
+                <label for="editPostTitle">Title:</label>
+                <input type="text" id="editPostTitle" required>
 
-        // Initialize Firebase App for this client-side dashboard's use
-        firebase.initializeApp(firebaseConfig);
-        const storage = firebase.storage(); // Get Firebase Storage instance
-    </script>
+                <label for="editPostContent">General Content:</label>
+                <textarea id="editPostContent" rows="5"></textarea>
 
-    <script src="admin-dashboard.js" type="module"></script>
+                <label for="editPostPublished">Published:</label>
+                <input type="checkbox" id="editPostPublished">
+
+                <div id="editJobFields" class="job-fields">
+                    <h3>Job Specific Details</h3>
+                    <label for="editCompanyName">Company Name:</label>
+                    <input type="text" id="editCompanyName">
+
+                    <label for="editJobLocation">Location:</label>
+                    <input type="text" id="editJobLocation">
+
+                    <label for="editJobType">Job Type:</label>
+                    <input type="text" id="editJobType">
+
+                    <label for="editJobDescription">Job Description:</label>
+                    <textarea id="editJobDescription" rows="5"></textarea>
+
+                    <label for="editJobTags">Tags (comma-separated):</label>
+                    <input type="text" id="editJobTags">
+
+                    <label for="editCompanyLogo">Company Logo:</label>
+                    <input type="file" id="editCompanyLogo" accept="image/*">
+                    <div id="currentCompanyLogo" style="margin-top: 5px;">
+                    </div>
+
+                    <label for="editJobImages">Job Images:</label>
+                    <input type="file" id="editJobImages" accept="image/*" multiple>
+                    <div id="currentJobImages" style="margin-top: 5px;">
+                    </div>
+                </div>
+
+                <button type="submit">Save Changes</button>
+                <button type="button" id="cancelEditButton">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+
 </body>
+<script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-auth-compat.js"></script>
+<script>
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDA1oonly5aQv0NPPna32lJli3P2GVPzHs",
+        authDomain: "gba-marketplace.firebaseapp.com",
+        projectId: "gba-marketplace",
+        storageBucket: "gba-marketplace.firebasestorage.app",
+        messagingSenderId: "110246782047",
+        appId: "1:110246782047:web:ca126e8b6466395833e7ea",
+        measurementId: "G-SSS7TFDC83"
+    };
+
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const storage = firebase.storage();
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+</script>
+<script src="admin-dashboard.js"></script>
+
 </html>

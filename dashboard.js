@@ -1,20 +1,16 @@
-//SIDE BAR FUNCTION
 const sideMenu = document.querySelector("aside");
 const menuBtn = document.querySelector("#menu-btn");
 const closeBtn = document.querySelector("#close-btn");
 const themeToggle = document.querySelector(".theme-toggle");
 
-//show sidebar
-menuBtn.addEventListener("click", function(){
+menuBtn.addEventListener("click", function () {
     sideMenu.style.display = "block";
 });
 
-//hide sidebar
-closeBtn.addEventListener("click", function(){
+closeBtn.addEventListener("click", function () {
     sideMenu.style.display = "none";
 });
 
-//change theme
 themeToggle.addEventListener("click", () => {
     document.body.classList.toggle("dark-theme-variables");
 
@@ -26,7 +22,7 @@ themeToggle.addEventListener("click", () => {
 //fill in the orders from Orders.js file
 Orders.forEach(order => {
     const tr = document.createElement("tr");
-    const trContent =   `
+    const trContent = `
                 <td>${order.productName}</td>
                 <td>${order.productNumber}</td>
                 <td>${order.paymentStatus}</td>

@@ -48,11 +48,9 @@ const postsHandler = async (req, res) => {
             }
             break;
 
-        // Optional: Add 'PUT' for updating posts and 'DELETE' for deleting posts
-        /*
-        case 'PUT': // Update a post by ID
+        case 'PUT':
             try {
-                const { id } = req.query; // Expect ID as query param, e.g., /api/posts?id=xyz
+                const { id } = req.query;
                 const { title, content, published } = req.body;
                 if (!id) return res.status(400).json({ message: 'Post ID is required for update.' });
 
@@ -68,9 +66,9 @@ const postsHandler = async (req, res) => {
                 res.status(500).json({ message: 'Internal server error.' });
             }
             break;
-        case 'DELETE': // Delete a post by ID
+        case 'DELETE':
             try {
-                const { id } = req.query; // Expect ID as query param
+                const { id } = req.query;
                 if (!id) return res.status(400).json({ message: 'Post ID is required for deletion.' });
 
                 await db.collection('posts').doc(id).delete();
@@ -80,7 +78,6 @@ const postsHandler = async (req, res) => {
                 res.status(500).json({ message: 'Internal server error.' });
             }
             break;
-        */
 
         default:
             res.status(405).json({ message: 'Method Not Allowed' });

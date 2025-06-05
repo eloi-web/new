@@ -1,10 +1,4 @@
-// firebase.js
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app"; // ONLY KEEP THIS ONE!
-// import { getAnalytics } from "firebase/analytics"; // Can remove if not used
-
-// Ensure this line is GONE: import { initializeApp } from 'firebase/app';
-
+import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 
@@ -18,12 +12,10 @@ const firebaseConfig = {
   measurementId: "G-SSS7TFDC83"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Export the initialized services and relevant functions
 export {
   auth,
   db,

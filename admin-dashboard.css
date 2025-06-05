@@ -1,124 +1,245 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 * {
   font-family: 'Poppins', sans-serif;
 }
-body { 
-       background-color: #f4f7f6;
-       display: flex; 
-       flex-direction: column; 
-       align-items: center; 
-       justify-content: center; 
-       min-height: 100vh; 
-       margin: 0; 
-     }
-        .dashboard-container { background-color: #fff; 
-         padding: 30px; 
-         border-radius: 8px; 
-         box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-         width: 90%; max-width: 800px; 
-        }
-        .dashboard-header { 
-         text-align: center; 
-         margin-bottom: 30px; 
-        }
-        .dashboard-header h2 { 
-        color: #333; 
-        margin-bottom: 10px; 
-        }
-        .form-group { 
-         margin-bottom: 20px; 
-        }
-        .form-group label { 
-         display: block; 
-         margin-bottom: 8px; 
-         font-weight: bold; 
-         color: #555; 
-        }
-        .form-group input[type="text"],
-        .form-group textarea,
-        .form-group select { 
-        width: calc(100% - 20px); 
-        padding: 12px; 
-        border: 1px solid #ddd; 
-        border-radius: 5px; 
-        font-size: 16px; 
-        transition: border-color 0.3s; 
-        }
-        .form-group input[type="text"]:focus,
-        .form-group textarea:focus,
-        .form-group select:focus { 
-         border-color: #007bff; 
-         outline: none; 
-        }
-        .form-group textarea { 
-         min-height: 120px; 
-         resize: vertical; 
-        }
-        .create-post-button { 
-         background-color: #007bff; 
-         color: white; 
-         padding: 12px 25px; 
-         border: none; 
-         border-radius: 25px; 
-         cursor: pointer; 
-         font-size: 17px; 
-         font-weight: bold; 
-         width: 100%; 
-         transition: background-color 0.3s ease; 
-        }
-        .create-post-button:hover { 
-         background-color: #007bff; 
-        }
-        #logoutButton {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #007bff;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        #logoutButton:hover { 
-        background-color: #007bff; 
-        }
-        .category-specific-fields { 
-        display: none; margin-top: 20px; 
-        padding-top: 20px; 
-        border-top: 1px dashed #eee; 
-        }
-        .category-specific-fields.active { 
-        display: block; 
-        }
-        .posts-list { 
-        margin-top: 40px; 
-        border-top: 1px solid #eee; 
-        padding-top: 30px; 
-        }
-        .posts-list h3 { 
-        text-align: center; 
-        color: #333; margin-bottom: 25px; 
-        }
-        .post-item { 
-        background-color: #f9f9f9; 
-        border: 1px solid #eee; 
-        padding: 15px; 
-        margin-bottom: 15px; 
-        border-radius: 5px; 
-        }
-        .post-item h4 { 
-        margin-top: 0; 
-        color: #007bff; 
-        }
-        .post-item p { 
-        color: #666; 
-        font-size: 15px; 
-        line-height: 1.6; 
-        }
-        .post-meta { 
-        font-size: 13px; 
-        color: #888; 
-        margin-top: 10px; 
-        }
+
+body {
+  background-color: #f4f7f6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.dashboard-container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 800px;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.dashboard-header h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+  width: calc(100% - 20px);
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.create-post-button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: bold;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.create-post-button:hover {
+  background-color: #007bff;
+}
+
+#logoutButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#logoutButton:hover {
+  background-color: #007bff;
+}
+
+.category-specific-fields {
+  display: none;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px dashed #eee;
+}
+
+.category-specific-fields.active {
+  display: block;
+}
+
+.posts-list {
+  margin-top: 40px;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.posts-list h3 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+.post-item {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.post-item h4 {
+  margin-top: 0;
+  color: #007bff;
+}
+
+.post-item p {
+  color: #666;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.post-meta {
+  font-size: 13px;
+  color: #888;
+  margin-top: 10px;
+}
+
+button.delete {
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 13px;
+  background-color: #007bff;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 700px;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-content form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.modal-content form input[type="text"],
+.modal-content form textarea,
+.modal-content form select {
+  width: calc(100% - 22px);
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.modal-content form button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.modal-content form button:hover {
+  opacity: 0.9;
+}
+
+.modal-content form button#cancelEditButton {
+  background-color: #6c757d;
+}
+.job-fields {
+  display: none;
+  border: 1px dashed #ccc;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 5px;
+}
+
+.job-fields.active {
+  display: block;
+}

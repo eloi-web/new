@@ -1,7 +1,7 @@
 // api/public-posts.js
 const admin = require('../config/firebaseAdmin'); // Firebase Admin SDK is already set up
 
-const db = admin.firestore(); // Get Firestore instance
+const db = admin.firestore();
 
 module.exports = async (req, res) => {
     if (req.method !== 'GET') {
@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
         const { category } = req.query; // Get the 'category' query parameter from the URL
 
         let postsRef = db.collection('posts')
-                         .where('published', '==', true); // Always fetch only published posts
+            .where('published', '==', true); // Always fetch only published posts
 
         if (category) {
             // If a category is specified, add a filter for it

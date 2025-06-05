@@ -1,16 +1,22 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyDA1oonly5aQv0NPPna32lJli3P2GVPzHs",
-  authDomain: "gba-marketplace.firebaseapp.com",
-  projectId: "gba-marketplace",
-  storageBucket: "gba-marketplace.firebasestorage.app",
-  messagingSenderId: "110246782047",
-  appId: "1:110246782047:web:ca126e8b6466395833e7ea",
-  measurementId: "G-SSS7TFDC83"
-};
-firebase.initializeApp(firebaseConfig);
-const storage = firebase.storage();
 
-document.addEventListener('DOMContentLoaded', async () => {
+const firebaseConfig = {
+    apiKey: "AIzaSyDA1oonly5aQv0NPPna32lJli3P2GVPzHs",
+    authDomain: "gba-marketplace.firebaseapp.com",
+    projectId: "gba-marketplace",
+    storageBucket: "gba-marketplace.firebasestorage.app",
+    messagingSenderId: "110246782047",
+    appId: "1:110246782047:web:ca126e8b6466395833e7ea",
+    measurementId: "G-SSS7TFDC83"
+};
+
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const storage = firebase.storage();
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+  document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('adminToken');
     const postForm = document.getElementById('postForm');
     const postCategorySelect = document.getElementById('postCategory');
@@ -19,6 +25,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     const companyLogoInput = document.getElementById('companyLogo');
     const logoutButton = document.getElementById('logoutButton');
     const postsContainer = document.getElementById('postsContainer');
+    const editPostModal = document.getElementById('editPostModal');
+    const closeEditModalButton = document.getElementById('closeEditModalButton');
+    const editPostForm = document.getElementById('editPostForm');
+    const cancelEditButton = document.getElementById('cancelEditButton');
+
+    const editPostIdInput = document.getElementById('editPostId');
+    const editPostCategorySelect = document.getElementById('editPostCategory');
+    const editPostTitleInput = document.getElementById('editPostTitle');
+    const editPostContentInput = document.getElementById('editPostContent');
+    const editPostPublishedCheckbox = document.getElementById('editPostPublished');
+
+    const editJobFieldsDiv = document.getElementById('editJobFields');
+    const editCompanyNameInput = document.getElementById('editCompanyName');
+    const editJobLocationInput = document.getElementById('editJobLocation');
+    const editJobTypeInput = document.getElementById('editJobType');
+    const editJobDescriptionInput = document.getElementById('editJobDescription');
+    const editJobTagsInput = document.getElementById('editJobTags');
+    const editCompanyLogoInput = document.getElementById('editCompanyLogo');
+    const currentCompanyLogoDiv = document.getElementById('currentCompanyLogo');
+    const editJobImagesInput = document.getElementById('editJobImages');
+    const currentJobImagesDiv = document.getElementById('currentJobImages');
 
     if (!token) {
         alert('You are not authorized. Please log in.');
@@ -80,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 published,
             };
 
-                if (category === 'Jobs') {
+            if (category === 'Jobs') {
                 const companyName = document.getElementById('companyName').value;
                 const jobLocation = document.getElementById('jobLocation').value;
                 const jobType = document.getElementById('jobType').value;
@@ -96,7 +123,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 const companyLogoUrl = await uploadFile(companyLogoFile, 'company_logos');
                 if (!jobDescription || !companyName || !jobLocation || !jobType || !companyLogoUrl || uploadedJobImageUrls.length === 0) {
-                     alert('For Job posts: Title, Content (general), Company Name, Location, Type, Job Description, at least one image, and a company logo are all required.');
+                    alert('For Job posts: Title, Content (general), Company Name, Location, Type, Job Description, at least one image, and a company logo are all required.');
                     return;
                 }
 
@@ -122,16 +149,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 const data = await response.json();
 
-                if (response.ok) { 
+                if (response.ok) {
                     alert(`Post created successfully: ${data.message}`);
                     postForm.reset();
-                    postCategorySelect.dispatchEvent(new Event('change')); 
+                    postCategorySelect.dispatchEvent(new Event('change'));
                     await loadPosts();
                 } else {
                     if (response.status === 401 || response.status === 403) {
                         alert(`Authentication Error: ${data.message || 'Your session has expired. Please log in again.'}`);
-                        localStorage.removeItem('adminToken'); 
-                        window.location.href = '/log-in.html'; 
+                        localStorage.removeItem('adminToken');
+                        window.location.href = '/log-in.html';
                     } else {
                         alert(`Error creating post: ${data.message || 'An unexpected error occurred.'}`);
                     }
@@ -159,7 +186,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (posts.length === 0) {
                     postsContainer.innerHTML = '<p>No posts found. Start by creating one above!</p>';
                 } else {
-                    postsContainer.innerHTML = ''; 
+                    postsContainer.innerHTML = '';
                     posts.forEach(post => {
                         const postElement = document.createElement('div');
                         postElement.className = 'post-item';
@@ -171,15 +198,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                         if (post.category === 'Jobs') {
                             postDetailsHtml += `
-                                <p><strong>Job Description:</strong> ${post.jobDescription || 'N/A'}</p>
-                                <p><strong>Tags:</strong> ${Array.isArray(post.jobTags) && post.jobTags.length > 0 ? post.jobTags.join(', ') : 'N/A'}</p>
-                                ${post.companyLogo ? `<p><strong>Company Logo:</strong><br><img src="${post.companyLogo}" alt="Company Logo" width="80px" style="margin-top: 5px; border: 1px solid #eee;"></p>` : ''}
-                                ${post.jobImages && post.jobImages.length > 0 ? `<p><strong>Job Images:</strong><br>${post.jobImages.map(img => `<img src="${img}" alt="Job Image" width="80px" style="margin-top: 5px; margin-right: 5px; border: 1px solid #eee;">`).join('')}</p>` : ''}
+                                <p><strong>Company:</strong> ${post.company || 'N/A'}</p>
+                                <p><strong>Location:</strong> ${post.location || 'N/A'}</p>
+                                <p><strong>Type:</strong> ${post.type || 'N/A'}</p>
+                                <p><strong>Description:</strong> ${post.description || 'N/A'}</p>
+                                <p><strong>Tags:</strong> ${Array.isArray(post.tags) && post.tags.length > 0 ? post.tags.join(', ') : 'N/A'}</p>
+                                ${post.logo ? `<p><strong>Company Logo:</strong><br><img src="${post.logo}" alt="Company Logo" width="80px" style="margin-top: 5px; border: 1px solid #eee;"></p>` : ''}
+                                ${post.image ? `<p><strong>Job Main Image:</strong><br><img src="${post.image}" alt="Job Main Image" width="80px" style="margin-top: 5px; margin-right: 5px; border: 1px solid #eee;"></p>` : ''}
+                                ${post.images && post.images.length > 0 ? `<p><strong>All Job Images:</strong><br>${post.images.map(img => `<img src="${img}" alt="Job Image" width="80px" style="margin-top: 5px; margin-right: 5px; border: 1px solid #eee;">`).join('')}</p>` : ''}
                             `;
                         }
 
                         postDetailsHtml += `
-                            <div class="post-meta">
+                           <div class="post-meta">
                                 Posted: ${post.createdAt ? new Date(post.createdAt._seconds * 1000).toLocaleDateString() : 'N/A'}
                                 ${!post.published ? '<span style="color: red; font-weight: bold;"> (UNPUBLISHED)</span>' : ''}
                             </div>
@@ -193,7 +224,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     });
                 }
             } else {
-              
+
                 if (response.status === 401 || response.status === 403) {
                     const errorData = await response.json();
                     alert(`Error loading posts: ${errorData.message || 'Your session has expired. Please log in again.'}`);
@@ -211,8 +242,154 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
     window.editPost = (postId) => {
-        alert(`Edit functionality for post ID: ${postId} (Requires implementing PUT method in api/posts.js and client-side form logic)`);
-    };
+                try {
+            const response = await fetch(`/api/posts/${postId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const post = await response.json(); 
+
+            if (!response.ok) {
+                if (response.status === 401 || response.status === 403) {
+                    alert(`Authentication Error: ${post.message || 'Your session has expired. Please log in again.'}`);
+                    localStorage.removeItem('adminToken');
+                    window.location.href = '/log-in.html';
+                } else {
+                    throw new Error(post.message || 'Failed to fetch post for editing.');
+                }
+            }
+            editPostIdInput.value = post.id;
+            editPostCategorySelect.value = post.category;
+            editPostTitleInput.value = post.title;
+            editPostContentInput.value = post.content || '';
+            editPostPublishedCheckbox.checked = post.published;
+
+            editPostCategorySelect.dispatchEvent(new Event('change'));
+
+            if (post.category === 'Jobs') {
+                editCompanyNameInput.value = post.company || '';
+                editJobLocationInput.value = post.location || '';
+                editJobTypeInput.value = post.type || '';
+                editJobDescriptionInput.value = post.description || '';
+                editJobTagsInput.value = Array.isArray(post.tags) ? post.tags.join(', ') : '';
+                currentCompanyLogoDiv.innerHTML = post.logo ?
+                    `<p>Current Logo: <img src="${post.logo}" alt="Current Company Logo" width="60px"></p>` :
+                    '<p>No current logo.</p>';
+
+                currentJobImagesDiv.innerHTML = '';
+                if (post.images && post.images.length > 0) {
+                    currentJobImagesDiv.innerHTML += '<p>Current Images:</p>';
+                    post.images.forEach(imgUrl => {
+                        currentJobImagesDiv.innerHTML += `<img src="${imgUrl}" alt="Current Job Image" width="60px" style="margin-right: 5px; margin-bottom: 5px;">`;
+                    });
+                } else {
+                    currentJobImagesDiv.innerHTML = '<p>No current images.</p>';
+                }
+            }
+  };
+    // style for post modal display...
+    editPostModal.style.display = 'block';
+    //handle form submission....
+     editPostForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const postId = editPostIdInput.value;
+        const category = editPostCategorySelect.value;
+        const title = editPostTitleInput.value;
+        const content = editPostContentInput.value;
+        const published = editPostPublishedCheckbox.checked;
+
+        let updatedPostData = {
+            category,
+            title,
+            content,
+            published,
+        };
+
+        if (category === 'Jobs') {
+            const companyName = editCompanyNameInput.value;
+            const jobLocation = editJobLocationInput.value;
+            const jobType = editJobTypeInput.value;
+            const jobDescription = editJobDescriptionInput.value;
+            const jobTags = editJobTagsInput.value;
+            
+            const newCompanyLogoFile = editCompanyLogoInput.files[0];
+            const newJobImagesFiles = editJobImagesInput.files;
+
+            let companyLogoUrl = newCompanyLogoFile ? await uploadFile(newCompanyLogoFile, 'company_logos') : null;
+            let jobImageUrls = [];
+            if (newJobImagesFiles.length > 0) {
+                for (const file of newJobImagesFiles) {
+                    const url = await uploadFile(file, 'job_images');
+                    if (url) jobImageUrls.push(url);
+                }
+            }
+
+            Object.assign(updatedPostData, {
+                company: companyName,
+                location: jobLocation,
+                type: jobType,
+                description: jobDescription,
+                tags: jobTags.split(',').map(tag => tag.trim()).filter(tag => tag !== ''),
+            });
+
+            if (companyLogoUrl) {
+                updatedPostData.logo = companyLogoUrl;
+            }
+            if (jobImageUrls.length > 0) {
+                updatedPostData.image = jobImageUrls[0];
+                updatedPostData.images = jobImageUrls; 
+            }
+        }
+
+        try {
+            const response = await fetch(`/api/posts/${postId}`, {
+                method: 'PUT', // or 'PATCH'
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(updatedPostData),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(`Post updated successfully: ${data.message}`);
+                editPostModal.style.display = 'none';
+                await loadPosts();
+            } else {
+                if (response.status === 401 || response.status === 403) {
+                    alert(`Authentication Error: ${data.message || 'Your session has expired. Please log in again.'}`);
+                    localStorage.removeItem('adminToken');
+                    window.location.href = '/log-in.html';
+                } else {
+                    alert(`Error updating post: ${data.message || 'An unexpected error occurred.'}`);
+                }
+            }
+        } catch (error) {
+            console.error('Network or client-side error updating post:', error);
+            alert('A network error occurred while updating the post. Please check your connection and try again.');
+        }
+    });
+
+    closeEditModalButton.addEventListener('click', () => {
+        editPostModal.style.display = 'none';
+    });
+
+    cancelEditButton.addEventListener('click', () => {
+        editPostModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === editPostModal) {
+            editPostModal.style.display = 'none';
+        }
+    });
+
 
     window.deletePost = async (postId) => {
         if (!confirm('Are you sure you want to delete this post? This cannot be undone.')) {
@@ -238,11 +415,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                     alert(`Error deleting post: ${data.message || 'An unexpected error occurred.'}`);
                 }
             }
-        } catch (error) {
+        }
+        catch (error) {
             console.error('Network error deleting post:', error);
             alert('A network error occurred while deleting the post.');
         }
     };
 
     await loadPosts();
-});
+    });

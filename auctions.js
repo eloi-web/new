@@ -58,29 +58,29 @@ const auctions = [
 ];
 
 
-  const auctionGrid = document.getElementById("auctionGrid");
-  const popup = document.getElementById("auctionPopup");
+const auctionGrid = document.getElementById("auctionGrid");
+const popup = document.getElementById("auctionPopup");
 
-  function updateCountdown(endTime, el) {
-    const interval = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = endTime - now;
-      if (distance < 0) {
-        clearInterval(interval);
-        el.textContent = "Expired";
-        return;
-      }
-      const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const s = Math.floor((distance % (1000 * 60)) / 1000);
-      el.textContent = `${h}h ${m}m ${s}s`;
-    }, 1000);
-  }
+function updateCountdown(endTime, el) {
+  const interval = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = endTime - now;
+    if (distance < 0) {
+      clearInterval(interval);
+      el.textContent = "Expired";
+      return;
+    }
+    const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((distance % (1000 * 60)) / 1000);
+    el.textContent = `${h}h ${m}m ${s}s`;
+  }, 1000);
+}
 
-  auctions.forEach((item, index) => {
-    const card = document.createElement("div");
-    card.className = "listing-item";
-    card.innerHTML = `
+auctions.forEach((item, index) => {
+  const card = document.createElement("div");
+  card.className = "listing-item";
+  card.innerHTML = `
       <div class="property-image" style="background-image:url('${item.image}')"></div>
       <h3>${item.title}</h3>
       <p>${item.desc}</p>
@@ -90,28 +90,28 @@ const auctions = [
       </div>
       <button onclick="showPopup(${index})" class="cta-btn">View & Bid</button>
     `;
-    auctionGrid.appendChild(card);
-    updateCountdown(item.endTime, document.getElementById(`countdown${index}`));
-  });
+  auctionGrid.appendChild(card);
+  updateCountdown(item.endTime, document.getElementById(`countdown${index}`));
+});
 
-  function showPopup(index) {
-    const a = auctions[index];
-    document.getElementById("popupImage").style.backgroundImage = `url('${a.image}')`;
-    document.getElementById("popupTitle").textContent = a.title;
-    document.getElementById("popupDesc").textContent = a.desc;
-    document.getElementById("popupBid").textContent = a.bid;
-    updateCountdown(a.endTime, document.getElementById("popupTime"));
-    popup.classList.remove("hidden");
-  }
+function showPopup(index) {
+  const a = auctions[index];
+  document.getElementById("popupImage").style.backgroundImage = `url('${a.image}')`;
+  document.getElementById("popupTitle").textContent = a.title;
+  document.getElementById("popupDesc").textContent = a.desc;
+  document.getElementById("popupBid").textContent = a.bid;
+  updateCountdown(a.endTime, document.getElementById("popupTime"));
+  popup.classList.remove("hidden");
+}
 
-  function closePopup() {
-    popup.classList.add("hidden");
-  }
+function closePopup() {
+  popup.classList.add("hidden");
+}
 
-  const newsletterForm = document.querySelector('.newsletter form');
-  newsletterForm?.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const email = this.querySelector('input[type="email"]').value;
-    alert(`Thank you for subscribing with ${email}!`);
-    this.reset();
-  });
+const newsletterForm = document.querySelector('.newsletter form');
+newsletterForm?.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const email = this.querySelector('input[type="email"]').value;
+  alert(`Thank you for subscribing with ${email}!`);
+  this.reset();
+});
