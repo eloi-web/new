@@ -16,7 +16,7 @@ const storage = firebase.storage();
 const db = firebase.firestore();
 const auth = firebase.auth();
 
-  document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('adminToken');
     const postForm = document.getElementById('postForm');
     const postCategorySelect = document.getElementById('postCategory');
@@ -241,16 +241,17 @@ const auth = firebase.auth();
             postsContainer.innerHTML = '<p>Failed to load posts. Please check your internet connection.</p>';
         }
     }
-    window.editPost = (postId) => {
-                try {
-            const response = await fetch(`/api/posts/${postId}`, {
+    window.editPost = async (postId) => {
+            try {
+            // 1. Fetch the specific post data
+            const response = await fetch(`/api/posts/${postId}`, { // Assuming backend supports GET /api/posts/:id
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
 
-            const post = await response.json(); 
+            const post = await response.json(); // Assuming the backend sends the post directly
 
             if (!response.ok) {
                 if (response.status === 401 || response.status === 403) {
@@ -261,24 +262,31 @@ const auth = firebase.auth();
                     throw new Error(post.message || 'Failed to fetch post for editing.');
                 }
             }
+
+            // 2. Populate the edit form fields
             editPostIdInput.value = post.id;
             editPostCategorySelect.value = post.category;
             editPostTitleInput.value = post.title;
             editPostContentInput.value = post.content || '';
             editPostPublishedCheckbox.checked = post.published;
 
+            // Trigger change event for category to show/hide specific fields
             editPostCategorySelect.dispatchEvent(new Event('change'));
 
+            // Populate Job-specific fields if applicable
             if (post.category === 'Jobs') {
                 editCompanyNameInput.value = post.company || '';
                 editJobLocationInput.value = post.location || '';
                 editJobTypeInput.value = post.type || '';
                 editJobDescriptionInput.value = post.description || '';
                 editJobTagsInput.value = Array.isArray(post.tags) ? post.tags.join(', ') : '';
+
+                // Display current logo
                 currentCompanyLogoDiv.innerHTML = post.logo ?
                     `<p>Current Logo: <img src="${post.logo}" alt="Current Company Logo" width="60px"></p>` :
                     '<p>No current logo.</p>';
 
+                // Display current images
                 currentJobImagesDiv.innerHTML = '';
                 if (post.images && post.images.length > 0) {
                     currentJobImagesDiv.innerHTML += '<p>Current Images:</p>';
@@ -289,7 +297,16 @@ const auth = firebase.auth();
                     currentJobImagesDiv.innerHTML = '<p>No current images.</p>';
                 }
             }
-  };
+
+            // 3. Show the edit modal
+            editPostModal.style.display = 'block';
+
+        } catch (error) {
+            console.error('Error fetching post for edit:', error);
+            alert(`Failed to load post for editing: ${error.message}`);
+        }
+    };
+
     // style for post modal display...
     editPostModal.style.display = 'block';
     //handle form submission....
@@ -423,4 +440,4 @@ const auth = firebase.auth();
     };
 
     await loadPosts();
-    });
+});
