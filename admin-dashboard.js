@@ -1,4 +1,3 @@
-
 const firebaseConfig = {
     apiKey: "AIzaSyDA1oonly5aQv0NPPna32lJli3P2GVPzHs",
     authDomain: "gba-marketplace.firebaseapp.com",
@@ -15,6 +14,7 @@ if (!firebase.apps.length) {
 const storage = firebase.storage();
 const db = firebase.firestore();
 const auth = firebase.auth();
+const app = initializeApp(firebaseConfig);
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('adminToken');
@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
     window.editPost = async (postId) => {
-            try {
+        try {
             // 1. Fetch the specific post data
             const response = await fetch(`/api/posts/${postId}`, { // Assuming backend supports GET /api/posts/:id
                 method: 'GET',
@@ -308,7 +308,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     //handle form submission....
-     editPostForm.addEventListener('submit', async (e) => {
+    editPostForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const postId = editPostIdInput.value;
@@ -330,7 +330,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const jobType = editJobTypeInput.value;
             const jobDescription = editJobDescriptionInput.value;
             const jobTags = editJobTagsInput.value;
-            
+
             const newCompanyLogoFile = editCompanyLogoInput.files[0];
             const newJobImagesFiles = editJobImagesInput.files;
 
@@ -356,7 +356,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             if (jobImageUrls.length > 0) {
                 updatedPostData.image = jobImageUrls[0];
-                updatedPostData.images = jobImageUrls; 
+                updatedPostData.images = jobImageUrls;
             }
         }
 
@@ -378,10 +378,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 await loadPosts();
             } else {
                 if (response.status === 401 || response.status === 403) {
-                    alert(`Authentication Error: ${data.message || 'Your session has expired. Please log in again.'}`);
+                    const errorData = await response.json();
+                    alert(`Error loading posts: ${errorData.message || 'Your session has expired. Please log in again.'}`);
                     localStorage.removeItem('adminToken');
                     window.location.href = '/log-in.html';
-                } else {
+                }
+                else {
                     alert(`Error updating post: ${data.message || 'An unexpected error occurred.'}`);
                 }
             }
@@ -438,3 +440,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     await loadPosts();
+});
