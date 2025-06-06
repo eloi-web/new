@@ -307,8 +307,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-    // style for post modal display...
-    editPostModal.style.display = 'block';
     //handle form submission....
      editPostForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -440,4 +438,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     await loadPosts();
-});
