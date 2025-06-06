@@ -570,10 +570,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         try {
-            // Important: If you want to delete images from Cloudinary when a post is deleted,
-            // you would first fetch the post by postId to get its image URLs/public_ids.
-            // Then, for each image, send a request to your backend to delete it from Cloudinary.
-            // For now, this only deletes the Firestore document.
+            
 
             const response = await fetch(`/api/posts?id=${postId}`, { // Changed to query param for consistency
                 method: 'DELETE',
