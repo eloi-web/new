@@ -34,50 +34,50 @@
 
             <div class="form-group">
                 <label for="postTitle">Post Title:</label>
-                <input type="text" id="postTitle" placeholder="Enter post title" required>
+                <input type="text" name="post" id="postTitle" placeholder="Enter post title" required>
             </div>
 
             <div class="form-group">
                 <label for="postContent">General Content:</label>
-                <textarea id="postContent" placeholder="General description for this post (optional)"></textarea>
+                <textarea id="postContent" name="general" placeholder="General description for this post (optional)"></textarea>
             </div>
 
             <div id="jobFields" class="category-specific-fields">
                 <h4>Job Specific Details</h4>
                 <div class="form-group">
                     <label for="companyName">Company Name:</label>
-                    <input type="text" id="companyName" placeholder="Enter company name" required>
+                    <input type="text" name="company" id="companyName" placeholder="Enter company name" required>
                 </div>
                 <div class="form-group">
                     <label for="jobLocation">Job Location:</label>
-                    <input type="text" id="jobLocation" placeholder="e.g., Kigali, Musanze, Huye, Rubavu" required>
+                    <input type="text" name="location" id="jobLocation" placeholder="e.g., Kigali, Musanze, Huye, Rubavu" required>
                 </div>
                 <div class="form-group">
                     <label for="jobType">Job Type:</label>
-                    <input type="text" id="jobType" placeholder="e.g., Full-time, Part-time, Freelance" required>
+                    <input type="text" name="type" id="jobType" placeholder="e.g., Full-time, Part-time, Freelance" required>
                 </div>
                 <div class="form-group">
                     <label for="jobDescription">Job Description:</label>
-                    <textarea id="jobDescription" placeholder="Detailed job description"></textarea>
+                    <textarea id="jobDescription" name="desc" placeholder="Detailed job description"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="jobTags">Tags (comma-separated):</label>
-                    <input type="text" id="jobTags" placeholder="e.g., full-time, remote, engineering">
+                    <input type="text" name="tags" id="jobTags" placeholder="e.g., full-time, remote, engineering">
                 </div>
                 <div class="form-group">
                     <label for="jobImages">Job Images (select multiple):</label>
-                    <input type="file" id="jobImages" accept="image/*" multiple>
+                    <input type="file" name="img" id="jobImages" accept="image/*" multiple>
                     <div id="jobImagePreviews"></div>
                 </div>
                 <div class="form-group">
                     <label for="companyLogo">Company Logo:</label>
-                    <input type="file" id="companyLogo" accept="image/*">
+                    <input type="file" name="logo" id="companyLogo" accept="image/*">
                     <div id="companyLogoPreview"></div>
                 </div>
             </div>
 
             <div class="form-group">
-                <input type="checkbox" id="postPublished" checked>
+                <input type="checkbox" name="check" id="postPublished" checked>
                 <label for="postPublished">Publish Immediately</label>
             </div>
 
