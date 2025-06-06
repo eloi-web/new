@@ -2,7 +2,6 @@ const firebaseConfig = {
     apiKey: "AIzaSyDA1oonly5aQv0NPPna32lJli3P2GVPzHs",
     authDomain: "gba-marketplace.firebaseapp.com",
     projectId: "gba-marketplace",
-    // storageBucket: "gba-marketplace.firebasestorage.app", // REMOVED: No longer needed for direct client-side uploads
     messagingSenderId: "110246782047",
     appId: "1:110246782047:web:ca126e8b6466395833e7ea",
     measurementId: "G-SSS7TFDC83"

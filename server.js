@@ -16,8 +16,7 @@ try {
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
         projectId: "gba-marketplace",
-        databaseURL: "https://gba-marketplace.firebaseio.com", // Example for Realtime Database
-        storageBucket: "gba-marketplace.firebasestorage.app" // Example for Storage (can remain, even if not directly used for new uploads)
+        databaseURL: "https://gba-marketplace.firebaseio.com",
     });
 
     console.log('Firebase Admin SDK initialized successfully.');
@@ -73,8 +72,8 @@ app.post('/api/upload-image', upload.single('image'), async (req, res) => {
     }
 });
 
-// API route to handle multiple image uploads (for jobImages)
-app.post('/api/upload-multiple-images', upload.array('images', 10), async (req, res) => { // 'images' is the field name, 10 is max files
+
+app.post('/api/upload-image', upload.array('images', 10), async (req, res) => { // 'images' is the field name, 10 is max files
     try {
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({ message: 'No files uploaded.' });
