@@ -1,27 +1,23 @@
-// api/posts.js
 const admin = require('../config/firebaseAdmin');
-const authMiddleware = require('../middleware/auth'); // Import authentication middleware
+const authMiddleware = require('../middleware/auth');
 
-const db = admin.firestore(); // Get a reference to Firestore
+const db = admin.firestore();
 
-// The core handler for post operations (protected by authMiddleware)
 const postsHandler = async (req, res) => {
-    // req.user is populated by authMiddleware if token is valid and isAdmin is true
-
     switch (req.method) {
-        case 'POST': // Create a new post
+        case 'POST':t
             try {
-                const { title, content, published = true } = req.body; // 'published' defaults to true
+                const { title, content, published = true } = req.body; 
                 if (!title || !content) {
                     return res.status(400).json({ message: 'Title and content are required.' });
                 }
 
-                const newPostRef = db.collection('posts').doc(); // Firestore generates unique ID
+                const newPostRef = db.collection('posts').doc();
                 await newPostRef.set({
                     title,
                     content,
                     published,
-                    authorEmail: req.user.email, // Store who posted it (from JWT payload)
+                    authorEmail: req.user.email,
                     createdAt: admin.firestore.FieldValue.serverTimestamp(),
                     updatedAt: admin.firestore.FieldValue.serverTimestamp()
                 });
@@ -34,7 +30,7 @@ const postsHandler = async (req, res) => {
             }
             break;
 
-        case 'GET': // Get all posts (for admin view - including unpublished)
+        case 'GET':
             try {
                 const postsSnapshot = await db.collection('posts').orderBy('createdAt', 'desc').get();
                 const posts = postsSnapshot.docs.map(doc => ({
@@ -84,5 +80,4 @@ const postsHandler = async (req, res) => {
     }
 };
 
-// Wrap the handler with the authentication middleware
 module.exports = authMiddleware(postsHandler);

@@ -11,10 +11,9 @@ if (!admin.apps.length) {
         console.log('Firebase Admin SDK initialized from environment variable.');
     } catch (error) {
         console.error('Failed to parse FIREBASE_SERVICE_ACCOUNT_KEY or initialize from env. Attempting local file...', error);
-        // Fallback for local development if the env var isn't set or is invalid
         try {
 
-            const serviceAccountLocal = require('../keys/your-firebase-admin-sdk-key.json'); // RENAME THIS to your actual file
+            const serviceAccountLocal = require('./serviceAccountKey.json');
             admin.initializeApp({
                 credential: admin.credential.cert(serviceAccountLocal)
             });

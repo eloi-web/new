@@ -1,0 +1,7 @@
+# Firebase Admin SDK service account key - DO NOT COMMIT SENSITIVE KEYS!
+serviceAccountKey.json
+
+# Node.js specific ignores
+node_modules/
+npm-debug.log
+.env # If you use .env files for other secrets
