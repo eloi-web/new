@@ -14,7 +14,6 @@ if (!firebase.apps.length) {
 const storage = firebase.storage();
 const db = firebase.firestore();
 const auth = firebase.auth();
-const app = initializeApp(firebaseConfig);
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('adminToken');
