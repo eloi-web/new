@@ -1,10 +1,15 @@
 const express = require('express');
 const admin = require('firebase-admin');
 const path = require('path');
+const multer = require('multer'); // Import multer for file uploads
+const cloudinary = require('cloudinary').v2; // Import cloudinary
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ===============================================
+// 1. Firebase Admin SDK Initialization
+// ===============================================
 try {
     const serviceAccount = require('./serviceAccountKey.json');
 
@@ -12,7 +17,7 @@ try {
         credential: admin.credential.cert(serviceAccount),
         projectId: "gba-marketplace",
         databaseURL: "https://gba-marketplace.firebaseio.com", // Example for Realtime Database
-        storageBucket: "gba-marketplace.firebasestorage.app" // Example for Storage
+        storageBucket: "gba-marketplace.firebasestorage.app" // Example for Storage (can remain, even if not directly used for new uploads)
     });
 
     console.log('Firebase Admin SDK initialized successfully.');
@@ -23,17 +28,85 @@ try {
 }
 
 // ===============================================
-// 2. Middleware & Routes
+// 2. Cloudinary Configuration
+// ===============================================
+// Make sure to use environment variables for these in production!
+cloudinary.config({
+    cloud_name: 'dy40yogai',
+    api_key: '799887153723792',
+    api_secret: 'NTkG_ahctcVuY9Vmz5hJSJn9S1s'
+});
+
+// Configure Multer for in-memory storage (files will be available in req.file or req.files)
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// ===============================================
+// 3. Middleware & Routes
 // ===============================================
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-// Example API route using Firebase Admin SDK
+// API route to handle single image uploads
+app.post('/api/upload-image', upload.single('image'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: 'No file uploaded.' });
+        }
+
+        const folder = req.body.folder || 'misc_uploads'; // Get folder from request body, default to 'misc_uploads'
+
+        // Upload the image to Cloudinary
+        const result = await cloudinary.uploader.upload(`data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`, {
+            folder: folder // Specify the folder in Cloudinary
+        });
+
+        res.status(200).json({
+            message: 'Image uploaded successfully!',
+            url: result.secure_url // The URL of the uploaded image on Cloudinary
+        });
+
+    } catch (error) {
+        console.error('Error uploading image to Cloudinary:', error);
+        res.status(500).json({ message: 'Error uploading image.', error: error.message });
+    }
+});
+
+// API route to handle multiple image uploads (for jobImages)
+app.post('/api/upload-multiple-images', upload.array('images', 10), async (req, res) => { // 'images' is the field name, 10 is max files
+    try {
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ message: 'No files uploaded.' });
+        }
+
+        const folder = req.body.folder || 'misc_uploads'; // Get folder from request body, default to 'misc_uploads'
+        const uploadedUrls = [];
+
+        for (const file of req.files) {
+            const result = await cloudinary.uploader.upload(`data:${file.mimetype};base64,${file.buffer.toString('base64')}`, {
+                folder: folder
+            });
+            uploadedUrls.push(result.secure_url);
+        }
+
+        res.status(200).json({
+            message: 'Images uploaded successfully!',
+            urls: uploadedUrls
+        });
+
+    } catch (error) {
+        console.error('Error uploading multiple images to Cloudinary:', error);
+        res.status(500).json({ message: 'Error uploading multiple images.', error: error.message });
+    }
+});
+
+
+// Example API route using Firebase Admin SDK (your existing GET route)
 app.get('/api/posts/:postId', async (req, res) => {
     try {
         const postId = req.params.postId;
-        const db = admin.firestore(); 
+        const db = admin.firestore();
         const docRef = db.collection('posts').doc(postId);
         const doc = await docRef.get();
 
@@ -49,6 +122,7 @@ app.get('/api/posts/:postId', async (req, res) => {
     }
 });
 
+// Your existing static file serving and catch-all route
 app.use(express.static(path.join(__dirname, 'new')));
 
 app.get('*', (req, res) => {
