@@ -158,6 +158,15 @@ button.delete {
   font-size: 13px;
   background-color: #007bff;
 }
+button.edit{
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 13px;
+  background-color: #007bff;
+}
 
 .modal {
   display: none;

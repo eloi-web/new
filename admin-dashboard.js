@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 ${!post.published ? '<span style="color: red; font-weight: bold;"> (UNPUBLISHED)</span>' : ''}
                             </div>
                             <div class="post-actions">
-                                <button onclick="editPost('${post.id}')">Edit</button>
+                                <button class='edit' onclick="editPost('${post.id}')">Edit</button>
                                 <button class="delete" onclick="deletePost('${post.id}')">Delete</button>
                             </div>
                         `;

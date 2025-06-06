@@ -1,14 +1,7 @@
-// config/firebaseAdmin.js
 const admin = require('firebase-admin');
-
-// This path is for local development if you put the key file there
-// Make sure `keys/your-project-name-firebase-adminsdk.json` is in your .gitignore!
-// const serviceAccountLocal = require('../keys/your-project-name-firebase-adminsdk.json');
-
-// For Vercel deployment: The content of the JSON file is stored in an environment variable
 const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
 
-if (!admin.apps.length) { // Prevents re-initialization if imported multiple times
+if (!admin.apps.length) { 
     try {
         // Try initializing from the environment variable (Vercel)
         const serviceAccountConfig = JSON.parse(serviceAccountJson);

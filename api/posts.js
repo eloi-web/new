@@ -1,5 +1,5 @@
 // api/posts.js
-const admin = require('../config/firebaseAdmin'); // Import initialized Firebase Admin SDK
+const admin = require('../config/firebaseAdmin');
 const authMiddleware = require('../middleware/auth'); // Import authentication middleware
 
 const db = admin.firestore(); // Get a reference to Firestore
