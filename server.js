@@ -111,7 +111,7 @@ app.post('/api/upload-multiple-images', upload.array('images', 10), async (req, 
 
 
 // Example API route using Firebase Admin SDK (your existing GET route)
-app.get('/api/posts/:postId', async (req, res) => {
+/*app.get('/api/posts/:postId', async (req, res) => {
     try {
         const postId = req.params.postId;
         const db = admin.firestore(); // Access Firestore after initialization
@@ -128,7 +128,7 @@ app.get('/api/posts/:postId', async (req, res) => {
         console.error('Error fetching single post (backend):', error);
         res.status(500).json({ message: 'Internal server error.' });
     }
-});
+});*/
 
 // Your existing static file serving and catch-all route
 // These should always come AFTER your specific API routes
