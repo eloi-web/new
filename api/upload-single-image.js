@@ -11,9 +11,9 @@ export const config = {
 
 // Configure Cloudinary (ensure environment variables are set in Vercel)
 cloudinary.config({
-  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME, // Use NEXT_PUBLIC if you want it client-side, but usually not for API secrets
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+    cloud_name: 'dy40yogai',
+    api_key: '799887153723792',
+    api_secret: 'NTkG_ahctcVuY9Vmz5hJSJn9S1s'
 });
 
 export default async function handler(req, res) {
