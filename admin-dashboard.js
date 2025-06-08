@@ -104,64 +104,81 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
     // --- New: Function to upload a single file to backend (Cloudinary) ---
-    async function uploadFileToBackend(file, folderName) {
-        const formData = new FormData();
-        formData.append('image', file); // 'image' must match the field name in your Multer setup
-        formData.append('folder', folderName); // Pass the desired Cloudinary folder
+    async function uploadFileToBackend(file, folderName) { // Keep folderName parameter
+    const formData = new FormData();
+    formData.append('image', file); // Ensure 'image' for single upload
+    formData.append('folder', folderName);
 
-        try {
-            const response = await fetch('/api/upload-single-image', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}` // Ensure admin token is sent
-                },
-                body: formData // Multer expects FormData
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(`File upload failed: ${errorData.message}`);
-            }
-
-            const data = await response.json();
-            return data.url; // Return the Cloudinary URL
-        } catch (error) {
-            console.error('Error uploading file to backend:', error);
-            alert(`Error uploading ${file.name}: ${error.message}`);
-            return null; // Return null on failure
-        }
-    }
-
-    // --- New: Function to upload multiple files to backend (Cloudinary) ---
-    async function uploadMultipleFilesToBackend(files, folderName) {
-        const formData = new FormData();
-        Array.from(files).forEach(file => {
-            formData.append('images', file); // 'images' must match the field name in your Multer setup
+    try {
+        const response = await fetch('/api/upload-single-image', { // CONFIRM THIS PATH
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: formData
         });
-        formData.append('folder', folderName);
 
-        try {
-            const response = await fetch('/api/upload-multiple-images', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}` // Ensure admin token is sent
-                },
-                body: formData
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(`Multiple file upload failed: ${errorData.message}`);
-            }
-
-            const data = await response.json();
-            return data.urls; // Return array of Cloudinary URLs
-        } catch (error) {
-            console.error('Error uploading multiple files to backend:', error);
-            alert(`Error uploading job images: ${error.message}`);
-            return []; // Return empty array on failure
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Server responded with non-OK status for single upload:', response.status, errorText);
+            throw new Error(`Upload failed (${file.name}): ${response.status} ${response.statusText}. Details: ${errorText.substring(0, 200)}...`);
         }
+
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) { // Use .includes for robustness
+            const data = await response.json();
+            return data.url; // Assuming you return { url: '...' }
+        } else {
+            const successText = await response.text();
+            console.warn('Unexpected content type from server (single upload):', contentType, successText);
+            throw new Error(`Unexpected response format from backend for ${file.name}. Details: ${successText.substring(0, 200)}...`);
+        }
+
+    } catch (error) {
+        console.error('Error uploading file to backend:', error);
+        alert(`Error uploading ${file.name}: ${error.message}`);
+        return null;
     }
+}
+
+    async function uploadMultipleFilesToBackend(files, folderName) {
+    const formData = new FormData();
+    Array.from(files).forEach(file => {
+        formData.append('images', file); // Ensure 'images' for multiple uploads
+    });
+    formData.append('folder', folderName);
+
+    try {
+        const response = await fetch('/api/upload-multiple-images', { // CONFIRM THIS PATH
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: formData
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Server responded with non-OK status for multi-upload:', response.status, errorText);
+            throw new Error(`Multiple file upload failed: ${response.status} ${response.statusText}. Details: ${errorText.substring(0, 200)}...`);
+        }
+
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            const data = await response.json();
+            return data.urls; // Assuming you return { urls: [...] }
+        } else {
+            const successText = await response.text();
+            console.warn('Unexpected content type from server (multi-upload):', contentType, successText);
+            throw new Error(`Unexpected response format from backend for multiple images. Details: ${successText.substring(0, 200)}...`);
+        }
+
+    } catch (error) {
+        console.error('Error uploading multiple files to backend:', error);
+        alert(`Error uploading job images: ${error.message}`);
+        return [];
+    }
+}
 
     // --- Category field visibility and 'required' attribute logic for CREATE FORM ---
     const toggleJobFields = () => {
