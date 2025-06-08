@@ -47,39 +47,38 @@ const upload = multer({ storage: storage });
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-// API route to handle single image uploads
-app.post('/api/upload-image', upload.single('image'), async (req, res) => {
+app.post('/api/upload-single-image', upload.single('image'), async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ message: 'No file uploaded.' });
         }
 
-        const folder = req.body.folder || 'misc_uploads'; // Get folder from request body, default to 'misc_uploads'
+        const folder = req.body.folder || 'misc_uploads';
 
-        // Upload the image to Cloudinary
         const result = await cloudinary.uploader.upload(`data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`, {
-            folder: folder // Specify the folder in Cloudinary
+            folder: folder
         });
 
         res.status(200).json({
             message: 'Image uploaded successfully!',
-            url: result.secure_url // The URL of the uploaded image on Cloudinary
+            url: result.secure_url
         });
 
     } catch (error) {
-        console.error('Error uploading image to Cloudinary:', error);
+        console.error('Error uploading single image to Cloudinary:', error);
         res.status(500).json({ message: 'Error uploading image.', error: error.message });
     }
 });
 
-
-app.post('/api/upload-image', upload.array('images', 10), async (req, res) => { // 'images' is the field name, 10 is max files
+// API route to handle multiple image uploads
+// IMPORTANT: Use '/api/upload-multiple-images' for multiple uploads
+app.post('/api/upload-multiple-images', upload.array('images', 10), async (req, res) => {
     try {
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({ message: 'No files uploaded.' });
         }
 
-        const folder = req.body.folder || 'misc_uploads'; // Get folder from request body, default to 'misc_uploads'
+        const folder = req.body.folder || 'misc_uploads';
         const uploadedUrls = [];
 
         for (const file of req.files) {
@@ -99,7 +98,6 @@ app.post('/api/upload-image', upload.array('images', 10), async (req, res) => { 
         res.status(500).json({ message: 'Error uploading multiple images.', error: error.message });
     }
 });
-
 
 // Example API route using Firebase Admin SDK (your existing GET route)
 app.get('/api/posts/:postId', async (req, res) => {

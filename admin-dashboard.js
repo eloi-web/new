@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         formData.append('folder', folderName); // Pass the desired Cloudinary folder
 
         try {
-            const response = await fetch('/api/upload-image', {
+            const response = await fetch('/api/upload-single-image', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}` // Ensure admin token is sent
