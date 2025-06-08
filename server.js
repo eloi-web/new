@@ -47,7 +47,7 @@ const upload = multer({ storage: storage });
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-app.post('/api/upload-single-image', upload.single('image'), async (req, res) => {
+app.post('/api/upload-single-image', upload.single('image'), async (req, res) => { // <-- CONFIRM THIS LINE
     try {
         if (!req.file) {
             return res.status(400).json({ message: 'No file uploaded.' });
@@ -72,7 +72,7 @@ app.post('/api/upload-single-image', upload.single('image'), async (req, res) =>
 
 // API route to handle multiple image uploads
 // IMPORTANT: Use '/api/upload-multiple-images' for multiple uploads
-app.post('/api/upload-multiple-images', upload.array('images', 10), async (req, res) => {
+app.post('/api/upload-multiple-images', upload.array('images', 10), async (req, res) => { // <-- CONFIRM THIS LINE
     try {
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({ message: 'No files uploaded.' });
@@ -98,6 +98,7 @@ app.post('/api/upload-multiple-images', upload.array('images', 10), async (req, 
         res.status(500).json({ message: 'Error uploading multiple images.', error: error.message });
     }
 });
+
 
 // Example API route using Firebase Admin SDK (your existing GET route)
 app.get('/api/posts/:postId', async (req, res) => {
