@@ -7,33 +7,44 @@ const cloudinary = require('cloudinary').v2; // Import cloudinary
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+
 // ===============================================
 // 1. Firebase Admin SDK Initialization
 // ===============================================
-try {
-    const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+// Wrap initialization in a check to prevent 'duplicate-app' error on hot reloads/re-invocations
+if (!admin.apps.length) { // THIS IS THE KEY CHANGE
+    try {
+        const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
 
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        projectId: "gba-marketplace",
-        databaseURL: "https://gba-marketplace.firebaseio.com",
-    });
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount),
+            projectId: "gba-marketplace",
+            databaseURL: "https://gba-marketplace.firebaseio.com",
+        });
 
-    console.log('Firebase Admin SDK initialized successfully.');
+        console.log('Firebase Admin SDK initialized successfully.');
 
-} catch (error) {
-    console.error('Failed to initialize Firebase Admin SDK:', error);
-    process.exit(1);
+    } catch (error) {
+        console.error('Failed to initialize Firebase Admin SDK:', error);
+        // It's usually better not to exit the process in a serverless function if possible,
+        // but for critical initialization like this, process.exit(1) is acceptable.
+        process.exit(1);
+    }
+} else {
+    console.log('Firebase Admin SDK already initialized.');
 }
+
 
 // ===============================================
 // 2. Cloudinary Configuration
 // ===============================================
-// Make sure to use environment variables for these in production!
+// IMPORTANT SECURITY FIX: Use environment variables for Cloudinary credentials
+// You MUST set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET
+// in your Vercel project's environment variables.
 cloudinary.config({
-    cloud_name: 'dy40yogai',
-    api_key: '799887153723792',
-    api_secret: 'NTkG_ahctcVuY9Vmz5hJSJn9S1s'
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 // Configure Multer for in-memory storage (files will be available in req.file or req.files)
@@ -47,7 +58,7 @@ const upload = multer({ storage: storage });
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-app.post('/api/upload-single-image', upload.single('image'), async (req, res) => { // <-- CONFIRM THIS LINE
+app.post('/api/upload-single-image', upload.single('image'), async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ message: 'No file uploaded.' });
@@ -71,8 +82,7 @@ app.post('/api/upload-single-image', upload.single('image'), async (req, res) =>
 });
 
 // API route to handle multiple image uploads
-// IMPORTANT: Use '/api/upload-multiple-images' for multiple uploads
-app.post('/api/upload-multiple-images', upload.array('images', 10), async (req, res) => { // <-- CONFIRM THIS LINE
+app.post('/api/upload-multiple-images', upload.array('images', 10), async (req, res) => {
     try {
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({ message: 'No files uploaded.' });
@@ -104,7 +114,7 @@ app.post('/api/upload-multiple-images', upload.array('images', 10), async (req, 
 app.get('/api/posts/:postId', async (req, res) => {
     try {
         const postId = req.params.postId;
-        const db = admin.firestore();
+        const db = admin.firestore(); // Access Firestore after initialization
         const docRef = db.collection('posts').doc(postId);
         const doc = await docRef.get();
 
@@ -121,6 +131,7 @@ app.get('/api/posts/:postId', async (req, res) => {
 });
 
 // Your existing static file serving and catch-all route
+// These should always come AFTER your specific API routes
 app.use(express.static(path.join(__dirname, 'new')));
 
 app.get('*', (req, res) => {
