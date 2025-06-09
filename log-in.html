@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,22 +57,8 @@
             </div>
         </div>
     </div>
-    <script>
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDA1oonly5aQv0NPPna32lJli3P2GVPzHs",
-            authDomain: "gba-marketplace.firebaseapp.com",
-            projectId: "gba-marketplace",
-            storageBucket: "gba-marketplace.firebasestorage.app",
-            messagingSenderId: "110246782047",
-            appId: "1:110246782047:web:ca126e8b6466395833e7ea",
-            measurementId: "G-SSS7TFDC83"
-        };
-
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
 
     <script type="module" src="log-in.js"></script>
 </body>
