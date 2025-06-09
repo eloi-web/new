@@ -1,16 +1,25 @@
-import { getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+// log-in.js (client-side)
+// If you are using 'type="module"' in your script tag, you can use import statements:
+import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
+// If you are NOT using 'type="module"', remove the import line and use firebase.auth() directly as before.
+
 document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('loginForm');
+    // Get references to the form elements
+    const loginForm = document.getElementById('loginForm'); // Now using the ID
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const loginMessage = document.getElementById('loginMessage');
-    const auth = getAuth();
+
+    // Initialize Firebase Auth instance (assuming firebase.initializeApp is done in HTML)
+    const auth = getAuth(); // For type="module" import
+    // If not using type="module", use: const auth = firebase.auth();
+
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const email = emailInput.value; 
-            const password = passwordInput.value;
+            const email = emailInput.value; // Get value by ID
+            const password = passwordInput.value; // Get value by ID
 
             loginMessage.textContent = ''; // Clear previous messages
             loginMessage.style.color = 'red'; // Default to red for errors
@@ -57,7 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
+
+    // Existing back arrow logic (keep as is)
     const backArrow = document.getElementById('backArrow');
     if (backArrow) {
         backArrow.addEventListener('click', function() {
