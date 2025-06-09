@@ -105,80 +105,80 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- New: Function to upload a single file to backend (Cloudinary) ---
     async function uploadFileToBackend(file, folderName) { // Keep folderName parameter
-    const formData = new FormData();
-    formData.append('image', file); // Ensure 'image' for single upload
-    formData.append('folder', folderName);
+        const formData = new FormData();
+        formData.append('image', file); // Ensure 'image' for single upload
+        formData.append('folder', folderName);
 
-    try {
-        const response = await fetch('/api/upload-single-image', { // CONFIRM THIS PATH
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: formData
-        });
+        try {
+            const response = await fetch('/api/upload-single-image', { // CONFIRM THIS PATH
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            });
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('Server responded with non-OK status for single upload:', response.status, errorText);
-            throw new Error(`Upload failed (${file.name}): ${response.status} ${response.statusText}. Details: ${errorText.substring(0, 200)}...`);
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Server responded with non-OK status for single upload:', response.status, errorText);
+                throw new Error(`Upload failed (${file.name}): ${response.status} ${response.statusText}. Details: ${errorText.substring(0, 200)}...`);
+            }
+
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) { // Use .includes for robustness
+                const data = await response.json();
+                return data.url; // Assuming you return { url: '...' }
+            } else {
+                const successText = await response.text();
+                console.warn('Unexpected content type from server (single upload):', contentType, successText);
+                throw new Error(`Unexpected response format from backend for ${file.name}. Details: ${successText.substring(0, 200)}...`);
+            }
+
+        } catch (error) {
+            console.error('Error uploading file to backend:', error);
+            alert(`Error uploading ${file.name}: ${error.message}`);
+            return null;
         }
-
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) { // Use .includes for robustness
-            const data = await response.json();
-            return data.url; // Assuming you return { url: '...' }
-        } else {
-            const successText = await response.text();
-            console.warn('Unexpected content type from server (single upload):', contentType, successText);
-            throw new Error(`Unexpected response format from backend for ${file.name}. Details: ${successText.substring(0, 200)}...`);
-        }
-
-    } catch (error) {
-        console.error('Error uploading file to backend:', error);
-        alert(`Error uploading ${file.name}: ${error.message}`);
-        return null;
     }
-}
 
     async function uploadMultipleFilesToBackend(files, folderName) {
-    const formData = new FormData();
-    Array.from(files).forEach(file => {
-        formData.append('images', file); // Ensure 'images' for multiple uploads
-    });
-    formData.append('folder', folderName);
-
-    try {
-        const response = await fetch('/api/upload-multiple-images', { // CONFIRM THIS PATH
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: formData
+        const formData = new FormData();
+        Array.from(files).forEach(file => {
+            formData.append('images', file); // Ensure 'images' for multiple uploads
         });
+        formData.append('folder', folderName);
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('Server responded with non-OK status for multi-upload:', response.status, errorText);
-            throw new Error(`Multiple file upload failed: ${response.status} ${response.statusText}. Details: ${errorText.substring(0, 200)}...`);
+        try {
+            const response = await fetch('/api/upload-multiple-images', { // CONFIRM THIS PATH
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Server responded with non-OK status for multi-upload:', response.status, errorText);
+                throw new Error(`Multiple file upload failed: ${response.status} ${response.statusText}. Details: ${errorText.substring(0, 200)}...`);
+            }
+
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                const data = await response.json();
+                return data.urls; // Assuming you return { urls: [...] }
+            } else {
+                const successText = await response.text();
+                console.warn('Unexpected content type from server (multi-upload):', contentType, successText);
+                throw new Error(`Unexpected response format from backend for multiple images. Details: ${successText.substring(0, 200)}...`);
+            }
+
+        } catch (error) {
+            console.error('Error uploading multiple files to backend:', error);
+            alert(`Error uploading job images: ${error.message}`);
+            return [];
         }
-
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
-            const data = await response.json();
-            return data.urls; // Assuming you return { urls: [...] }
-        } else {
-            const successText = await response.text();
-            console.warn('Unexpected content type from server (multi-upload):', contentType, successText);
-            throw new Error(`Unexpected response format from backend for multiple images. Details: ${successText.substring(0, 200)}...`);
-        }
-
-    } catch (error) {
-        console.error('Error uploading multiple files to backend:', error);
-        alert(`Error uploading job images: ${error.message}`);
-        return [];
     }
-}
 
     // --- Category field visibility and 'required' attribute logic for CREATE FORM ---
     const toggleJobFields = () => {
@@ -270,9 +270,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         try {
             const category = postCategorySelect.value;
-            const title = postTitleInput.value; // Use defined variable
-            const content = postContentTextarea.value; // Use defined variable
-            const published = postPublishedCheckbox.checked; // Use defined variable
+            const title = postTitleInput.value;
+            const content = postContentTextarea.value;
+            const published = postPublishedCheckbox.checked;
 
             let companyLogoUrl = null;
             let uploadedJobImageUrls = [];
@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const companyLogoFile = companyLogoInput.files[0];
             if (companyLogoFile) {
                 companyLogoUrl = await uploadFileToBackend(companyLogoFile, 'company_logos');
-                if (companyLogoUrl === null) { // Check for null explicitly
+                if (companyLogoUrl === null) {
                     throw new Error('Company logo upload failed.');
                 }
             }
@@ -290,7 +290,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (jobImagesFiles && jobImagesFiles.length > 0) {
                 uploadedJobImageUrls = await uploadMultipleFilesToBackend(jobImagesFiles, 'job_images');
                 if (uploadedJobImageUrls.length === 0 && jobImagesFiles.length > 0) {
-                    // If files were selected but none uploaded, it's an error
                     throw new Error('Some or all job images failed to upload.');
                 }
             }
@@ -304,13 +303,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Add job-specific fields if category is Jobs
             if (category === 'Jobs') {
-                postData.companyName = companyNameInput.value; // Use defined variable
-                postData.jobLocation = jobLocationInput.value; // Use defined variable
-                postData.jobType = jobTypeInput.value; // Use defined variable
-                postData.jobDescription = jobDescriptionTextarea.value; // Use defined variable
-                postData.jobTags = jobTagsInput.value; // Use defined variable // Keep as string, backend splits
-                postData.companyLogoUrl = companyLogoUrl; // Attach Cloudinary URL
-                postData.jobImageUrls = uploadedJobImageUrls; // Attach Cloudinary URLs
+                postData.companyName = companyNameInput.value;
+                postData.jobLocation = jobLocationInput.value;
+                postData.jobType = jobTypeInput.value;
+                postData.jobDescription = jobDescriptionTextarea.value;
+                postData.jobTags = jobTagsInput.value;
+                postData.companyLogoUrl = companyLogoUrl;
+                postData.jobImageUrls = uploadedJobImageUrls;
             }
 
             // --- Send Post Data to Backend (Firestore via Express) ---
@@ -320,17 +319,54 @@ document.addEventListener('DOMContentLoaded', async () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify(postData) // Send all post data including image URLs
+                body: JSON.stringify(postData)
             });
 
+            if (!response.ok) {
+                const errorText = await response.text(); // Read the response as plain text first
+                console.error('Server responded with non-OK status for post creation:', response.status, errorText);
+
+                // Try to parse as JSON if content-type suggests it, otherwise use plain text
+                let errorMessage = `HTTP error! status: ${response.status}. Details: ${errorText}`;
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    try {
+                        const errorData = JSON.parse(errorText); // Attempt to parse
+                        errorMessage = `Error creating post: ${errorData.message || 'An unexpected error occurred.'}`;
+                    } catch (jsonError) {
+                        // It claimed to be JSON but wasn't, or parsing failed. Use raw text.
+                        console.warn('Response claimed JSON but parsing failed, using raw text:', jsonError);
+                    }
+                }
+
+                if (response.status === 401 || response.status === 403) {
+                    alert(`Authentication Error: ${errorMessage}. Your session has expired. Please log in again.`);
+                    localStorage.removeItem('adminToken');
+                    window.location.href = '/log-in.html';
+                } else {
+                    alert(errorMessage);
+                }
+                // Re-throw the error to be caught by the outer catch block
+                throw new Error(errorMessage);
+            }
+
+            // Check if the content type is JSON before parsing (for success case)
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                const errorText = await response.text();
+                console.error('Received non-JSON response when JSON was expected (success path):', contentType, errorText);
+                throw new Error(`Unexpected response format from backend. Details: ${errorText.substring(0, 200)}...`);
+            }
+
             const data = await response.json();
+
             if (response.ok) {
                 alert(data.message);
                 postForm.reset();
-                jobImagePreviewsDiv.innerHTML = ''; // Clear image previews
+                jobImagePreviewsDiv.innerHTML = '';
                 companyLogoPreviewDiv.innerHTML = '';
-                toggleJobFields(); // Reset category visibility and required attributes
-                await loadPosts(); // Reload posts to show the new one
+                toggleJobFields();
+                await loadPosts();
             } else {
                 if (response.status === 401 || response.status === 403) {
                     alert(`Authentication Error: ${data.message || 'Your session has expired. Please log in again.'}`);
@@ -340,6 +376,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     alert(`Error creating post: ${data.message || 'An unexpected error occurred.'}`);
                 }
             }
+
         } catch (error) {
             console.error('Error in post creation:', error);
             alert(`Failed to create post: ${error.message}`);
@@ -389,8 +426,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         ${post.companyLogoUrl ? `<img src="${post.companyLogoUrl}" alt="Company Logo" style="max-width: 80px; max-height: 80px; margin-right: 10px; object-fit: contain;">` : ''}
                         <div class="job-images-display" style="display: flex; flex-wrap: wrap; margin-top: 5px;">
                             ${post.jobImageUrls && post.jobImageUrls.length > 0 ?
-                                post.jobImageUrls.map(url => `<img src="${url}" alt="Job Image" style="max-width: 80px; max-height: 80px; margin-right: 5px; margin-bottom: 5px; object-fit: cover;">`).join('')
-                                : ''}
+                            post.jobImageUrls.map(url => `<img src="${url}" alt="Job Image" style="max-width: 80px; max-height: 80px; margin-right: 5px; margin-bottom: 5px; object-fit: cover;">`).join('')
+                            : ''}
                         </div>
                     ` : ''}
                     <p class="status">Status: ${post.published ? 'Published' : 'Draft'}</p>
