@@ -3,6 +3,15 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebas
 import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const firebaseConfig = {
+  apiKey: "AIzaSyDA1oonly5aQv0NPPna32lJli3P2GVPzHs",
+  authDomain: "gba-marketplace.firebaseapp.com",
+  projectId: "gba-marketplace",
+  storageBucket: "gba-marketplace.firebasestorage.app",
+  messagingSenderId: "110246782047",
+  appId: "1:110246782047:web:ca126e8b6466395833e7ea",
+  measurementId: "G-SSS7TFDC83"
+};
 document.addEventListener('DOMContentLoaded', () => {
     // Get references to the form elements
     const loginForm = document.getElementById('loginForm'); // Now using the ID
