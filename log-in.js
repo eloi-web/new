@@ -1,8 +1,8 @@
 // log-in.js (client-side)
-// If you are using 'type="module"' in your script tag, you can use import statements:
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
 import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
-// If you are NOT using 'type="module"', remove the import line and use firebase.auth() directly as before.
-
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 document.addEventListener('DOMContentLoaded', () => {
     // Get references to the form elements
     const loginForm = document.getElementById('loginForm'); // Now using the ID
