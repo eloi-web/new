@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="sign-up.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <button id="backArrow" class="back-arrow" aria-label="Go back">←</button>
     <div class="auth-container">
@@ -26,7 +27,8 @@
                     </div>
                     <div class="input-group">
                         <i class="fas fa-lock"></i>
-                        <input type="password" id="password" class="form-control" name="password" placeholder="Password" required>
+                        <input type="password" id="password" class="form-control" name="password" placeholder="Password"
+                            required>
                     </div>
                     <div class="form-options">
                         <div class="remember-me">
@@ -54,23 +56,24 @@
             </div>
         </div>
     </div>
+    <script>
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDA1oonly5aQv0NPPna32lJli3P2GVPzHs",
+            authDomain: "gba-marketplace.firebaseapp.com",
+            projectId: "gba-marketplace",
+            storageBucket: "gba-marketplace.firebasestorage.app",
+            messagingSenderId: "110246782047",
+            appId: "1:110246782047:web:ca126e8b6466395833e7ea",
+            measurementId: "G-SSS7TFDC83"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+    </script>
 
     <script type="module" src="log-in.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const backArrow = document.getElementById('backArrow');
-
-            if (backArrow) {
-                backArrow.addEventListener('click', function() {
-                    if (window.history.length > 1) {
-                        window.history.back();
-                    } else {
-                        window.location.href = 'inde.html';
-                    }
-                });
-            }
-        });
-    </script>
 </body>
+
 </html>
