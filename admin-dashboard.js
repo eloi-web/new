@@ -388,65 +388,88 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- Load Posts for Admin View ---
     const loadPosts = async () => {
-        try {
-            postsContainer.innerHTML = '<p>Loading posts...</p>';
-            const response = await fetch('/api/posts', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            const posts = await response.json();
+    try {
+        postsContainer.innerHTML = '<p>Loading posts...</p>';
+        const response = await fetch('/api/posts', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
 
-            if (!response.ok) {
-                if (response.status === 401 || response.status === 403) {
-                    throw new Error(`Authentication Error: ${posts.message || 'Your session has expired. Please log in again.'}`);
-                } else {
-                    throw new Error(`Error loading posts: ${posts.message || 'An unexpected error occurred.'}`);
+        const contentType = response.headers.get('content-type');
+        let posts = [];
+
+        if (!response.ok) {
+            // Read response text first
+            const errorText = await response.text();
+            console.error('Error response:', response.status, errorText);
+
+            let errorMessage = `HTTP error! status: ${response.status}. Details: ${errorText}`;
+            if (contentType && contentType.includes('application/json')) {
+                try {
+                    const errorData = JSON.parse(errorText);
+                    errorMessage = errorData.message || errorMessage;
+                } catch (jsonError) {
+                    console.warn('Failed to parse JSON error:', jsonError);
                 }
             }
 
-            postsContainer.innerHTML = '';
-            if (posts.length === 0) {
-                postsContainer.innerHTML = '<p>No posts yet. Create your first post!</p>';
-                return;
-            }
-
-            posts.forEach(post => {
-                const postElement = document.createElement('div');
-                postElement.classList.add('post-item');
-                postElement.innerHTML = `
-                    <h4>${post.title} (${post.category})</h4>
-                    <p>${post.content ? post.content.substring(0, 100) + '...' : 'No general content.'}</p>
-                    ${post.category === 'Jobs' ? `
-                        <p><strong>Company:</strong> ${post.companyName || 'N/A'}</p>
-                        <p><strong>Location:</strong> ${post.jobLocation || 'N/A'}</p>
-                        <p><strong>Type:</strong> ${post.jobType || 'N/A'}</p>
-                        <p><strong>Description:</strong> ${post.jobDescription ? post.jobDescription.substring(0, 100) + '...' : 'N/A'}</p>
-                        <p><strong>Tags:</strong> ${post.jobTags && Array.isArray(post.jobTags) ? post.jobTags.join(', ') : 'N/A'}</p>
-                        ${post.companyLogoUrl ? `<img src="${post.companyLogoUrl}" alt="Company Logo" style="max-width: 80px; max-height: 80px; margin-right: 10px; object-fit: contain;">` : ''}
-                        <div class="job-images-display" style="display: flex; flex-wrap: wrap; margin-top: 5px;">
-                            ${post.jobImageUrls && post.jobImageUrls.length > 0 ?
-                            post.jobImageUrls.map(url => `<img src="${url}" alt="Job Image" style="max-width: 80px; max-height: 80px; margin-right: 5px; margin-bottom: 5px; object-fit: cover;">`).join('')
-                            : ''}
-                        </div>
-                    ` : ''}
-                    <p class="status">Status: ${post.published ? 'Published' : 'Draft'}</p>
-                    <p class="meta">Created: ${post.createdAt ? new Date(post.createdAt._seconds * 1000).toLocaleString() : 'N/A'}</p>
-                    <button onclick="editPost('${post.id}')" class="edit-button">Edit</button>
-                    <button onclick="deletePost('${post.id}')" class="delete-button">Delete</button>
-                `;
-                postsContainer.appendChild(postElement);
-            });
-        } catch (error) {
-            console.error('Error loading posts:', error);
-            postsContainer.innerHTML = `<p style="color: red;">${error.message}</p>`;
-            if (error.message.includes('Authentication Error')) {
-                localStorage.removeItem('adminToken');
-                setTimeout(() => { window.location.href = '/log-in.html'; }, 2000);
+            if (response.status === 401 || response.status === 403) {
+                throw new Error(`Authentication Error: ${errorMessage}. Please log in again.`);
+            } else {
+                throw new Error(`Error loading posts: ${errorMessage}`);
             }
         }
-    };
+// If success path: make sure content-type is JSON
+        if (contentType && contentType.includes('application/json')) {
+            posts = await response.json();
+        } else {
+            const errorText = await response.text();
+            throw new Error(`Unexpected response format. Details: ${errorText.substring(0, 200)}...`);
+        }
 
+        // Render posts
+        postsContainer.innerHTML = '';
+        if (posts.length === 0) {
+            postsContainer.innerHTML = '<p>No posts yet. Create your first post!</p>';
+            return;
+        }
+
+            posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.classList.add('post-item');
+            postElement.innerHTML = `
+                <h4>${post.title} (${post.category})</h4>
+                <p>${post.content ? post.content.substring(0, 100) + '...' : 'No general content.'}</p>
+                ${post.category === 'Jobs' ? `
+                    <p><strong>Company:</strong> ${post.companyName || 'N/A'}</p>
+                    <p><strong>Location:</strong> ${post.jobLocation || 'N/A'}</p>
+                    <p><strong>Type:</strong> ${post.jobType || 'N/A'}</p>
+                    <p><strong>Description:</strong> ${post.jobDescription ? post.jobDescription.substring(0, 100) + '...' : 'N/A'}</p>
+                    <p><strong>Tags:</strong> ${post.jobTags && Array.isArray(post.jobTags) ? post.jobTags.join(', ') : 'N/A'}</p>
+                    ${post.companyLogoUrl ? `<img src="${post.companyLogoUrl}" alt="Company Logo" style="max-width: 80px; max-height: 80px; margin-right: 10px; object-fit: contain;">` : ''}
+                    <div class="job-images-display" style="display: flex; flex-wrap: wrap; margin-top: 5px;">
+                        ${post.jobImageUrls && post.jobImageUrls.length > 0 ?
+                        post.jobImageUrls.map(url => `<img src="${url}" alt="Job Image" style="max-width: 80px; max-height: 80px; margin-right: 5px; margin-bottom: 5px; object-fit: cover;">`).join('')
+                        : ''}
+                    </div>
+                ` : ''}
+                <p class="status">Status: ${post.published ? 'Published' : 'Draft'}</p>
+                <p class="meta">Created: ${post.createdAt ? new Date(post.createdAt._seconds * 1000).toLocaleString() : 'N/A'}</p>
+                <button onclick="editPost('${post.id}')" class="edit-button">Edit</button>
+                <button onclick="deletePost('${post.id}')" class="delete-button">Delete</button>
+            `;
+            postsContainer.appendChild(postElement);
+        });
+    } catch (error) {
+        console.error('Error loading posts:', error);
+        postsContainer.innerHTML = `<p style="color: red;">${error.message}</p>`;
+        if (error.message.includes('Authentication Error')) {
+            localStorage.removeItem('adminToken');
+            setTimeout(() => { window.location.href = '/log-in.html'; }, 2000);
+        }
+    }
+};
 
     // --- Edit Post Functionality ---
     window.editPost = async (postId) => {
