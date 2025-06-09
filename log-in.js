@@ -1,8 +1,17 @@
-import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+// log-in.js (client-side)
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
+const firebaseConfig = {
+            apiKey: "AIzaSyDA1oonly5aQv0NPPna32lJli3P2GVPzHs",
+            authDomain: "gba-marketplace.firebaseapp.com",
+            projectId: "gba-marketplace",
+            storageBucket: "gba-marketplace.firebasestorage.app",
+            messagingSenderId: "110246782047",
+            appId: "1:110246782047:web:ca126e8b6466395833e7ea",
+            measurementId: "G-SSS7TFDC83"
+        };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-signInWithEmailAndPassword(auth, email, password)
 document.addEventListener('DOMContentLoaded', () => {
     // Get references to the form elements
     const loginForm = document.getElementById('loginForm'); // Now using the ID
@@ -41,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Redirect to the admin dashboard after a short delay for message visibility
                 setTimeout(() => {
                     window.location.href = '/admin-dashboard.html';
-                }, 1000);
+                }, 1000); // Redirect after 1 second
 
             } catch (error) {
                 console.error("Firebase Login Error:", error);
