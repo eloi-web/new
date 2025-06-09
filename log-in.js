@@ -1,43 +1,63 @@
-// log-in.js (client-side)
+import { getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.querySelector('.login-form');
-
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const loginMessage = document.getElementById('loginMessage');
+    const auth = getAuth();
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const email = loginForm['username'].value;
-            const password = loginForm['password'].value;
+            const email = emailInput.value; 
+            const password = passwordInput.value;
+
+            loginMessage.textContent = ''; // Clear previous messages
+            loginMessage.style.color = 'red'; // Default to red for errors
 
             try {
-                const response = await fetch('/api/admin-login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email, password }),
-                });
+                // Use Firebase Authentication to sign in the user
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
-                const data = await response.json();
+                // Get the Firebase ID Token (this is a JWT issued by Firebase)
+                const idToken = await userCredential.user.getIdToken();
 
-                if (response.ok) {
-                    console.log("Admin login successful:", data.message);
-                    // Store the JWT token securely
-                    localStorage.setItem('adminToken', data.token); // Store the token!
-                    alert("Admin login successful! Redirecting to admin dashboard.");
-                    window.location.href = '/admin-dashboard.html'; // Redirect to new dashboard
-                } else {
-                    console.error("Admin login failed:", data.message);
-                    alert(`Login Failed: ${data.message || 'An unexpected error occurred.'}`);
-                }
+                // Store this token for future authenticated requests to your backend
+                localStorage.setItem('adminToken', idToken);
+
+                loginMessage.style.color = 'green';
+                loginMessage.textContent = 'Login successful! Redirecting to admin dashboard.';
+                console.log("Admin login successful. Firebase ID Token obtained.");
+
+                // Redirect to the admin dashboard after a short delay for message visibility
+                setTimeout(() => {
+                    window.location.href = '/admin-dashboard.html';
+                }, 1000); // Redirect after 1 second
 
             } catch (error) {
-                console.error("Network or client-side error during login:", error);
-                alert("A network error occurred. Please try again.");
+                console.error("Firebase Login Error:", error);
+                let errorMessage = 'Login failed. Please check your credentials.';
+
+                // Provide user-friendly messages for common Firebase Auth errors
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                    case 'auth/wrong-password':
+                        errorMessage = 'Invalid email or password.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'The email address is not valid.';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'Too many failed login attempts. Please try again later.';
+                        break;
+                    default:
+                        errorMessage = `Login failed: ${error.message}`;
+                }
+                loginMessage.textContent = errorMessage;
             }
         });
     }
-
+    
     const backArrow = document.getElementById('backArrow');
     if (backArrow) {
         backArrow.addEventListener('click', function() {
