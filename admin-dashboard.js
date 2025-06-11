@@ -1,19 +1,3 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyDA1oonly5aQv0NPPna32lJli3P2GVPzHs",
-    authDomain: "gba-marketplace.firebaseapp.com",
-    projectId: "gba-marketplace",
-    messagingSenderId: "110246782047",
-    appId: "1:110246782047:web:ca126e8b6466395833e7ea",
-    measurementId: "G-SSS7TFDC83"
-};
-
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
-// const storage = firebase.storage(); // REMOVED: Firebase Storage is no longer used directly here
-const db = firebase.firestore();
-const auth = firebase.auth();
-
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('adminToken');
     // Redirect if not authenticated
