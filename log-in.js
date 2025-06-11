@@ -1,77 +1,48 @@
-// log-in.js (client-side)
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
-import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
-const firebaseConfig = {
-            apiKey: "AIzaSyDA1oonly5aQv0NPPna32lJli3P2GVPzHs",
-            authDomain: "gba-marketplace.firebaseapp.com",
-            projectId: "gba-marketplace",
-            storageBucket: "gba-marketplace.firebasestorage.app",
-            messagingSenderId: "110246782047",
-            appId: "1:110246782047:web:ca126e8b6466395833e7ea",
-            measurementId: "G-SSS7TFDC83"
-        };
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Get references to the form elements
-    const loginForm = document.getElementById('loginForm'); // Now using the ID
+const loginForm = document.getElementById('loginForm');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const loginMessage = document.getElementById('loginMessage');
-
-    // Initialize Firebase Auth instance (assuming firebase.initializeApp is done in HTML)
-    const auth = getAuth(); // For type="module" import
-    // If not using type="module", use: const auth = firebase.auth();
 
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const email = emailInput.value; // Get value by ID
-            const password = passwordInput.value; // Get value by ID
+            const email = emailInput.value;
+            const password = passwordInput.value;
 
             loginMessage.textContent = ''; // Clear previous messages
             loginMessage.style.color = 'red'; // Default to red for errors
 
             try {
-                // Use Firebase Authentication to sign in the user
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                // Make a POST request to your backend /login route
+                const response = await fetch('http://localhost:3000/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
 
-                // Get the Firebase ID Token (this is a JWT issued by Firebase)
-                const idToken = await userCredential.user.getIdToken();
+                const data = await response.json();
 
-                // Store this token for future authenticated requests to your backend
-                localStorage.setItem('adminToken', idToken);
+                if (response.ok) {
+                    // Store JWT token in localStorage or sessionStorage
+                    localStorage.setItem('adminToken', data.token);
 
-                loginMessage.style.color = 'green';
-                loginMessage.textContent = 'Login successful! Redirecting to admin dashboard.';
-                console.log("Admin login successful. Firebase ID Token obtained.");
+                    loginMessage.style.color = 'green';
+                    loginMessage.textContent = 'Login successful! Redirecting to admin dashboard.';
+                    console.log('Admin login successful.');
 
-                // Redirect to the admin dashboard after a short delay for message visibility
-                setTimeout(() => {
-                    window.location.href = '/admin-dashboard.html';
-                }, 1000); // Redirect after 1 second
-
-            } catch (error) {
-                console.error("Firebase Login Error:", error);
-                let errorMessage = 'Login failed. Please check your credentials.';
-
-                // Provide user-friendly messages for common Firebase Auth errors
-                switch (error.code) {
-                    case 'auth/user-not-found':
-                    case 'auth/wrong-password':
-                        errorMessage = 'Invalid email or password.';
-                        break;
-                    case 'auth/invalid-email':
-                        errorMessage = 'The email address is not valid.';
-                        break;
-                    case 'auth/too-many-requests':
-                        errorMessage = 'Too many failed login attempts. Please try again later.';
-                        break;
-                    default:
-                        errorMessage = `Login failed: ${error.message}`;
+                    // Redirect to admin dashboard
+                    setTimeout(() => {
+                        window.location.href = '/admin-dashboard.html';
+                    }, 1000);
+                } else {
+                    loginMessage.textContent = data.error || 'Login failed. Please try again.';
                 }
-                loginMessage.textContent = errorMessage;
+            } catch (error) {
+                console.error('Login Error:', error);
+                loginMessage.textContent = 'Login failed. Please check your internet connection.';
             }
         });
     }
