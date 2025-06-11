@@ -653,7 +653,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 title,
                 content,
                 published,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp() // Update timestamp
+                updatedAt:FieldValue.serverTimestamp() // Update timestamp
             };
 
             // Only update job-specific fields if the category is 'Jobs'
@@ -668,13 +668,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 updatedPostData.jobImageUrls = finalJobImageUrls; // Attach updated Cloudinary URLs
             } else {
                 // If category is changed from 'Jobs' to something else, clear job-specific fields
-                updatedPostData.companyName = firebase.firestore.FieldValue.delete();
-                updatedPostData.jobLocation = firebase.firestore.FieldValue.delete();
-                updatedPostData.jobType = firebase.firestore.FieldValue.delete();
-                updatedPostData.jobDescription = firebase.firestore.FieldValue.delete();
-                updatedPostData.jobTags = firebase.firestore.FieldValue.delete();
-                updatedPostData.companyLogoUrl = firebase.firestore.FieldValue.delete();
-                updatedPostData.jobImageUrls = firebase.firestore.FieldValue.delete();
+                updatedPostData.companyName =FieldValue.delete();
+                updatedPostData.jobLocation =FieldValue.delete();
+                updatedPostData.jobType =FieldValue.delete();
+                updatedPostData.jobDescription =FieldValue.delete();
+                updatedPostData.jobTags =FieldValue.delete();
+                updatedPostData.companyLogoUrl =FieldValue.delete();
+                updatedPostData.jobImageUrls =FieldValue.delete();
             }
 
 

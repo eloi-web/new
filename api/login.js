@@ -28,7 +28,8 @@ module.exports = async (req, res) => {
             console.error(error);
             res.status(500).json({ error: 'Server error' });
         }
-    } else {
+    } 
+    else {
         res.status(405).json({ error: 'Method Not Allowed' });
     }
 });
