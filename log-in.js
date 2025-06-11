@@ -17,7 +17,7 @@ const loginForm = document.getElementById('loginForm');
             loginMessage.style.color = 'red'; // Default to red for errors
 
             try {
-                const response = await fetch('https://gba-pk9srjlwa-miguel-s-projects-3ef37130.vercel.app/log-in.html', {
+                const response = await fetch('https://gba-pk9srjlwa-miguel-s-projects-3ef37130.vercel.app/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
