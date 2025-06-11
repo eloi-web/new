@@ -15,38 +15,16 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.post('/login', (req, res) => {
-    module.exports = async (req, res) => {
-         cors()(req, res, async () => {
-        if (req.method === 'POST') {
-            const { email, password } = req.body;
-    
-            try {
-                const user = await User.findOne({ email });
-                if (!user) {
-                    return res.status(400).json({ error: 'Invalid email or password' });
-                }
-    
-                const isMatch = await bcrypt.compare(password, user.password);
-                if (!isMatch) {
-                    return res.status(400).json({ error: 'Invalid email or password' });
-                }
-    
-                // Create JWT Token
-                const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    
-                res.status(200).json({ token });
-            } catch (error) {
-                console.error(error);
-                res.status(500).json({ error: 'Server error' });
-            }
-        } 
-        else {
-            res.status(405).json({ error: 'Method Not Allowed' });
-        }
-    });
-    };
-    
+app.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    // Dummy user check (replace with your actual user validation)
+    if (email === 'reloimiguel@gmail.com' && password === 'miguel..') {
+        const token = jwt.sign({ user: email }, 'miguel..', { expiresIn: '1h' });
+        return res.json({ token });
+    }
+
+    res.status(401).json({ message: 'Invalid credentials' });
 });
 
 // Connect to MongoDB Atlas
