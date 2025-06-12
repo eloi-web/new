@@ -6,8 +6,9 @@ module.exports = async function (req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
-    
-await connectDB();
+
+    await connectDB();
+
     const { email, password } = req.body;
 
     try {
