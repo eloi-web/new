@@ -16,6 +16,18 @@
     {
       "source": "/admin-dashboard",
       "destination": "/admin-dashboard.html"
+    },
+    {
+      "source": "/login",
+      "destination": "/log-in.html"
+    },
+    {
+      "source": "/signup",
+      "destination": "/sign-up.html"
+    },
+    {
+      "source": "/",
+      "destination": "/inde.html"
     }
   ]
 }
