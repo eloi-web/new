@@ -1,6 +1,6 @@
 // server.js
 const express = require('express');
-const cors = require('cors');
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');
 const app = express();
@@ -8,22 +8,23 @@ const app = express();
 // Middleware to parse incoming JSON data
 app.use(express.json());
 
-const corsOptions = {
-    origin: 'https://gba-ruby.vercel.app',  
-    methods: ['GET', 'POST'],               
-    allowedHeaders: ['Content-Type', 'Authorization'],  
-};
-app.use(cors(corsOptions));
-
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
 
-    // Dummy user check (replace with your actual user validation)
-    if (email === 'reloimiguel@gmail.com' && password === 'miguel..') {
+    // Hardcoded email and password for login (you can change this)
+    const hardcodedEmail = 'reloimiguel@gmail.com';
+    const hardcodedPassword = 'miguel..';
+
+    // Dummy user validation: check if email and password match the hardcoded ones
+    if (email === hardcodedEmail && password === hardcodedPassword) {
+        // Create a JWT token
         const token = jwt.sign({ user: email }, 'miguel..', { expiresIn: '1h' });
+
+        // Respond with the token
         return res.json({ token });
     }
 
+    // If the credentials don't match, send an error
     res.status(401).json({ message: 'Invalid credentials' });
 });
 

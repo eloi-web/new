@@ -2,35 +2,54 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User'); 
-const cors = require('cors');
 
-module.exports = async (req, res) => {
-     cors()(req, res, async () => {
-    if (req.method === 'POST') {
-        const { email, password } = req.body;
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const loginMessage = document.getElementById('loginMessage');
+
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = emailInput.value;
+        const password = passwordInput.value;
+
+        // Clear previous messages
+        loginMessage.textContent = '';
+        loginMessage.style.color = 'red';
 
         try {
-            const user = await User.findOne({ email });
-            if (!user) {
-                return res.status(400).json({ error: 'Invalid email or password' });
+            // Send POST request to the backend login API
+            const response = await fetch('gba.rubyvercel.app', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            // If the response is successful, store the JWT token and redirect
+            if (response.ok) {
+                const data = await response.json();
+                const token = data.token;
+
+                // Store the JWT token in localStorage
+                localStorage.setItem('adminToken', token);
+
+                // Show success message and redirect after 1 second
+                loginMessage.style.color = 'green';
+                loginMessage.textContent = 'Login successful! Redirecting to admin dashboard...';
+
+                setTimeout(() => {
+                    window.location.href = '/admin-dashboard.html'; // Redirect to dashboard
+                }, 1000);
+            } else {
+                const errorData = await response.json();
+                loginMessage.textContent = errorData.message; // Show error message
             }
-
-            const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) {
-                return res.status(400).json({ error: 'Invalid email or password' });
-            }
-
-            // Create JWT Token
-            const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-            res.status(200).json({ token });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Server error' });
+            loginMessage.textContent = 'An error occurred. Please try again later.';
         }
-    } 
-    else {
-        res.status(405).json({ error: 'Method Not Allowed' });
-    }
+    });
 });
-};
