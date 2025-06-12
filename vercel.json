@@ -1,7 +1,21 @@
 {
   "version": 2,
-  "env": {
-    "MONGO_URI": "mongodb+srv://miguel:miguel..@cluster0.g1iwcy3.mongodb.net/",
-    "JWT_SECRET": "miguel.."
-  }
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1.js"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/admin-dashboard",
+      "destination": "/admin-dashboard.html"
+    }
+  ]
 }
