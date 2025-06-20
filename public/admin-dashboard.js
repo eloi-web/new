@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const postsContainer = document.getElementById('postsContainer');
     const editPostModal = document.getElementById('editPostModal');
-    const closeEditModalButton = document.getElementById('closeEditModal');
+    const closeEditModalButton = document.getElementById('closeEditModalButton');
     const cancelEditButton = document.getElementById('cancelEditButton');
     const editPostForm = document.getElementById('editPostForm');
     const logoutButton = document.getElementById('logoutButton');
@@ -401,7 +401,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Close modal handlers
     closeEditModalButton.addEventListener('click', () => {
         editPostModal.style.display = 'none';
     });
@@ -444,7 +443,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-    // Logout button
     logoutButton.addEventListener('click', async () => {
         try {
             localStorage.removeItem('adminToken');
@@ -456,6 +454,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Initial posts load
     await loadPosts();
 });
