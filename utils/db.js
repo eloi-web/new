@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const connectDB = require('./utils/db');
 let cached = global.mongoose || { conn: null, promise: null };
 
 async function connectDB() {
