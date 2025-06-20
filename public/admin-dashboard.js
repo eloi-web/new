@@ -447,7 +447,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             localStorage.removeItem('adminToken');
             alert('Logged out successfully!');
-            window.location.href = '/public/public/log-in.html';
+            window.location.href = '/public/log-in.html';
         } catch (error) {
             console.error('Error during logout:', error);
             alert('Error logging out. Please try again.');
