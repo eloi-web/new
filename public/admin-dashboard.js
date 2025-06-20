@@ -1,5 +1,3 @@
-// admin-dashboard.js
-
 window.addEventListener('DOMContentLoaded', async () => {
     const postsContainer = document.getElementById('postsContainer');
     const logoutButton = document.getElementById('logoutButton');
@@ -89,11 +87,10 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     window.loadPosts = async () => {
         try {
-            const response = await fetch('/api/posts', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
+           const response = await fetch('./api/post', {
+  method: 'GET',
+  headers: { Authorization: `Bearer ${token}` }
+});
 
             const contentType = response.headers.get('content-type');
             let posts = [];
