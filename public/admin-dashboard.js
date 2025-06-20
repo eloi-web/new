@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('adminToken');
     if (!token) {
         alert('No admin token found, please log in.');
-        window.location.href = '/public/public/log-in.html';
+        window.location.href = './log-in.html';
         return;
     }
 
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             postsContainer.innerHTML = `<p style="color: red;">${error.message}</p>`;
             if (error.message.includes('Authentication Error')) {
                 localStorage.removeItem('adminToken');
-                setTimeout(() => { window.location.href = '/public/log-in.html'; }, 2000);
+                setTimeout(() => { window.location.href = './log-in.html'; }, 2000);
             }
         }
     }
@@ -290,7 +290,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             alert(`Failed to load post for editing: ${error.message}`);
             if (error.message.includes('Authentication Error')) {
                 localStorage.removeItem('adminToken');
-                setTimeout(() => { window.location.href = '/public/log-in.html'; }, 2000);
+                setTimeout(() => { window.location.href = './log-in.html'; }, 2000);
             }
         }
     };
@@ -358,7 +358,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 updatedPostData.companyLogoUrl = finalCompanyLogoUrl;
                 updatedPostData.jobImageUrls = finalJobImageUrls;
             } else {
-                // Clear job-specific fields if category changed
                 updatedPostData.companyName = null;
                 updatedPostData.jobLocation = null;
                 updatedPostData.jobType = null;
@@ -387,7 +386,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (response.status === 401 || response.status === 403) {
                     alert(`Authentication Error: ${data.message || 'Your session has expired. Please log in again.'}`);
                     localStorage.removeItem('adminToken');
-                    window.location.href = '/public/log-in.html';
+                    window.location.href = './log-in.html';
                 } else {
                     alert(`Error updating post: ${data.message || 'An unexpected error occurred.'}`);
                 }
@@ -432,7 +431,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (response.status === 401 || response.status === 403) {
                     alert(`Authentication Error: ${data.message || 'Your session has expired. Please log in again.'}`);
                     localStorage.removeItem('adminToken');
-                    window.location.href = '/public/log-in.html';
+                    window.location.href = './log-in.html';
                 } else {
                     alert(`Error deleting post: ${data.message || 'An unexpected error occurred.'}`);
                 }
@@ -447,7 +446,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             localStorage.removeItem('adminToken');
             alert('Logged out successfully!');
-            window.location.href = '/public/log-in.html';
+            window.location.href = './log-in.html';
         } catch (error) {
             console.error('Error during logout:', error);
             alert('Error logging out. Please try again.');
