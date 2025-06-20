@@ -29,7 +29,6 @@ window.addEventListener('DOMContentLoaded', async () => {
         e.preventDefault();
 
         const formData = new FormData(createPostForm);
-
         try {
             const response = await fetch('/api/create-post', {
                 method: 'POST',
@@ -39,16 +38,25 @@ window.addEventListener('DOMContentLoaded', async () => {
                 body: formData
             });
 
-            const result = await response.json();
-            if (!response.ok) throw new Error(result.message);
+            const contentType = response.headers.get('content-type');
 
-            alert('Post created!');
-            await loadPosts();
-            createPostForm.reset();
-            toggleJobFields();
+            let result;
+            if (contentType && contentType.includes('application/json')) {
+                result = await response.json();
+            } else {
+                const text = await response.text();  // fallback to plain text
+                throw new Error(`Unexpected response: ${text}`);
+            }
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Something went wrong during post creation.');
+            }
+
+            alert('Post created successfully!');
+            // maybe reload or reset form
         } catch (err) {
-            console.error('Failed to create post:', err);
-            alert(`Error: ${err.message}`);
+            console.error('Post creation error:', err);
+            alert(`Post creation failed: ${err.message}`);
         }
     });
 
@@ -127,8 +135,8 @@ window.addEventListener('DOMContentLoaded', async () => {
                         ${post.companyLogoUrl ? `<img src="${post.companyLogoUrl}" alt="Company Logo" style="max-width: 80px; max-height: 80px; object-fit: contain;">` : ''}
                         <div class="job-images-display" style="display: flex; flex-wrap: wrap;">
                             ${post.jobImageUrls && post.jobImageUrls.length > 0 ?
-                                post.jobImageUrls.map(url => `<img src="${url}" alt="Job Image" style="max-width: 80px; max-height: 80px; margin-right: 5px; object-fit: cover;">`).join('')
-                                : ''}
+                            post.jobImageUrls.map(url => `<img src="${url}" alt="Job Image" style="max-width: 80px; max-height: 80px; margin-right: 5px; object-fit: cover;">`).join('')
+                            : ''}
                         </div>
                     ` : ''}
                     <p class="status">Status: ${post.published ? 'Published' : 'Draft'}</p>
