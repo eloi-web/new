@@ -55,6 +55,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             editJobTagsInput.required = false;
         }
     }
+
+    postCategorySelect.addEventListener('change', toggleJobFields);
+    window.addEventListener('DOMContentLoaded', toggleJobFields);
     editPostCategorySelect.addEventListener('change', toggleEditJobFields);
 
     // Helper: Upload single file, returns uploaded file URL or null
