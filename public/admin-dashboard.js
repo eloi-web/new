@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    const postCategorySelect = document.getElementById('postCategory');
     const token = localStorage.getItem('adminToken');
     if (!token) {
         alert('No admin token found, please log in.');

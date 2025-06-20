@@ -79,6 +79,46 @@
                 </div>
             </div>
 
+            <!-- AUCTIONS -->
+            <div id="auctionFields" class="category-specific-fields" style="display:none;">
+                <h4>Auction Specific Details</h4>
+                <input type="text" id="auctionItemName" placeholder="Item Name">
+                <input type="number" id="startingBid" placeholder="Starting Bid Amount">
+                <input type="date" id="auctionEndDate" placeholder="Auction End Date">
+                <textarea id="auctionDescription" placeholder="Auction Description"></textarea>
+                <input type="file" id="auctionImages" accept="image/*" multiple>
+            </div>
+
+            <!-- CONSULTANTS -->
+            <div id="consultantsFields" class="category-specific-fields" style="display:none;">
+                <h4>Consultant Specific Details</h4>
+                <input type="text" id="consultantName" placeholder="Consultant Name">
+                <input type="text" id="consultantExpertise" placeholder="Expertise / Field">
+                <input type="text" id="consultantLocation" placeholder="Location">
+                <textarea id="consultantBio" placeholder="Short Bio"></textarea>
+                <input type="file" id="consultantPhoto" accept="image/*">
+            </div>
+
+            <!-- TENDERS -->
+            <div id="tendersFields" class="category-specific-fields" style="display:none;">
+                <h4>Tender Specific Details</h4>
+                <input type="text" id="tenderTitle" placeholder="Tender Title">
+                <input type="text" id="tenderLocation" placeholder="Location">
+                <input type="date" id="tenderDeadline" placeholder="Deadline">
+                <textarea id="tenderDetails" placeholder="Tender Details"></textarea>
+                <input type="file" id="tenderDocuments" accept=".pdf,.doc,.docx" multiple>
+            </div>
+
+            <!-- VENUES -->
+            <div id="venuesFields" class="category-specific-fields" style="display:none;">
+                <h4>Venue Specific Details</h4>
+                <input type="text" id="venueName" placeholder="Venue Name">
+                <input type="text" id="venueLocation" placeholder="Venue Location">
+                <input type="number" id="venueCapacity" placeholder="Capacity">
+                <textarea id="venueDescription" placeholder="Description"></textarea>
+                <input type="file" id="venueImages" accept="image/*" multiple>
+            </div>
+
             <div class="form-group">
                 <input type="checkbox" name="check" id="postPublished" checked>
                 <label for="postPublished">Publish Immediately</label>
