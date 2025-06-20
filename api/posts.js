@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import connectDB from '../utils/db';
 import JobPost from '../models/Post';
 import AuctionPost from '../models/AuctionPost';
 import ConsultantPost from '../models/ConsultantPost';
@@ -14,10 +15,14 @@ const modelMap = {
 };
 
 export default async function handler(req, res) {
+  await connectDB();
+
   const { id } = req.query;
   const token = req.headers.authorization?.split(' ')[1];
 
-  if (!token) return res.status(401).json({ message: 'Authorization header missing.' });
+  if (!token) {
+    return res.status(401).json({ message: 'Authorization header missing.' });
+  }
 
   try {
     jwt.verify(token, process.env.JWT_SECRET);
@@ -63,7 +68,6 @@ export default async function handler(req, res) {
 
   if (req.method === 'GET') {
     if (id) {
-      // Get single post by ID
       try {
         for (const [category, Model] of Object.entries(modelMap)) {
           const post = await Model.findById(id).lean();
@@ -80,7 +84,6 @@ export default async function handler(req, res) {
         return res.status(500).json({ message: 'Server error' });
       }
     } else {
-      // Get all posts from all categories
       try {
         const allPosts = [];
 
