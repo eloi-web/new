@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 postData.jobImageUrls = uploadedJobImageUrls;
             }
 
-            const response = await fetch('/models/post', {
+            const response = await fetch('/models/Post', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
