@@ -1,12 +1,10 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('adminToken');
-    // Redirect if not authenticated
     if (!token) {
         window.location.href = '/log-in.html';
         return;
     }
 
-    // --- Create Post Form Elements ---
     const postForm = document.getElementById('postForm');
     const postCategorySelect = document.getElementById('postCategory');
     const jobFieldsDiv = document.getElementById('jobFields');
@@ -14,16 +12,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const postContentTextarea = document.getElementById('postContent');
     const postPublishedCheckbox = document.getElementById('postPublished');
 
-    const companyNameInput = document.getElementById('companyName'); // Make sure you have this ID in your HTML
-    const jobLocationInput = document.getElementById('jobLocation'); // Make sure you have this ID in your HTML
-    const jobTypeInput = document.getElementById('jobType'); // Make sure you have this ID in your HTML
-    const jobDescriptionTextarea = document.getElementById('jobDescription'); // Make sure you have this ID in your HTML
-    const jobTagsInput = document.getElementById('jobTags'); // Make sure you have this ID in your HTML
+    const companyNameInput = document.getElementById('companyName');
+    const jobLocationInput = document.getElementById('jobLocation');
+    const jobTypeInput = document.getElementById('jobType');
+    const jobDescriptionTextarea = document.getElementById('jobDescription');
+    const jobTagsInput = document.getElementById('jobTags');
 
     const jobImagesInput = document.getElementById('jobImages');
     const companyLogoInput = document.getElementById('companyLogo');
-    const jobImagePreviewsDiv = document.getElementById('jobImagePreviews'); // Get preview div
-    const companyLogoPreviewDiv = document.getElementById('companyLogoPreview'); // Get preview div
+    const jobImagePreviewsDiv = document.getElementById('jobImagePreviews');
+    const companyLogoPreviewDiv = document.getElementById('companyLogoPreview');
 
     const logoutButton = document.getElementById('logoutButton');
     const postsContainer = document.getElementById('postsContainer');
@@ -296,14 +294,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 postData.jobImageUrls = uploadedJobImageUrls;
             }
 
-            const response = await fetch('/models/Post', {
+            const response = await fetch('/api/posts', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify(postData)
+                body: formData 
             });
+
 
             if (!response.ok) {
                 const errorText = await response.text(); // Read the response as plain text first
@@ -371,57 +369,57 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- Load Posts for Admin View ---
     const loadPosts = async () => {
-    try {
-        postsContainer.innerHTML = '<p>Loading posts...</p>';
-        const response = await fetch('/api/posts', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+        try {
+            postsContainer.innerHTML = '<p>Loading posts...</p>';
+            const response = await fetch('/api/posts', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
 
-        const contentType = response.headers.get('content-type');
-        let posts = [];
+            const contentType = response.headers.get('content-type');
+            let posts = [];
 
-        if (!response.ok) {
-            // Read response text first
-            const errorText = await response.text();
-            console.error('Error response:', response.status, errorText);
+            if (!response.ok) {
+                // Read response text first
+                const errorText = await response.text();
+                console.error('Error response:', response.status, errorText);
 
-            let errorMessage = `HTTP error! status: ${response.status}. Details: ${errorText}`;
-            if (contentType && contentType.includes('application/json')) {
-                try {
-                    const errorData = JSON.parse(errorText);
-                    errorMessage = errorData.message || errorMessage;
-                } catch (jsonError) {
-                    console.warn('Failed to parse JSON error:', jsonError);
+                let errorMessage = `HTTP error! status: ${response.status}. Details: ${errorText}`;
+                if (contentType && contentType.includes('application/json')) {
+                    try {
+                        const errorData = JSON.parse(errorText);
+                        errorMessage = errorData.message || errorMessage;
+                    } catch (jsonError) {
+                        console.warn('Failed to parse JSON error:', jsonError);
+                    }
+                }
+
+                if (response.status === 401 || response.status === 403) {
+                    throw new Error(`Authentication Error: ${errorMessage}. Please log in again.`);
+                } else {
+                    throw new Error(`Error loading posts: ${errorMessage}`);
                 }
             }
-
-            if (response.status === 401 || response.status === 403) {
-                throw new Error(`Authentication Error: ${errorMessage}. Please log in again.`);
+            // If success path: make sure content-type is JSON
+            if (contentType && contentType.includes('application/json')) {
+                posts = await response.json();
             } else {
-                throw new Error(`Error loading posts: ${errorMessage}`);
+                const errorText = await response.text();
+                throw new Error(`Unexpected response format. Details: ${errorText.substring(0, 200)}...`);
             }
-        }
-// If success path: make sure content-type is JSON
-        if (contentType && contentType.includes('application/json')) {
-            posts = await response.json();
-        } else {
-            const errorText = await response.text();
-            throw new Error(`Unexpected response format. Details: ${errorText.substring(0, 200)}...`);
-        }
 
-        // Render posts
-        postsContainer.innerHTML = '';
-        if (posts.length === 0) {
-            postsContainer.innerHTML = '<p>No posts yet. Create your first post!</p>';
-            return;
-        }
+            // Render posts
+            postsContainer.innerHTML = '';
+            if (posts.length === 0) {
+                postsContainer.innerHTML = '<p>No posts yet. Create your first post!</p>';
+                return;
+            }
 
             posts.forEach(post => {
-            const postElement = document.createElement('div');
-            postElement.classList.add('post-item');
-            postElement.innerHTML = `
+                const postElement = document.createElement('div');
+                postElement.classList.add('post-item');
+                postElement.innerHTML = `
                 <h4>${post.title} (${post.category})</h4>
                 <p>${post.content ? post.content.substring(0, 100) + '...' : 'No general content.'}</p>
                 ${post.category === 'Jobs' ? `
@@ -433,8 +431,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     ${post.companyLogoUrl ? `<img src="${post.companyLogoUrl}" alt="Company Logo" style="max-width: 80px; max-height: 80px; margin-right: 10px; object-fit: contain;">` : ''}
                     <div class="job-images-display" style="display: flex; flex-wrap: wrap; margin-top: 5px;">
                         ${post.jobImageUrls && post.jobImageUrls.length > 0 ?
-                        post.jobImageUrls.map(url => `<img src="${url}" alt="Job Image" style="max-width: 80px; max-height: 80px; margin-right: 5px; margin-bottom: 5px; object-fit: cover;">`).join('')
-                        : ''}
+                            post.jobImageUrls.map(url => `<img src="${url}" alt="Job Image" style="max-width: 80px; max-height: 80px; margin-right: 5px; margin-bottom: 5px; object-fit: cover;">`).join('')
+                            : ''}
                     </div>
                 ` : ''}
                 <p class="status">Status: ${post.published ? 'Published' : 'Draft'}</p>
@@ -442,17 +440,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <button onclick="editPost('${post.id}')" class="edit-button">Edit</button>
                 <button onclick="deletePost('${post.id}')" class="delete-button">Delete</button>
             `;
-            postsContainer.appendChild(postElement);
-        });
-    } catch (error) {
-        console.error('Error loading posts:', error);
-        postsContainer.innerHTML = `<p style="color: red;">${error.message}</p>`;
-        if (error.message.includes('Authentication Error')) {
-            localStorage.removeItem('adminToken');
-            setTimeout(() => { window.location.href = '/log-in.html'; }, 2000);
+                postsContainer.appendChild(postElement);
+            });
+        } catch (error) {
+            console.error('Error loading posts:', error);
+            postsContainer.innerHTML = `<p style="color: red;">${error.message}</p>`;
+            if (error.message.includes('Authentication Error')) {
+                localStorage.removeItem('adminToken');
+                setTimeout(() => { window.location.href = '/log-in.html'; }, 2000);
+            }
         }
-    }
-};
+    };
 
     // --- Edit Post Functionality ---
     window.editPost = async (postId) => {
@@ -652,7 +650,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 title,
                 content,
                 published,
-                updatedAt:FieldValue.serverTimestamp() // Update timestamp
+                updatedAt: FieldValue.serverTimestamp() // Update timestamp
             };
 
             // Only update job-specific fields if the category is 'Jobs'
@@ -667,13 +665,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 updatedPostData.jobImageUrls = finalJobImageUrls; // Attach updated Cloudinary URLs
             } else {
                 // If category is changed from 'Jobs' to something else, clear job-specific fields
-                updatedPostData.companyName =FieldValue.delete();
-                updatedPostData.jobLocation =FieldValue.delete();
-                updatedPostData.jobType =FieldValue.delete();
-                updatedPostData.jobDescription =FieldValue.delete();
-                updatedPostData.jobTags =FieldValue.delete();
-                updatedPostData.companyLogoUrl =FieldValue.delete();
-                updatedPostData.jobImageUrls =FieldValue.delete();
+                updatedPostData.companyName = FieldValue.delete();
+                updatedPostData.jobLocation = FieldValue.delete();
+                updatedPostData.jobType = FieldValue.delete();
+                updatedPostData.jobDescription = FieldValue.delete();
+                updatedPostData.jobTags = FieldValue.delete();
+                updatedPostData.companyLogoUrl = FieldValue.delete();
+                updatedPostData.jobImageUrls = FieldValue.delete();
             }
 
 
