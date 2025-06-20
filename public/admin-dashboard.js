@@ -760,7 +760,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             await auth.signOut();
             localStorage.removeItem('adminToken');
             alert('Logged out successfully!');
-            window.location.href = '/log-in.html';
+            window.location.href = '/public/log-in.html';
         } catch (error) {
             console.error('Error during logout:', error);
             alert('Error logging out. Please try again.');
