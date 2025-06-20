@@ -30,7 +30,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
         const formData = new FormData(createPostForm);
         try {
-            const response = await fetch('/api/create-post', {
+            const response = await fetch('./api/create-post', {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}`
