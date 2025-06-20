@@ -3,12 +3,12 @@ import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
-import connectDB from '../../utils/db';
-import JobPost from '../../models/Post';
-import AuctionPost from '../../models/AuctionPost';
-import ConsultantPost from '../../models/ConsultantPost';
-import TenderPost from '../../models/TenderPost';
-import VenuePost from '../../models/VenuePost';
+import connectDB from './utils/db';
+import JobPost from './models/JobPost';
+import AuctionPost from '..models/AuctionPost';
+import ConsultantPost from './models/ConsultantPost';
+import TenderPost from './models/TenderPost';
+import VenuePost from './models/VenuePost';
 
 export const config = {
   api: {
