@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const postCategorySelect = document.getElementById('postCategory');
+    const jobFieldsDiv = document.getElementById('jobFields');
     const token = localStorage.getItem('adminToken');
     if (!token) {
         alert('No admin token found, please log in.');
@@ -57,8 +58,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    postCategorySelect.addEventListener('change', toggleJobFields);
-    window.addEventListener('DOMContentLoaded', toggleJobFields);
+    postCategorySelect.addEventListener('change', toggleEditJobFields);
+    window.addEventListener('DOMContentLoaded', toggleEditJobFields);
     editPostCategorySelect.addEventListener('change', toggleEditJobFields);
 
     // Helper: Upload single file, returns uploaded file URL or null
