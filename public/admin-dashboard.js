@@ -296,8 +296,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 postData.jobImageUrls = uploadedJobImageUrls;
             }
 
-            // --- Send Post Data to Backend (Firestore via Express) ---
-            const response = await fetch('/api/posts', {
+            const response = await fetch('/models/post', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
