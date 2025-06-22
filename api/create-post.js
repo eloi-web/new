@@ -1,8 +1,5 @@
 import jwt from 'jsonwebtoken';
 import { IncomingForm } from 'formidable';
-import fs from 'fs';
-import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 import connectDB from '../utils/db.js';
 import JobPost from '../models/Post.js';
 import AuctionPost from '../models/AuctionPost.js';
@@ -42,10 +39,13 @@ export default async function handler(req, res) {
 
   await connectDB();
 
-  const form = new IncomingForm({ multiples: true, uploadDir: '/tmp', keepExtensions: true });
+  const form = new IncomingForm({ multiples: true, keepExtensions: true, uploadDir: '/tmp' });
 
   form.parse(req, async (err, fields, files) => {
-    if (err) return res.status(500).json({ message: 'Form parsing error' });
+    if (err) {
+      console.error('Form parsing error:', err);
+      return res.status(500).json({ message: 'Form parsing error', error: err.message });
+    }
 
     try {
       const {
@@ -60,12 +60,16 @@ export default async function handler(req, res) {
         jobTags
       } = fields;
 
-      const Model = modelMap[category];
-      if (!Model) return res.status(400).json({ message: 'Invalid category' });
+      if (!category || !modelMap[category]) {
+        return res.status(400).json({ message: 'Invalid category' });
+      }
 
+      // Debug: log all fields and files
+      console.log('Received fields:', fields);
+      console.log('Received files:', files);
+
+      // Prepare image URLs from uploaded files (adjust if you process or upload files somewhere else)
       const jobImageUrls = [];
-      const companyLogoUrl = files.companyLogo?.filepath || null;
-
       if (files.jobImages) {
         const imageFiles = Array.isArray(files.jobImages) ? files.jobImages : [files.jobImages];
         for (const file of imageFiles) {
@@ -73,29 +77,39 @@ export default async function handler(req, res) {
         }
       }
 
-      const newPost = new Model({
+      const companyLogoUrl = files.companyLogo?.filepath || null;
+
+      // Construct new post data depending on category
+      const postData = {
         title,
         content,
         category,
         published: published === 'true',
-        createdAt: new Date(),
-        ...(category === 'Jobs' && {
-          companyName,
-          jobLocation,
-          jobType,
-          jobDescription,
-          jobTags: jobTags ? jobTags.split(',').map(tag => tag.trim()) : [],
-          companyLogoUrl,
-          jobImageUrls
-        })
-      });
+        createdAt: new Date()
+      };
+
+      if (category === 'Jobs') {
+        postData.companyName = companyName || '';
+        postData.jobLocation = jobLocation || '';
+        postData.jobType = jobType || '';
+        postData.jobDescription = jobDescription || '';
+        postData.jobTags = jobTags ? jobTags.split(',').map(tag => tag.trim()) : [];
+        postData.companyLogoUrl = companyLogoUrl;
+        postData.jobImageUrls = jobImageUrls;
+      }
+
+      const Model = modelMap[category];
+      const newPost = new Model(postData);
+
+      // Debug before saving
+      console.log('Saving new post:', newPost);
 
       await newPost.save();
 
       return res.status(201).json({ message: 'Post created successfully', post: newPost });
     } catch (e) {
       console.error('Error saving post:', e);
-      return res.status(500).json({ message: 'Error saving post' });
+      return res.status(500).json({ message: 'Error saving post', error: e.message, stack: e.stack });
     }
   });
 }
