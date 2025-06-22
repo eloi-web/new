@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
-import connectDB from '../../utils/db.js';
-import JobPost from '../../models/Post.js';
-import AuctionPost from '../../models/AuctionPost.js';
-import ConsultantPost from '../../models/ConsultantPost.js';
-import TenderPost from '../../models/TenderPost.js';
-import VenuePost from '../../models/VenuePost.js';
+import connectDB from '../utils/db.js';
+import JobPost from '../models/Post.js';
+import AuctionPost from '../models/AuctionPost.js';
+import ConsultantPost from '../models/ConsultantPost.js';
+import TenderPost from '../models/TenderPost.js';
+import VenuePost from '../models/VenuePost.js';
 
 
 const modelMap = {
