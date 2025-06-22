@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 
 const auctionPostSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  description: String,
-  imageData: Buffer,
-  imageType: String,
+  itemName: { type: String, required: true },
+  startingBid: { type: Number, required: true },
+  endDate: { type: Date, required: true },
+  description: { type: String },
+  images: [String],
   createdAt: { type: Date, default: Date.now }
 });
 

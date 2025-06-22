@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-
 const jobPostSchema = new mongoose.Schema({
   title: String,
   content: String,

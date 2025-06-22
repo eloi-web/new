@@ -36,6 +36,75 @@ export default async function handler(req, res) {
   });
 
   form.parse(req, async (err, fields, files) => {
+    let postData = { createdAt: new Date(), category };
+
+    if (category === 'Jobs') {
+      postData = {
+        ...postData,
+        title: fields.title,
+        content: fields.content,
+        published: fields.published === 'true',
+        companyName: fields.companyName,
+        jobLocation: fields.jobLocation,
+        jobType: fields.jobType,
+        jobDescription: fields.jobDescription,
+        jobTags: fields.jobTags?.split(',').map(t => t.trim()) || [],
+        companyLogoUrl,
+        jobImageUrls
+      };
+    }
+
+    if (category === 'Auction') {
+      postData = {
+        ...postData,
+        itemName: fields.auctionItemName,
+        startingBid: parseFloat(fields.startingBid),
+        endDate: new Date(fields.auctionEndDate),
+        description: fields.auctionDescription,
+        images: auctionImageUrls
+      };
+    }
+    if (category === 'Consultants') {
+      postData = {
+        name: fields.consultantName,
+        expertise: fields.consultantExpertise,
+        location: fields.consultantLocation,
+        bio: fields.consultantBio,
+        photoUrl: files.consultantPhoto?.filepath || null,
+        createdAt: new Date()
+      };
+    }
+
+    if (category === 'Tenders') {
+      const tenderFiles = files.tenderDocuments
+        ? (Array.isArray(files.tenderDocuments) ? files.tenderDocuments : [files.tenderDocuments])
+        : [];
+
+      postData = {
+        title: fields.tenderTitle,
+        location: fields.tenderLocation,
+        deadline: new Date(fields.tenderDeadline),
+        details: fields.tenderDetails,
+        documentUrls: tenderFiles.map(file => file.filepath),
+        createdAt: new Date()
+      };
+    }
+
+    if (category === 'Venues') {
+      const venueImages = files.venueImages
+        ? (Array.isArray(files.venueImages) ? files.venueImages : [files.venueImages])
+        : [];
+
+      postData = {
+        name: fields.venueName,
+        location: fields.venueLocation,
+        capacity: parseInt(fields.venueCapacity) || 0,
+        description: fields.venueDescription,
+        imageUrls: venueImages.map(file => file.filepath),
+        createdAt: new Date()
+      };
+    }
+
     if (err) {
       console.error('Form parsing error:', err);
       return res.status(500).json({ message: 'Form parsing error', error: err.message });

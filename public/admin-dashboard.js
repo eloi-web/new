@@ -176,7 +176,8 @@ window.addEventListener('DOMContentLoaded', async () => {
             }
         }
     };
-
+    
+// logout functionality
     logoutButton.addEventListener('click', async () => {
         try {
             localStorage.removeItem('adminToken');
