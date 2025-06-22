@@ -43,7 +43,7 @@ window.addEventListener('DOMContentLoaded', async () => {
             if (contentType && contentType.includes('application/json')) {
                 result = await response.json();
             } else {
-                const text = await response.text();  // fallback to plain text
+                const text = await response.text();  
                 throw new Error(`Unexpected response: ${text}`);
             }
 
@@ -52,7 +52,7 @@ window.addEventListener('DOMContentLoaded', async () => {
             }
 
             alert('Post created successfully!');
-
+            createPostForm.reset();
             const category = formData.get('category');
 
             switch (category) {
