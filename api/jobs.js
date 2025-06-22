@@ -13,6 +13,9 @@ export default async function handler(req, res) {
       imageSrc: job.imageData && job.imageType
         ? `data:${job.imageType};base64,${job.imageData.toString('base64')}`
         : null,
+      companyLogoSrc: job.companyLogoData && job.companyLogoType
+    ? `data:${job.companyLogoType};base64,${job.companyLogoData.toString('base64')}`
+    : null,
       createdAt: job.createdAt
     }));
 
