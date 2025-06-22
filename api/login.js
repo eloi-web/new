@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const connectDB = require('../utils/db');
-const User = require('../../models/User');
+const User = require('../models/User');
 
 module.exports = async function handler(req, res) {
   try {
