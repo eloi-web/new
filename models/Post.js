@@ -6,6 +6,9 @@ const PostSchema = new mongoose.Schema({
   targetPage: String,
   imageData: Buffer,
   imageType: String,
+  companyLogoData: Buffer,
+  companyLogoType: String,
+
   createdAt: { type: Date, default: Date.now },
 
   companyName: String,
