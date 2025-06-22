@@ -8,7 +8,6 @@ const PostSchema = new mongoose.Schema({
   imageType: String,
   createdAt: { type: Date, default: Date.now },
 
-  // Extra fields for jobs
   companyName: String,
   jobLocation: String,
   jobType: String,
