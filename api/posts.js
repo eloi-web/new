@@ -73,11 +73,22 @@ export default async function handler(req, res) {
         for (const [category, Model] of Object.entries(modelMap)) {
           const post = await Model.findById(id).lean();
           if (post) {
-            return res.status(200).json({
-              ...post,
-              id: post._id,
-              category
-            });
+            const result = {
+  ...post,
+  id: post._id,
+  category
+};
+
+if (post.imageData && post.imageType) {
+  result.imageSrc = `data:${post.imageType};base64,${post.imageData.toString('base64')}`;
+}
+
+if (post.companyLogo && post.companyLogoType) {
+  result.companyLogoSrc = `data:${post.companyLogoType};base64,${post.companyLogo.toString('base64')}`;
+}
+
+return res.status(200).json(result);
+
           }
         }
         return res.status(404).json({ message: 'Post not found' });
@@ -91,12 +102,23 @@ export default async function handler(req, res) {
         for (const [category, Model] of Object.entries(modelMap)) {
           const docs = await Model.find().lean();
           docs.forEach(doc => {
-            allPosts.push({
-              ...doc,
-              id: doc._id,
-              category
-            });
-          });
+  const transformed = {
+    ...doc,
+    id: doc._id,
+    category
+  };
+
+  if (doc.imageData && doc.imageType) {
+    transformed.imageSrc = `data:${doc.imageType};base64,${doc.imageData.toString('base64')}`;
+  }
+
+  if (doc.companyLogo && doc.companyLogoType) {
+    transformed.companyLogoSrc = `data:${doc.companyLogoType};base64,${doc.companyLogo.toString('base64')}`;
+  }
+
+  allPosts.push(transformed);
+});
+
         }
 
         return res.status(200).json(allPosts);
