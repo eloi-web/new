@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const card = document.createElement("div");
       card.className = "listing-item";
 
-      const imageToShow = job.companyLogoSrc || "https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg";
+      const imageToShow = job.companyLogoSrc;
 
       card.innerHTML = `
         <div class="job-card-content" style="display:flex; align-items:center; gap:1rem;">
