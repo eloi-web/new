@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import formidable from 'formidable';
+import { IncomingForm } from 'formidable';
 import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
 
   await connectDB();
 
-  const form = new formidable.IncomingForm({ multiples: true, uploadDir: '/tmp', keepExtensions: true });
+  const form = new IncomingForm({ multiples: true, uploadDir: '/tmp', keepExtensions: true });
 
   form.parse(req, async (err, fields, files) => {
     if (err) return res.status(500).json({ message: 'Form parsing error' });
