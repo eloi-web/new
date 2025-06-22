@@ -1,9 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const connectDB = require('../utils/db');
+const connectDB = require('../../utils/db');
+const User = require('../../models/User');
 
-module.exports = async function (req, res) {
+module.exports = async function handler(req, res) {
   try {
     if (req.method !== 'POST') {
       return res.status(405).json({ message: 'Method Not Allowed' });
@@ -13,7 +13,7 @@ module.exports = async function (req, res) {
 
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required' });
+      return res.status(400).json({ message: 'Email and password required.' });
     }
 
     const user = await User.findOne({ email });
@@ -30,7 +30,7 @@ module.exports = async function (req, res) {
     return res.status(200).json({ token });
 
   } catch (err) {
-    console.error('🔥 /api/login error:', err.message);
-    return res.status(500).json({ message: 'Server error', error: err.message });
+    console.error('Login error:', err);
+    return res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 };
