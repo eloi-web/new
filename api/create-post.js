@@ -1,24 +1,13 @@
 import jwt from 'jsonwebtoken';
 import { IncomingForm } from 'formidable';
+import fs from 'fs';
 import connectDB from '../utils/db.js';
-import JobPost from '../models/Post.js';
-import AuctionPost from '../models/AuctionPost.js';
-import ConsultantPost from '../models/ConsultantPost.js';
-import TenderPost from '../models/TenderPost.js';
-import VenuePost from '../models/VenuePost.js';
+import Post from '../models/Post.js';
 
 export const config = {
   api: {
     bodyParser: false
   }
-};
-
-const modelMap = {
-  Jobs: JobPost,
-  Auction: AuctionPost,
-  Consultants: ConsultantPost,
-  Tenders: TenderPost,
-  Venues: VenuePost
 };
 
 export default async function handler(req, res) {
@@ -39,7 +28,12 @@ export default async function handler(req, res) {
 
   await connectDB();
 
-  const form = new IncomingForm({ multiples: true, keepExtensions: true, uploadDir: '/tmp', allowEmptyFiles: true, minFileSize: 0 });
+  const form = new IncomingForm({
+    multiples: false,
+    keepExtensions: true,
+    allowEmptyFiles: false,
+    maxFileSize: 5 * 1024 * 1024,  
+  });
 
   form.parse(req, async (err, fields, files) => {
     if (err) {
@@ -48,68 +42,36 @@ export default async function handler(req, res) {
     }
 
     try {
-      const {
-        title,
-        content,
-        category,
-        published,
-        companyName,
-        jobLocation,
-        jobType,
-        jobDescription,
-        jobTags
-      } = fields;
+      const { title, body, targetPage } = fields;
 
-      if (!category || !modelMap[category]) {
-        return res.status(400).json({ message: 'Invalid category' });
+      if (!title || !body || !targetPage) {
+        return res.status(400).json({ message: 'title, body, and targetPage are required' });
       }
 
-      // Debug: log all fields and files
-      console.log('Received fields:', fields);
-      console.log('Received files:', files);
+      let imageData = null;
+      let imageType = null;
 
-      // Prepare image URLs from uploaded files (adjust if you process or upload files somewhere else)
-      const jobImageUrls = [];
-      if (files.jobImages) {
-        const imageFiles = Array.isArray(files.jobImages) ? files.jobImages : [files.jobImages];
-        for (const file of imageFiles) {
-          jobImageUrls.push(file.filepath);
-        }
+      if (files.image && files.image.size > 0) {
+        const imageFile = files.image;
+        imageData = fs.readFileSync(imageFile.filepath);
+        imageType = imageFile.mimetype;
       }
 
-      const companyLogoUrl = files.companyLogo?.filepath || null;
-
-      // Construct new post data depending on category
-      const postData = {
-        title,
-        content,
-        category,
-        published: published === 'true',
+      const newPost = new Post({
+        title: Array.isArray(title) ? title[0] : title,
+        body: Array.isArray(body) ? body[0] : body,
+        targetPage: Array.isArray(targetPage) ? targetPage[0] : targetPage,
+        imageData,
+        imageType,
         createdAt: new Date()
-      };
-
-      if (category === 'Jobs') {
-        postData.companyName = companyName || '';
-        postData.jobLocation = jobLocation || '';
-        postData.jobType = jobType || '';
-        postData.jobDescription = jobDescription || '';
-        postData.jobTags = jobTags ? jobTags.split(',').map(tag => tag.trim()) : [];
-        postData.companyLogoUrl = companyLogoUrl;
-        postData.jobImageUrls = jobImageUrls;
-      }
-
-      const Model = modelMap[category];
-      const newPost = new Model(postData);
-
-      // Debug before saving
-      console.log('Saving new post:', newPost);
+      });
 
       await newPost.save();
 
       return res.status(201).json({ message: 'Post created successfully', post: newPost });
     } catch (e) {
       console.error('Error saving post:', e);
-      return res.status(500).json({ message: 'Error saving post', error: e.message, stack: e.stack });
+      return res.status(500).json({ message: 'Error saving post', error: e.message });
     }
   });
 }

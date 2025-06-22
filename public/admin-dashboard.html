@@ -23,7 +23,7 @@
 
             <div class="form-group">
                 <label for="postCategory">Category:</label>
-                <select id="postCategory" name="category">
+                <select id="postCategory" name="targetPage">
                     <option value="">--Select Category--</option>
                     <option value="Jobs">Jobs</option>
                     <option value="Auction">Auction</option>
@@ -40,8 +40,13 @@
 
             <div class="form-group">
                 <label for="postContent">General Content:</label>
-                <textarea id="postContent" name="content"
+                <textarea id="postContent" name="body"
                     placeholder="General description for this post (optional)"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="postImage">Post Image (optional):</label>
+                <input type="file" name="image" id="postImage" accept="image/*">
             </div>
 
             <div id="jobFields" class="category-specific-fields">
@@ -61,7 +66,8 @@
                 </div>
                 <div class="form-group">
                     <label for="jobDescription">Job Description:</label>
-                    <textarea id="jobDescription" name="jobDescription" placeholder="Detailed job description"></textarea>
+                    <textarea id="jobDescription" name="jobDescription"
+                        placeholder="Detailed job description"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="jobTags">Tags (comma-separated):</label>
