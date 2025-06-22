@@ -6,6 +6,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const jobFieldsDiv = document.getElementById('jobFields');
 
     const token = localStorage.getItem('adminToken');
+    
     if (!token) {
         alert('No admin token found, please log in.');
         window.location.href = './log-in.html';

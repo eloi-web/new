@@ -5,7 +5,6 @@ const User = require('../models/User');
 
 const router = express.Router();
 
-// POST /login route
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -16,14 +15,12 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Invalid email or password' });
     }
 
-    // Compare password with the hash
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       return res.status(400).json({ error: 'Invalid email or password' });
     }
 
-    // Create JWT Token
     const token = jwt.sign({ userId: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
 
     res.json({ token });

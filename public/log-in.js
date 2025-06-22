@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginMessage = document.getElementById('loginMessage');
 
     if (loginForm) {
+
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -53,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.history.length > 1) {
                 window.history.back();
             } else {
-                window.location.href = 'inde.html';
+                window.location.href = 'dex.html';
             }
         });
     }

@@ -1,8 +1,8 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const connectDB = require('../utils/db');
-module.exports = async function (req, res) {
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import connectDB from '../../utils/db';
+import User from '../../models/User';
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
@@ -22,10 +22,15 @@ module.exports = async function (req, res) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
-        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign(
+            { id: user._id, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
         res.status(200).json({ token });
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error('Login error:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
-};
+}
