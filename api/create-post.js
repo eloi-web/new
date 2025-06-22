@@ -39,7 +39,7 @@ export default async function handler(req, res) {
 
   await connectDB();
 
-  const form = new IncomingForm({ multiples: true, keepExtensions: true, uploadDir: '/tmp' });
+  const form = new IncomingForm({ multiples: true, keepExtensions: true, uploadDir: '/tmp', allowEmptyFiles: true });
 
   form.parse(req, async (err, fields, files) => {
     if (err) {
