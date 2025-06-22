@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     multiples: true,
     keepExtensions: true,
     allowEmptyFiles: true,
-    minFileSize: 1,
+    minFileSize: 0,
   });
 
   form.parse(req, async (err, fields, files) => {
