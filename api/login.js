@@ -12,7 +12,6 @@ module.exports = async function (req, res) {
     await connectDB();
 
     const { email, password } = req.body;
-
     if (!email || !password) {
       return res.status(400).json({ message: 'Email and password are required' });
     }
@@ -27,16 +26,11 @@ module.exports = async function (req, res) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    const token = jwt.sign(
-      { id: user._id, role: user.role || 'admin' },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     return res.status(200).json({ token });
 
-  } catch (error) {
-    console.error('API /login error:', error);
-    return res.status(500).json({ message: 'Server error', error: error.message });
+  } catch (err) {
+    console.error('🔥 /api/login error:', err.message);
+    return res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
