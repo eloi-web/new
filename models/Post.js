@@ -1,10 +1,21 @@
 const mongoose = require('mongoose');
 const postSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  body: { type: String, required: true },
-  imageData: { type: Buffer },
-  imageType: { type: String },
-  targetPage: { type: String, required: true },
+  body: { type: String },
+  targetPage: { type: String }, 
+  imageData: Buffer,             
+  imageType: String,             
+
+  companyLogoData: Buffer,       
+  companyLogoType: String,
+
+  companyName: String,
+  jobLocation: String,
+  jobType: String,
+  jobDescription: String,
+  jobTags: [String],
+  published: { type: Boolean, default: false },
+
   createdAt: { type: Date, default: Date.now }
 });
 
@@ -14,5 +25,4 @@ postSchema.virtual('imageSrc').get(function () {
   }
 });
 
-const Post = mongoose.model('Post', postSchema);
-module.exports = Post;
+export default mongoose.models.Post || mongoose.model('Post', PostSchema);

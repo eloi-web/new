@@ -31,7 +31,8 @@ export default async function handler(req, res) {
   const form = new IncomingForm({
     multiples: true,
     keepExtensions: true,
-    allowEmptyFiles: false,
+    allowEmptyFiles: true,
+    minFileSize: 1,
   });
 
   form.parse(req, async (err, fields, files) => {
@@ -57,14 +58,24 @@ export default async function handler(req, res) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
 
-      // Read single image
+      // Main image (e.g., jobImages[0])
       let imageData = null;
       let imageType = null;
-      const imageFile = files.image || files.companyLogo;
-      if (imageFile) {
-        const buffer = fs.readFileSync(imageFile.filepath);
-        imageData = buffer;
-        imageType = imageFile.mimetype;
+
+      if (files.jobImages && (Array.isArray(files.jobImages) ? files.jobImages.length > 0 : files.jobImages.size > 0)) {
+        const firstImage = Array.isArray(files.jobImages) ? files.jobImages[0] : files.jobImages;
+        const imageBuffer = fs.readFileSync(firstImage.filepath);
+        imageData = imageBuffer;
+        imageType = firstImage.mimetype;
+      }
+
+      // Optional: company logo
+      let companyLogoData = null;
+      let companyLogoType = null;
+      if (files.companyLogo && files.companyLogo.size > 0) {
+        const logoBuffer = fs.readFileSync(files.companyLogo.filepath);
+        companyLogoData = logoBuffer;
+        companyLogoType = files.companyLogo.mimetype;
       }
 
       const post = new Post({
@@ -73,8 +84,15 @@ export default async function handler(req, res) {
         targetPage: Array.isArray(targetPage) ? targetPage[0] : targetPage,
         imageData,
         imageType,
+        companyName: Array.isArray(companyName) ? companyName[0] : companyName,
+        jobLocation: Array.isArray(jobLocation) ? jobLocation[0] : jobLocation,
+        jobType: Array.isArray(jobType) ? jobType[0] : jobType,
+        jobDescription: Array.isArray(jobDescription) ? jobDescription[0] : jobDescription,
+        jobTags: jobTags ? (Array.isArray(jobTags) ? jobTags : jobTags.split(',').map(t => t.trim())) : [],
+        published: published === 'true',
+        companyLogoData,
+        companyLogoType,
         createdAt: new Date(),
-        // Additional job-related fields stored inside `body` for now (or extend schema later)
       });
 
       await post.save();

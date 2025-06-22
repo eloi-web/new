@@ -36,18 +36,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     skeletonsEl.innerHTML = "";
     const jobsToShow = allJobs.slice(displayedJobsCount, displayedJobsCount + jobsPerPage);
 
+    // In renderJobs()
     jobsToShow.forEach(job => {
       const div = document.createElement("div");
       div.className = "job-card";
       div.innerHTML = `
-        <h3>${job.title}</h3>
-        <p><strong>${job.company || 'N/A'}</strong> - ${capitalize(job.location || 'Rwanda')}</p>
-        <p><em>${job.type || 'Type N/A'}</em> | Tags: ${job.tags ? job.tags.join(', ') : ''}</p>
-        ${job.imageData && job.imageType ? `<img src="data:${job.imageType};base64,${job.imageData}" alt="Job Image" class="job-img">` : ''}
-        <p>${job.body}</p>
-      `;
+    <h3>${job.title}</h3>
+    <p><strong>${job.companyName || 'N/A'}</strong> - ${capitalize(job.jobLocation || 'Rwanda')}</p>
+    <p><em>${job.jobType || 'Type N/A'}</em> | Tags: ${job.jobTags ? job.jobTags.join(', ') : ''}</p>
+    ${job.imageData && job.imageType ? `<img src="data:${job.imageType};base64,${job.imageData}" alt="Job Image" class="job-img">` : ''}
+    <p>${job.body || ''}</p>
+  `;
       listingsEl.appendChild(div);
     });
+
 
     displayedJobsCount += jobsToShow.length;
     if (displayedJobsCount >= allJobs.length) {
