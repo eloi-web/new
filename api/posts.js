@@ -74,20 +74,21 @@ export default async function handler(req, res) {
           const post = await Model.findById(id).lean();
           if (post) {
             const result = {
-  ...post,
-  id: post._id,
-  category
-};
+              ...post,
+              id: post._id,
+              category
+            };
 
-if (post.imageData && post.imageType) {
-  result.imageSrc = `data:${post.imageType};base64,${post.imageData.toString('base64')}`;
+            if (post.imageData && post.imageType) {
+  result.imageSrc = `data:${post.imageType};base64,${Buffer.from(post.imageData).toString('base64')}`;
 }
 
 if (post.companyLogo && post.companyLogoType) {
-  result.companyLogoSrc = `data:${post.companyLogoType};base64,${post.companyLogo.toString('base64')}`;
+  result.companyLogoSrc = `data:${post.companyLogoType};base64,${Buffer.from(post.companyLogo).toString('base64')}`;
 }
 
-return res.status(200).json(result);
+
+            return res.status(200).json(result);
 
           }
         }
@@ -102,22 +103,22 @@ return res.status(200).json(result);
         for (const [category, Model] of Object.entries(modelMap)) {
           const docs = await Model.find().lean();
           docs.forEach(doc => {
-  const transformed = {
-    ...doc,
-    id: doc._id,
-    category
-  };
+            const transformed = {
+              ...doc,
+              id: doc._id,
+              category
+            };
 
-  if (doc.imageData && doc.imageType) {
-    transformed.imageSrc = `data:${doc.imageType};base64,${doc.imageData.toString('base64')}`;
-  }
+            if (doc.imageData && doc.imageType) {
+              transformed.imageSrc = `data:${doc.imageType};base64,${doc.imageData.toString('base64')}`;
+            }
 
-  if (doc.companyLogo && doc.companyLogoType) {
-    transformed.companyLogoSrc = `data:${doc.companyLogoType};base64,${doc.companyLogo.toString('base64')}`;
-  }
+            if (doc.companyLogo && doc.companyLogoType) {
+              transformed.companyLogoSrc = `data:${doc.companyLogoType};base64,${doc.companyLogo.toString('base64')}`;
+            }
 
-  allPosts.push(transformed);
-});
+            allPosts.push(transformed);
+          });
 
         }
 
