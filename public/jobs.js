@@ -27,9 +27,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const card = document.createElement("div");
       card.className = "listing-item";
 
-  const imageToShow = job.companyLogoSrc || job.imageSrc || "https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg";
-      
-  card.innerHTML = `
+      const imageToShow = job.companyLogoSrc || "https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg";
+
+      card.innerHTML = `
         <div class="job-card-content" style="display:flex; align-items:center; gap:1rem;">
       <img src="${imageToShow}" alt="${job.companyName}" class="job-logo">
       <div>
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById('popup-company').innerText = `${job.companyName} - ${capitalize(job.jobLocation)}`;
     document.getElementById('popup-type').innerText = job.jobType;
     document.getElementById('popup-desc').innerText = job.jobDescription || "No description provided.";
-    document.getElementById('popup-image').src = job.imageSrc || job.companyLogoSrc || "img/default-job.jpg";
+    document.getElementById('popup-image').src = job.imageSrc || "img/default-job.jpg";
     document.getElementById('job-popup').classList.remove('hidden');
     document.body.style.overflow = "hidden";
   };
