@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const jobFieldsDiv = document.getElementById('jobFields');
 
     const token = localStorage.getItem('adminToken');
-    
+
     if (!token) {
         alert('No admin token found, please log in.');
         window.location.href = './log-in.html';
@@ -52,6 +52,29 @@ window.addEventListener('DOMContentLoaded', async () => {
             }
 
             alert('Post created successfully!');
+
+            const category = formData.get('category');
+
+            switch (category) {
+                case 'Auction':
+                    window.location.href = '/auction.html';
+                    break;
+                case 'Jobs':
+                    window.location.href = '/jobs.html';
+                    break;
+                case 'Consultants':
+                    window.location.href = '/consultants.html';
+                    break;
+                case 'Tenders':
+                    window.location.href = '/tenders.html';
+                    break;
+                case 'Venues':
+                    window.location.href = '/venues.html';
+                    break;
+                default:
+                    alert('Unknown category. Staying on the dashboard.');
+            }
+
             // maybe reload or reset form
         } catch (err) {
             console.error('Post creation error:', err);

@@ -115,3 +115,30 @@ newsletterForm?.addEventListener('submit', function (e) {
   alert(`Thank you for subscribing with ${email}!`);
   this.reset();
 });
+
+
+async function fetchAuctionPosts() {
+  const res = await fetch('/api/get-auctions');
+  const data = await res.json();
+
+  const container = document.getElementById('auctionPostsContainer');
+  container.innerHTML = '';
+
+  data.posts.forEach(post => {
+    const imgSrc = post.imageData
+      ? `data:${post.imageType};base64,${post.imageData}`
+      : '';
+
+    const postEl = document.createElement('div');
+    postEl.className = 'auction-card';
+    postEl.innerHTML = `
+      <h3>${post.title}</h3>
+      <img src="${imgSrc}" alt="Auction Image" style="max-width: 300px" />
+      <p>${post.description}</p>
+    `;
+    container.appendChild(postEl);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', fetchAuctionPosts);
+

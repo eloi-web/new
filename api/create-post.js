@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     multiples: false,
     keepExtensions: true,
     allowEmptyFiles: false,
-    maxFileSize: 5 * 1024 * 1024,  
+    maxFileSize: 5 * 1024 * 1024,
   });
 
   form.parse(req, async (err, fields, files) => {
@@ -52,9 +52,12 @@ export default async function handler(req, res) {
       let imageType = null;
 
       if (files.image && files.image.size > 0) {
-        const imageFile = files.image;
-        imageData = fs.readFileSync(imageFile.filepath);
-        imageType = imageFile.mimetype;
+        const imageFile = files.auctionImages?.[0] || files.auctionImages;
+        if (imageFile) {
+          const imageBuffer = fs.readFileSync(imageFile.filepath);
+          postData.imageData = imageBuffer;
+          postData.imageType = imageFile.mimetype;
+        }
       }
 
       const newPost = new Post({
