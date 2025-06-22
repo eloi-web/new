@@ -87,7 +87,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     window.loadPosts = async () => {
         try {
-            const response = await fetch('/api/post', {
+            const response = await fetch('/api/posts', {
                 method: 'GET',
                 headers: { Authorization: `Bearer ${token}` }
             });

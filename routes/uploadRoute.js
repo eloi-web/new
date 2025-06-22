@@ -9,9 +9,9 @@ const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
 cloudinary.config({
-    cloud_name: 'dy40yogai',  // Replace with your Cloudinary cloud name
-    api_key: '799887153723792',       // Replace with your Cloudinary API key
-    api_secret: 'NTkG_ahctcVuY9Vmz5hJSJn9S1s'  // Replace with your Cloudinary API secret
+    cloud_name: 'dy40yogai',  
+    api_key: '799887153723792',       
+    api_secret: 'NTkG_ahctcVuY9Vmz5hJSJn9S1s'
 });
 
 // Post route to upload a photo
