@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById('popup-company').innerText = `${job.companyName} - ${capitalize(job.jobLocation)}`;
     document.getElementById('popup-type').innerText = job.jobType;
     document.getElementById('popup-desc').innerText = job.jobDescription || "No description provided.";
-    document.getElementById('popup-image').src = job.imageData;
+    document.getElementById('popup-image').src = job.imageSrc;
     document.getElementById('job-popup').classList.remove('hidden');
     document.body.style.overflow = "hidden";
   };
