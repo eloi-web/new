@@ -5,6 +5,11 @@ window.addEventListener('DOMContentLoaded', async () => {
     const postCategorySelect = document.getElementById('postCategory');
     const jobFieldsDiv = document.getElementById('jobFields');
 
+    
+    const editPostModal = document.getElementById('editPostModal');
+    const editPostForm = document.getElementById('editPostForm');
+    const editPostIdInput = document.getElementById('editPostId'); 
+
     const token = localStorage.getItem('adminToken');
 
     if (!token) {
@@ -20,6 +25,18 @@ window.addEventListener('DOMContentLoaded', async () => {
             jobFieldsDiv.style.display = 'none';
         }
     }
+
+    function toggleEditJobFields(category) {
+        const editJobFieldsDiv = document.getElementById('editJobFields');
+        if (editJobFieldsDiv) {
+            if (category === 'Jobs') {
+                editJobFieldsDiv.style.display = 'block';
+            } else {
+                editJobFieldsDiv.style.display = 'none';
+            }
+        }
+    }
+
 
     postCategorySelect.addEventListener('change', toggleJobFields);
     toggleJobFields();
@@ -43,7 +60,7 @@ window.addEventListener('DOMContentLoaded', async () => {
             if (contentType && contentType.includes('application/json')) {
                 result = await response.json();
             } else {
-                const text = await response.text();  
+                const text = await response.text();
                 throw new Error(`Unexpected response: ${text}`);
             }
 
@@ -53,8 +70,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 
             alert('Post created successfully!');
             createPostForm.reset();
+            
+            await window.loadPosts(); 
             const category = formData.get('category');
-
             switch (category) {
                 case 'Auction':
                     window.location.href = '/auction.html';
@@ -75,43 +93,16 @@ window.addEventListener('DOMContentLoaded', async () => {
                     alert('Unknown category. Staying on the dashboard.');
             }
 
-            // maybe reload or reset form
+
         } catch (err) {
             console.error('Post creation error:', err);
             alert(`Post creation failed: ${err.message}`);
         }
     });
 
-    async function uploadFileToBackend(file, folder) {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('folder', folder);
-
-        const response = await fetch('/api/upload', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: formData
-        });
-
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.message || 'Upload failed');
-        return data.url;
-    }
-
-    async function uploadMultipleFilesToBackend(files, folder) {
-        const uploadedUrls = [];
-        for (const file of files) {
-            const url = await uploadFileToBackend(file, folder);
-            if (url) uploadedUrls.push(url);
-        }
-        return uploadedUrls;
-    }
-
     window.loadPosts = async () => {
         try {
-            const response = await fetch('/api/posts', {
+            const response = await fetch('/api/posts', { 
                 method: 'GET',
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -141,29 +132,37 @@ window.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
+        
+            posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+
             posts.forEach(post => {
                 const postElement = document.createElement('div');
                 postElement.classList.add('post-item');
+                
+                const postContent = post.body || post.content || 'No general content.'; 
+                const companyLogoHtml = post.companyLogoSrc ? `<img src="${post.companyLogoSrc}" alt="Company Logo" style="max-width: 80px; max-height: 80px; object-fit: contain;">` : '';
+                const jobImagesHtml = post.jobImageUrls && post.jobImageUrls.length > 0 ?
+                    `<div class="job-images-display" style="display: flex; flex-wrap: wrap;">` +
+                    post.jobImageUrls.map(url => `<img src="${url}" alt="Job Image" style="max-width: 80px; max-height: 80px; margin-right: 5px; object-fit: cover;">`).join('') +
+                    `</div>` : '';
+
                 postElement.innerHTML = `
-                    <h4>${post.title} (${post.category})</h4>
-                    <p>${post.content ? post.content.substring(0, 100) + '...' : 'No general content.'}</p>
+                    <h4>${post.title || 'Untitled'} (${post.category || 'N/A'})</h4>
+                    <p>${postContent.substring(0, 100) + (postContent.length > 100 ? '...' : '')}</p>
                     ${post.category === 'Jobs' ? `
                         <p><strong>Company:</strong> ${post.companyName || 'N/A'}</p>
                         <p><strong>Location:</strong> ${post.jobLocation || 'N/A'}</p>
                         <p><strong>Type:</strong> ${post.jobType || 'N/A'}</p>
                         <p><strong>Description:</strong> ${post.jobDescription ? post.jobDescription.substring(0, 100) + '...' : 'N/A'}</p>
                         <p><strong>Tags:</strong> ${post.jobTags && Array.isArray(post.jobTags) ? post.jobTags.join(', ') : 'N/A'}</p>
-                        ${post.companyLogoUrl ? `<img src="${post.companyLogoUrl}" alt="Company Logo" style="max-width: 80px; max-height: 80px; object-fit: contain;">` : ''}
-                        <div class="job-images-display" style="display: flex; flex-wrap: wrap;">
-                            ${post.jobImageUrls && post.jobImageUrls.length > 0 ?
-                            post.jobImageUrls.map(url => `<img src="${url}" alt="Job Image" style="max-width: 80px; max-height: 80px; margin-right: 5px; object-fit: cover;">`).join('')
-                            : ''}
-                        </div>
+                        ${companyLogoHtml}
+                        ${jobImagesHtml}
                     ` : ''}
                     <p class="status">Status: ${post.published ? 'Published' : 'Draft'}</p>
-                    <p class="meta">Created: ${post.createdAt ? new Date(post.createdAt._seconds * 1000).toLocaleString() : 'N/A'}</p>
-                    <button onclick="editPost('${post.id}')" class="edit-button">Edit</button>
-                    <button onclick="deletePost('${post.id}')" class="delete-button">Delete</button>
+                    <p class="meta">Created: ${post.createdAt ? new Date(post.createdAt).toLocaleString() : 'N/A'}</p>
+                    <button class="edit-button" data-id="${post.id}" data-category="${post.category}">Update</button>
+                    <button class="delete-button" data-id="${post.id}" data-category="${post.category}">Delete</button>
                 `;
                 postsContainer.appendChild(postElement);
             });
@@ -176,8 +175,169 @@ window.addEventListener('DOMContentLoaded', async () => {
             }
         }
     };
-    
-// logout functionality
+
+    // --- HANDLE EDIT AND DELETE BUTTONS ---
+    postsContainer.addEventListener('click', async (event) => {
+        const target = event.target;
+        const postId = target.dataset.id;
+        const postCategory = target.dataset.category; 
+
+        if (target.classList.contains('edit-button')) {
+            if (postId && postCategory) {
+                console.log('Edit button clicked for ID:', postId, 'Category:', postCategory);
+                editPostModal.style.display = 'block';
+                await populateEditModal(postId, postCategory);
+            } else {
+                console.error("Edit button clicked, but post ID or category is missing from data-attributes.");
+            }
+        } else if (target.classList.contains('delete-button')) {
+            if (postId && postCategory) {
+                console.log('Delete button clicked for ID:', postId, 'Category:', postCategory);
+                if (confirm(`Are you sure you want to delete this ${postCategory} post?`)) {
+                    try {
+                        const response = await fetch(`/api/posts/${postId}?category=${postCategory}`, { // Pass category to backend
+                            method: 'DELETE',
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        });
+
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.message || 'Failed to delete post.');
+                        }
+
+                        alert('Post deleted successfully!');
+                        await window.loadPosts(); 
+                    } catch (error) {
+                        console.error('Error deleting post:', error);
+                        alert(`Error deleting post: ${error.message}`);
+                    }
+                }
+            } else {
+                console.error("Delete button clicked, but post ID or category is missing from data-attributes.");
+            }
+        }
+    });
+
+    // --- POPULATE EDIT MODAL FUNCTION ---
+    async function populateEditModal(postId, category) {
+        try {
+            const response = await fetch(`/api/posts/${postId}?category=${category}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            const post = await response.json();
+
+            if (!response.ok) {
+                throw new Error(post.message || 'Failed to fetch post for edit.');
+            }
+
+            // Populate form fields in the edit modal
+            editPostIdInput.value = post.id;
+            document.getElementById('editPostTitle').value = post.title || '';
+            document.getElementById('editPostBody').value = post.body || post.content || ''; // Use body or content
+            document.getElementById('editPostCategory').value = post.category || '';
+
+            // Toggle job-specific fields visibility in edit modal
+            toggleEditJobFields(post.category);
+
+            // Populate job-specific fields if it's a 'Jobs' post
+            if (post.category === 'Jobs') {
+                document.getElementById('editCompanyName').value = post.companyName || '';
+                document.getElementById('editJobLocation').value = post.jobLocation || '';
+                document.getElementById('editJobType').value = post.jobType || '';
+                document.getElementById('editJobDescription').value = post.jobDescription || '';
+                document.getElementById('editJobTags').value = (post.jobTags && Array.isArray(post.jobTags)) ? post.jobTags.join(', ') : '';
+
+                // Display current Company Logo
+                const currentCompanyLogoPreview = document.getElementById('currentCompanyLogoPreview');
+                currentCompanyLogoPreview.innerHTML = post.companyLogoSrc ? `<img src="${post.companyLogoSrc}" alt="Current Company Logo" style="max-width: 100px; max-height: 100px; display: block; margin-bottom: 5px;">` : 'No current logo';
+
+                // Display current Job Images (multiple)
+                const currentJobImagesPreview = document.getElementById('currentJobImagesPreview');
+                currentJobImagesPreview.innerHTML = ''; // Clear previous
+                if (post.jobImageUrls && post.jobImageUrls.length > 0) {
+                    post.jobImageUrls.forEach(url => {
+                        currentJobImagesPreview.innerHTML += `<img src="${url}" alt="Job Image" style="max-width: 80px; max-height: 80px; margin-right: 5px; object-fit: cover;">`;
+                    });
+                } else {
+                    currentJobImagesPreview.innerHTML = 'No current job images.';
+                }
+
+            }
+
+            // Display current General Post Image
+            const currentPostImagePreview = document.getElementById('currentPostImagePreview');
+            currentPostImagePreview.innerHTML = post.imageSrc ? `<img src="${post.imageSrc}" alt="Current Post Image" style="max-width: 100px; max-height: 100px; display: block; margin-bottom: 5px;">` : 'No current image';
+
+
+            // Set published checkbox
+            document.getElementById('editPublished').checked = post.published || false;
+
+            // Clear file inputs (important so user has to re-select if they want to change)
+            document.getElementById('editPostImage').value = '';
+            document.getElementById('editCompanyLogo').value = '';
+            document.getElementById('editJobImages').value = '';
+
+            // Reset removal checkboxes/inputs (if you have them)
+            const removeImageCheckbox = document.getElementById('removeImage');
+            if(removeImageCheckbox) removeImageCheckbox.checked = false;
+            const removeCompanyLogoCheckbox = document.getElementById('removeCompanyLogo');
+            if(removeCompanyLogoCheckbox) removeCompanyLogoCheckbox.checked = false;
+            const removeJobImagesCheckbox = document.getElementById('removeJobImages');
+            if(removeJobImagesCheckbox) removeJobImagesCheckbox.checked = false;
+
+
+        } catch (error) {
+            console.error('Error populating edit modal:', error);
+            alert('Failed to load post for editing: ' + error.message);
+            editPostModal.style.display = 'none'; // Close modal on error
+        }
+    }
+
+
+    // --- EDIT POST FORM SUBMISSION ---
+    editPostForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const postId = editPostIdInput.value;
+        const formData = new FormData(editPostForm);
+
+        // Get the category from the form data to pass to the API
+        const category = formData.get('category'); // Make sure your edit form has a 'category' input
+
+        // Log formData contents for debugging (optional)
+        console.log("Submitting edit form data:");
+        for (const pair of formData.entries()) {
+            console.log(pair[0] + ': ' + (typeof pair[1] === 'object' && pair[1] !== null ? pair[1].name || 'File Object' : pair[1]));
+        }
+
+        try {
+            const response = await fetch(`/api/posts/${postId}?category=${category}`, { // Pass category for backend to identify model
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                body: formData // Send FormData directly for file uploads
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Failed to update post.');
+            }
+
+            alert('Post updated successfully!');
+            editPostModal.style.display = 'none'; // Hide modal
+            await window.loadPosts(); // Reload posts to show changes
+        } catch (error) {
+            console.error('Error updating post:', error);
+            alert(`Error updating post: ${error.message}`);
+        }
+    });
+
+
+    // logout functionality
     logoutButton.addEventListener('click', async () => {
         try {
             localStorage.removeItem('adminToken');
@@ -189,5 +349,22 @@ window.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    await loadPosts();
+    // Close modal when close button or outside click
+    const closeButtons = document.querySelectorAll('.close-button');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (editPostModal) editPostModal.style.display = 'none';
+            // Add other modals if you have them
+        });
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target == editPostModal) {
+            editPostModal.style.display = 'none';
+        }
+    });
+
+
+    // Initial load of posts when the page loads
+    await window.loadPosts();
 });

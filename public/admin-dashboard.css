@@ -149,7 +149,7 @@ body {
   margin-top: 10px;
 }
 
-button.delete {
+.edit-button {
   color: white;
   padding: 10px 15px;
   border: none;
@@ -158,7 +158,7 @@ button.delete {
   font-size: 13px;
   background-color: #007bff;
 }
-button.edit{
+.delete-button{
   color: white;
   padding: 10px 15px;
   border: none;
