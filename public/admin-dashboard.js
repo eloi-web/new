@@ -102,7 +102,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     window.loadPosts = async () => {
         try {
-            const response = await fetch('/api/posts', { 
+            const response = await fetch('/api/posts/[id]', { 
                 method: 'GET',
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -195,7 +195,7 @@ window.addEventListener('DOMContentLoaded', async () => {
                 console.log('Delete button clicked for ID:', postId, 'Category:', postCategory);
                 if (confirm(`Are you sure you want to delete this ${postCategory} post?`)) {
                     try {
-                        const response = await fetch(`/api/posts/${postId}?category=${postCategory}`, { // Pass category to backend
+                        const response = await fetch(`/api/posts/[id]${postId}?category=${postCategory}`, { // Pass category to backend
                             method: 'DELETE',
                             headers: {
                                 Authorization: `Bearer ${token}`
@@ -223,7 +223,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     // --- POPULATE EDIT MODAL FUNCTION ---
     async function populateEditModal(postId, category) {
         try {
-            const response = await fetch(`/api/posts/${postId}?category=${category}`, {
+            const response = await fetch(`/api/posts/[id]${postId}?category=${category}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const post = await response.json();
@@ -313,7 +313,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         }
 
         try {
-            const response = await fetch(`/api/posts/${postId}?category=${category}`, { // Pass category for backend to identify model
+            const response = await fetch(`/api/posts/[id]${postId}?category=${category}`, { // Pass category for backend to identify model
                 method: 'PUT',
                 headers: {
                     Authorization: `Bearer ${token}`
