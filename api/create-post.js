@@ -67,7 +67,10 @@ export default async function handler(req, res) {
         const imageBuffer = fs.readFileSync(firstImage.filepath);
         imageData = imageBuffer;
         imageType = firstImage.mimetype;
-      }
+      }else {
+        console.log('Backend (create-post): Company Logo file not received or is empty.');
+        console.log('files.companyLogo object:', files.companyLogo);
+      }
 
       // Optional: company logo
       let companyLogoData = null;
@@ -90,8 +93,8 @@ export default async function handler(req, res) {
         jobDescription: Array.isArray(jobDescription) ? jobDescription[0] : jobDescription,
         jobTags: jobTags ? (Array.isArray(jobTags) ? jobTags : jobTags.split(',').map(t => t.trim())) : [],
         published: published === 'true',
-        companyLogoData,
-        companyLogoType,
+        companyLogo: companyLogoData,
+        companyLogoType: companyLogoType,
         createdAt: new Date(),
       });
 
