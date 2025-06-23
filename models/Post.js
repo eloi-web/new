@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const postSchema = new mongoose.Schema({
+const PostSchema = new mongoose.Schema({
   title: String,
   body: String,
   targetPage: String,

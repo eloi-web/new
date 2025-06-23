@@ -80,12 +80,12 @@ export default async function handler(req, res) {
             };
 
             if (post.imageData && post.imageType) {
-  result.imageSrc = `data:${post.imageType};base64,${Buffer.from(post.imageData).toString('base64')}`;
-}
+              result.imageSrc = `data:${post.imageType};base64,${Buffer.from(post.imageData).toString('base64')}`;
+            }
 
-if (post.companyLogo && post.companyLogoType) {
-  result.companyLogoSrc = `data:${post.companyLogoType};base64,${Buffer.from(post.companyLogo).toString('base64')}`;
-}
+            if (post.companyLogo && post.companyLogoType) {
+              result.companyLogoSrc = `data:${post.companyLogoType};base64,${Buffer.from(post.companyLogo).toString('base64')}`;
+            }
 
 
             return res.status(200).json(result);
