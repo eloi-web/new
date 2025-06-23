@@ -87,49 +87,44 @@
                 </div>
             </div>
 
-            <!-- AUCTIONS -->
             <div id="auctionFields" class="category-specific-fields" style="display:none;">
                 <h4>Auction Specific Details</h4>
-                <input type="text" id="auctionItemName" placeholder="Item Name">
-                <input type="number" id="startingBid" placeholder="Starting Bid Amount">
-                <input type="date" id="auctionEndDate" placeholder="Auction End Date">
-                <textarea id="auctionDescription" placeholder="Auction Description"></textarea>
-                <input type="file" id="auctionImages" accept="image/*" multiple>
+                <input type="text" id="auctionItemName" name="itemName" placeholder="Item Name">
+                <input type="number" id="startingBid" name="startingBid" placeholder="Starting Bid Amount">
+                <input type="date" id="auctionEndDate" name="auctionEndDate" placeholder="Auction End Date">
+                <textarea id="auctionDescription" name="auctionDescription" placeholder="Auction Description"></textarea>
+                <input type="file" id="auctionImages" name="auctionImages" accept="image/*" multiple>
             </div>
 
-            <!-- CONSULTANTS -->
             <div id="consultantsFields" class="category-specific-fields" style="display:none;">
                 <h4>Consultant Specific Details</h4>
-                <input type="text" id="consultantName" placeholder="Consultant Name">
-                <input type="text" id="consultantExpertise" placeholder="Expertise / Field">
-                <input type="text" id="consultantLocation" placeholder="Location">
-                <textarea id="consultantBio" placeholder="Short Bio"></textarea>
-                <input type="file" id="consultantPhoto" accept="image/*">
+                <input type="text" id="consultantName" name="consultantName" placeholder="Consultant Name">
+                <input type="text" id="consultantExpertise" name="consultantExpertise" placeholder="Expertise / Field">
+                <input type="text" id="consultantLocation" name="consultantLocation" placeholder="Location">
+                <textarea id="consultantBio" name="consultantBio" placeholder="Short Bio"></textarea>
+                <input type="file" id="consultantPhoto" name="consultantPhoto" accept="image/*">
             </div>
 
-            <!-- TENDERS -->
             <div id="tendersFields" class="category-specific-fields" style="display:none;">
                 <h4>Tender Specific Details</h4>
-                <input type="text" id="tenderTitle" placeholder="Tender Title">
-                <input type="text" id="tenderLocation" placeholder="Location">
-                <input type="date" id="tenderDeadline" placeholder="Deadline">
-                <textarea id="tenderDetails" placeholder="Tender Details"></textarea>
-                <input type="file" id="tenderDocuments" accept=".pdf,.doc,.docx" multiple>
+                <input type="text" id="tenderTitle" name="tenderTitle" placeholder="Tender Title">
+                <input type="text" id="tenderLocation" name="tenderLocation" placeholder="Location">
+                <input type="date" id="tenderDeadline" name="tenderDeadline" placeholder="Deadline">
+                <textarea id="tenderDetails" name="tenderDetails" placeholder="Tender Details"></textarea>
+                <input type="file" id="tenderDocuments" name="tenderDocuments" accept=".pdf,.doc,.docx" multiple>
             </div>
 
-            <!-- VENUES -->
             <div id="venuesFields" class="category-specific-fields" style="display:none;">
                 <h4>Venue Specific Details</h4>
-                <input type="text" id="venueName" placeholder="Venue Name">
-                <input type="text" id="venueLocation" placeholder="Venue Location">
-                <input type="number" id="venueCapacity" placeholder="Capacity">
-                <textarea id="venueDescription" placeholder="Description"></textarea>
-                <input type="file" id="venueImages" accept="image/*" multiple>
+                <input type="text" id="venueName" name="venueName" placeholder="Venue Name">
+                <input type="text" id="venueLocation" name="venueLocation" placeholder="Venue Location">
+                <input type="number" id="venueCapacity" name="venueCapacity" placeholder="Capacity">
+                <textarea id="venueDescription" name="venueDescription" placeholder="Description"></textarea>
+                <input type="file" id="venueImages" name="venueImages" accept="image/*" multiple>
             </div>
 
             <div class="form-group">
-                <input type="checkbox" name="check" id="postPublished" checked>
-                <label for="postPublished">Publish Immediately</label>
+                <input type="checkbox" name="published" id="postPublished" checked value="true"> <label for="postPublished">Publish Immediately</label>
             </div>
 
             <button type="submit" class="create-post-button">Create Post <i class="fas fa-plus"></i></button>
@@ -142,54 +137,42 @@
             </div>
         </div>
     </div>
-    <!-- modal popup -->
     <div id="editPostModal" class="modal">
         <div class="modal-content">
             <span class="close-button" id="closeEditModalButton">&times;</span>
             <h2>Edit Post</h2>
-            <form id="editPostForm">
-                <input type="hidden" id="editPostId"> <label for="editPostCategory">Category:</label>
-                <select id="editPostCategory" disabled>
-                    <option value="Jobs">Jobs</option>
+            <form id="editPostForm" enctype="multipart/form-data"> <input type="hidden" id="editPostId" name="id"> <label for="editPostCategory">Category:</label>
+                <select id="editPostCategory" name="category" disabled> <option value="Jobs">Jobs</option>
+                    <option value="Auction">Auction</option>
+                    <option value="Consultants">Consultants</option>
+                    <option value="Tenders">Tenders</option>
+                    <option value="Venues">Venues</option>
                 </select>
-
                 <label for="editPostTitle">Title:</label>
-                <input type="text" id="editPostTitle">
-
-                <label for="editPostContent">General Content:</label>
-                <textarea id="editPostContent" rows="5"></textarea>
-
-                <label for="editPostPublished">Published:</label>
-                <input type="checkbox" id="editPostPublished">
-
-                <div id="editJobFields" class="job-fields">
-                    <h3>Job Specific Details</h3>
-                    <label for="editCompanyName">Company Name:</label>
-                    <input type="text" id="editCompanyName">
-
-                    <label for="editJobLocation">Location:</label>
-                    <input type="text" id="editJobLocation">
-
-                    <label for="editJobType">Job Type:</label>
-                    <input type="text" id="editJobType">
-
-                    <label for="editJobDescription">Job Description:</label>
-                    <textarea id="editJobDescription" rows="5"></textarea>
-
-                    <label for="editJobTags">Tags (comma-separated):</label>
-                    <input type="text" id="editJobTags">
-
-                    <label for="editCompanyLogo">Company Logo:</label>
-                    <input type="file" id="editCompanyLogo" name="companyLogo" accept="image/*">
-                    <div id="currentCompanyLogo" style="margin-top: 5px;">
-                    </div>
-
-                    <label for="editJobImages">Job Images:</label>
-                    <input type="file" id="editJobImages" accept="image/*" multiple>
-                    <div id="currentJobImages" style="margin-top: 5px;">
-                    </div>
+                <input type="text" id="editPostTitle" name="title"> <label for="editPostBody">General Content:</label> <textarea id="editPostBody" name="body" rows="5"></textarea> <div class="form-group"> <label for="editPostImage">Post Image (Optional):</label>
+                    <input type="file" id="editPostImage" name="image" accept="image/*">
+                    <div id="currentPostImagePreview" style="margin-top: 5px;"></div> <label><input type="checkbox" id="removeImage" name="removeImage" value="true"> Remove current image</label>
                 </div>
 
+                <label for="editPublished">Published:</label>
+                <input type="checkbox" id="editPublished" name="published" value="true"> <div id="editJobFields" class="job-fields">
+                    <h3>Job Specific Details</h3>
+                    <label for="editCompanyName">Company Name:</label>
+                    <input type="text" id="editCompanyName" name="companyName"> <label for="editJobLocation">Location:</label>
+                    <input type="text" id="editJobLocation" name="jobLocation"> <label for="editJobType">Job Type:</label>
+                    <input type="text" id="editJobType" name="jobType"> <label for="editJobDescription">Job Description:</label>
+                    <textarea id="editJobDescription" name="jobDescription" rows="5"></textarea> <label for="editJobTags">Tags (comma-separated):</label>
+                    <input type="text" id="editJobTags" name="jobTags"> <div class="form-group"> <label for="editCompanyLogo">Company Logo:</label>
+                        <input type="file" id="editCompanyLogo" name="companyLogo" accept="image/*">
+                        <div id="currentCompanyLogoPreview" style="margin-top: 5px;"></div> <label><input type="checkbox" id="removeCompanyLogo" name="removeCompanyLogo" value="true"> Remove current logo</label>
+                    </div>
+
+                    <div class="form-group"> <label for="editJobImages">Job Images:</label>
+                        <input type="file" id="editJobImages" name="jobImages" accept="image/*" multiple>
+                        <div id="currentJobImagesPreview" style="margin-top: 5px;"></div> <label><input type="checkbox" id="removeJobImages" name="removeJobImages" value="true"> Clear all job images</label>
+                    </div>
+                </div>
+                
                 <button type="submit">Save Changes</button>
                 <button type="button" id="cancelEditButton">Cancel</button>
             </form>
