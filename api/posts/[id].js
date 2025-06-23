@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { IncomingForm } from 'formidable';
 import fs from 'fs'; // Import fs for reading file buffers
-import connectDB from '../utils/db.js';
+import connectDB from '../../utils/db.js';
 import JobPost from '../models/Post.js';
 import AuctionPost from '../models/AuctionPost.js';
 import ConsultantPost from '../models/ConsultantPost.js';
